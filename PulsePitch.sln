@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PulsePitchBackend", "PulsePitchBackend\PulsePitchBackend.csproj", "{EA81FDD5-8932-9796-BA90-283BC9DF3420}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EA81FDD5-8932-9796-BA90-283BC9DF3420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA81FDD5-8932-9796-BA90-283BC9DF3420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA81FDD5-8932-9796-BA90-283BC9DF3420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA81FDD5-8932-9796-BA90-283BC9DF3420}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19D3F6B7-7F0C-4F04-ACA3-7737D284A47A}
+	EndGlobalSection
+EndGlobal
