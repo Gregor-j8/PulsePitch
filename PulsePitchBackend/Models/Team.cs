@@ -10,5 +10,5 @@ public class Team
     [Required]
     public string JoinCode { get; set; }
     public int CoachId { get; set; }
-    public User Coach { get; set; }
+    public UserProfile Coach { get; set; }
 }
