@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PulsePitch.Models;
 
 namespace PulsePitch.Data
@@ -14,8 +13,7 @@ namespace PulsePitch.Data
         public DbSet<PlayerTeam> PlayerTeams { get; set; }
         public DbSet<TeamEvent> TeamEvents { get; set; }
         public DbSet<TeamGame> TeamGames { get; set; }
-        public DbSet<UserProfile> User { get; set; }
-
+        public DbSet<UserProfile> UserProfiles { get; set; }
 
         public PulsePitchDbContext(DbContextOptions<PulsePitchDbContext> options, IConfiguration configuration)
             : base(options)
@@ -28,18 +26,8 @@ namespace PulsePitch.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<IdentityRole>().HasData(
-                new IdentityRole
-                {
-                    Id = "1",
-                    Name = "Coach",
-                    NormalizedName = "COACH"
-                },
-                new IdentityRole
-                {
-                    Id = "2",
-                    Name = "Member",
-                    NormalizedName = "MEMBER"
-                }
+                new IdentityRole { Id = "1", Name = "Coach", NormalizedName = "COACH" },
+                new IdentityRole { Id = "2", Name = "Member", NormalizedName = "MEMBER" }
             );
 
             var coachUser = new IdentityUser
@@ -53,28 +41,56 @@ namespace PulsePitch.Data
                 SecurityStamp = Guid.NewGuid().ToString()
             };
 
-            coachUser.PasswordHash = new PasswordHasher<IdentityUser>()
-                .HashPassword(coachUser, "1234567");
-
-            modelBuilder.Entity<IdentityUser>().HasData(coachUser);
-
-            modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>
+            var memberUser = new IdentityUser
             {
-                UserId = "coach-user-id",
-                RoleId = "coach-role-id"
-            });
+                Id = "member-user-id",
+                UserName = "playerjane",
+                NormalizedUserName = "PLAYERJANE",
+                Email = "jane@team.com",
+                NormalizedEmail = "JANE@TEAM.COM",
+                EmailConfirmed = true,
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+
+            coachUser.PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(coachUser, "1234567");
+            memberUser.PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(memberUser, "1234567");
+
+            modelBuilder.Entity<IdentityUser>().HasData(coachUser, memberUser);
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string> { UserId = "coach-user-id", RoleId = "1" },
+                new IdentityUserRole<string> { UserId = "member-user-id", RoleId = "2" }
+            );
+
+            modelBuilder.Entity<UserProfile>().HasData(
+                new UserProfile
+                {
+                    Id = 1,
+                    FirstName = "John",
+                    LastName = "Coach",
+                    Address = "123 Coach Lane",
+                    IdentityUserId = "coach-user-id"
+                },
+                new UserProfile
+                {
+                    Id = 2,
+                    FirstName = "Jane",
+                    LastName = "Player",
+                    Address = "456 Field Dr",
+                    IdentityUserId = "member-user-id"
+                }
+            );
 
             modelBuilder.Entity<Team>().HasData(new Team
             {
                 Id = 1,
                 Name = "Eagles",
                 JoinCode = "JOIN123",
-                CoachId = 1
+                CoachId = "coach-user-id"
             });
 
             modelBuilder.Entity<PlayerTeam>().HasData(
-                new PlayerTeam { Id = 1, PlayerId = 2, TeamId = 1 },
-                new PlayerTeam { Id = 2, PlayerId = 3, TeamId = 1 }
+                new PlayerTeam { Id = 1, PlayerId = 2, TeamId = 1 }
             );
 
             modelBuilder.Entity<TeamEvent>().HasData(
