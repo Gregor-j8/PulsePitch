@@ -5,3 +5,5 @@ runs/
 data/
 models/
 .pt*
+output_videos/
+stubs/
