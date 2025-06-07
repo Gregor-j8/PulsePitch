@@ -49,9 +49,8 @@ public class AuthController : ControllerBase
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.FirstName, user.FirstName.ToString()),
+                    new Claim(ClaimTypes.Name, user.UserName.ToString()),
                     new Claim(ClaimTypes.Email, user.Email)
-
                 };
 
                 foreach (var userRole in userRoles)
@@ -135,6 +134,13 @@ public class AuthController : ControllerBase
         var result = await _userManager.CreateAsync(user, password);
         if (result.Succeeded)
         {
+            string assignedRole = "Member";
+            var roleResult = await _userManager.AddToRoleAsync(user, assignedRole);
+            if (!roleResult.Succeeded)
+            {
+                return StatusCode(500, "User created but failed to assign role.");
+            }
+
             _dbContext.UserProfiles.Add(new UserProfile
             {
                 FirstName = registration.FirstName,
