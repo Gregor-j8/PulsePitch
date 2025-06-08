@@ -9,3 +9,8 @@ output_videos/
 stubs/
 development_and_analysis/
 enhance_image.py
+venv/Include
+venv/lib
+venv/Scripts
+venv/share
+venv/pyvenv.cfg
