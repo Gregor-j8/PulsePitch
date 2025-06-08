@@ -7,11 +7,21 @@ import sys
 sys.path.append('../')
 from utils import get_bbox_width, get_center_of_bbox
 import cv2
+import pandas as pd
 
 class Tracker:
     def __init__(self, model_path):
          self.model = YOLO(model_path)
          self.tracker = sv.ByteTrack()
+         
+    def interpolate_ball_positions(self, ball_positions):
+        ball_positions = [x.get(1, {}).get('bbox', []) for x in ball_positions]
+        df_ball_positions = pd.DataFrame(ball_positions, columns=['x1', 'y1', 'x2', 'y2'])
+        df_ball_positions = df_ball_positions.interpolate()
+        df_ball_positions = df_ball_positions.bfill()
+        ball_positions = [{1: {"bbox": x}} for x in df_ball_positions.to_numpy().tolist()]
+            
+        return ball_positions
          
     def detect_frames(self, frames):
         batch_size = 20
@@ -131,6 +141,8 @@ class Tracker:
         ])
         cv2.drawContours(frame, [triangle_points], 0, color, cv2.FILLED)
         cv2.drawContours(frame, [triangle_points], 0, (0,0,0), 2)
+        
+        self.draw_annotations
         # cv2.drawChessboardCorners()
         return frame
         
@@ -146,8 +158,9 @@ class Tracker:
             ball_dict = tracks["ball"][frame_num]
 
             for track_id, player in player_dict.items():
-                colors = self.tracker.tracker.get_color(track_id)
-                frame = self.draw_ellipse(frame, player["bbox"], colors, track_id)
+                print(f"Drawing player {player} at frame {frame_num}")
+                color = player.get("team_color",(255,0,0))
+                frame = self.draw_ellipse(frame, player["bbox"], color, track_id)
             for _, referee in referees_dict.items():
                 frame = self.draw_ellipse(frame, referee["bbox"], (0, 255, 255))
             for track_id, ball in ball_dict.items():

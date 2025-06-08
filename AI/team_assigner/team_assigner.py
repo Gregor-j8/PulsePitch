@@ -5,6 +5,7 @@ class TeamAssigner:
         self.team_colors = {}
         self.player_team_dict = {}
         
+        
     def get_clustering_model(self, image):
             image_2d = image.reshape(-1, 3)
             kmeans = KMeans(n_clusters=2, init='k-means++', n_init=1).fit(image_2d)
@@ -37,7 +38,6 @@ class TeamAssigner:
         
         self.team_colors[1] = kmeans.cluster_centers_[0]
         self.team_colors[2] = kmeans.cluster_centers_[1]
-        
     def get_player_teams(self, frame, player_bbox, player_id):
         if player_id in self.player_team_dict:
             return self.player_team_dict[player_id]

@@ -1,4 +1,7 @@
 opencv-python
+fastapi
+uvicorn
+pydantic
 numpy
 ultralytics
 deep_sort_realtime
