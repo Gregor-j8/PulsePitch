@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -180,10 +181,14 @@ namespace PulsePitchBackend.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    IdentityUserId = table.Column<string>(type: "text", nullable: true),
-                    FirstName = table.Column<string>(type: "text", nullable: true),
-                    LastName = table.Column<string>(type: "text", nullable: true),
-                    Address = table.Column<string>(type: "text", nullable: true)
+                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    UserName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
+                    CreateDateTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ImageLocation = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    Roles = table.Column<List<string>>(type: "text[]", nullable: true),
+                    IdentityUserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -274,19 +279,19 @@ namespace PulsePitchBackend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[,]
-                {
-                    { "1", null, "Coach", "COACH" },
-                    { "2", null, "Member", "MEMBER" }
-                });
+                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", null, "Admin", "admin" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "coach-user-id", 0, "98405d35-c048-47cf-8c10-e4c5daac2b45", "john@team.com", true, false, null, "JOHN@TEAM.COM", "COACHJOHN", "AQAAAAIAAYagAAAAEOsvCS5RZKw4ytcXjH7yy7RYkIqtZ8oNI+E/icK/RM8oTxXuxzsEgUblGW4HMpkt8w==", null, false, "b3f697f0-5aa8-4aa6-833f-1f8383f34327", false, "coachjohn" },
-                    { "member-user-id", 0, "1a335514-2a3a-4ae7-a1ae-23412e607bba", "jane@team.com", true, false, null, "JANE@TEAM.COM", "PLAYERJANE", "AQAAAAIAAYagAAAAEB5ImxnnNecRe02mML9lvaGcBrDLDwOeLfraLpXteIxg26pEGqIBV0Il+h+CV3fsYQ==", null, false, "66865ceb-44ab-47d5-83be-d413535b717b", false, "playerjane" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "1438b3dd-c712-432c-af2a-e37b28b692fd", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEG/+E4GwxeON+GlAmiOROkItLNKrWUnT3l19aNzUgMMF5kTqhnpuq/PuqT5iVesBAQ==", null, false, "b3b9dbf3-8900-40c5-a5a1-82db4619af25", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "cac2ceaa-278c-48a7-b288-b34f60b3f5ce", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEM0OYDSVK9uMY+39X8WylZi/W3WnpWhM09o4MmuJBkN0X0sGJBAUzyF8QywcVH4SGw==", null, false, "0643ffcf-a104-4b61-8c70-72d6d9f5d40f", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "1e251ff7-a2b3-44ec-be73-dfdac5ec612d", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEOPto+eJ1fpDWtEjFQhfA6vG7BX7FRH1WoopX72TOkur8iHUVWUdGFF9aZzJlI735g==", null, false, "08c59bcc-7be0-44ef-890e-b11b3e79eaa5", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "190c0f25-2e7f-4db9-b4ab-f8b0e29b05e4", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEN6NKYxMwnHRdovQNBxPrqmtyK+IMf2PlY3qs3NDgcImORlkL6s9zfS+7Ggv7WxMVw==", null, false, "f801fa96-5c4c-4499-a023-48d73fe4801a", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "df0b68c5-ba84-4924-9ed6-55fc3f9a2d53", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEHLhPXgPT/pyWDquCGxJNIkWoxzFDPvyvZttz9yXEfGPmahIM53hrr2LX8Hhlt12Hw==", null, false, "fb9d73fa-2b37-4a4e-ac92-181489a24f51", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "3aae5dc1-0e07-4f3a-b7ad-8da00a61d8f0", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEA3F0FXGQ3wqNQTIXtwoNv8lUfaZdm1W0kHUl26C+NB1/NjLUQLxFfrZc6C+S/vZWA==", null, false, "d6c37e8b-a3f7-4a6b-856f-333f98caa4b6", false, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
@@ -299,8 +304,8 @@ namespace PulsePitchBackend.Migrations
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "1", "coach-user-id" },
-                    { "2", "member-user-id" }
+                    { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "d8d76512-74f1-43bb-b1fd-87d3a8aa36df" },
+                    { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f" }
                 });
 
             migrationBuilder.InsertData(
@@ -315,11 +320,15 @@ namespace PulsePitchBackend.Migrations
 
             migrationBuilder.InsertData(
                 table: "UserProfiles",
-                columns: new[] { "Id", "Address", "FirstName", "IdentityUserId", "LastName" },
+                columns: new[] { "Id", "CreateDateTime", "Email", "FirstName", "IdentityUserId", "ImageLocation", "LastName", "Roles", "UserName" },
                 values: new object[,]
                 {
-                    { 1, "123 Coach Lane", "John", "coach-user-id", "Coach" },
-                    { 2, "456 Field Dr", "Jane", "member-user-id", "Player" }
+                    { 1, new DateTime(2022, 1, 25, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Admina", "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", "https://robohash.org/numquamutut.png?size=150x150&set=set1", "Strator", null, null },
+                    { 2, new DateTime(2023, 2, 2, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "John", "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", "https://robohash.org/nisiautemet.png?size=150x150&set=set1", "Doe", null, null },
+                    { 3, new DateTime(2022, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Jane", "a7d21fac-3b21-454a-a747-075f072d0cf3", "https://robohash.org/molestiaemagnamet.png?size=150x150&set=set1", "Smith", null, null },
+                    { 4, new DateTime(2023, 6, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Alice", "c806cfae-bda9-47c5-8473-dd52fd056a9b", "https://robohash.org/deseruntutipsum.png?size=150x150&set=set1", "Johnson", null, null },
+                    { 5, new DateTime(2023, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bob", "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", "https://robohash.org/quiundedignissimos.png?size=150x150&set=set1", "Williams", null, null },
+                    { 6, new DateTime(2022, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Eve", "d224a03d-bf0c-4a05-b728-e3521e45d74d", "https://robohash.org/hicnihilipsa.png?size=150x150&set=set1", "Davis", null, null }
                 });
 
             migrationBuilder.InsertData(
