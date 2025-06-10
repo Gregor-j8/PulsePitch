@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text;
 using PulsePitch.Models;
-using PulsePitch.DTO;
 using PulsePitch.Data;
 
 namespace PulsePitch.Controllers;
@@ -25,56 +24,62 @@ public class AuthController : ControllerBase
         _userManager = userManager;
     }
 
-    [HttpPost("login")]
-    public IActionResult Login([FromHeader(Name = "Authorization")] string authHeader)
+[HttpPost("login")]
+public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] string authHeader)
+{
+    try
     {
-        try
-        {
-            string encodedCreds = authHeader.Substring(6).Trim();
-            string creds = Encoding
+        string encodedCreds = authHeader.Substring(6).Trim();
+        string creds = Encoding
             .GetEncoding("iso-8859-1")
             .GetString(Convert.FromBase64String(encodedCreds));
 
-            // Get email and password
-            int separator = creds.IndexOf(':');
-            string email = creds.Substring(0, separator);
-            string password = creds.Substring(separator + 1);
+        int separator = creds.IndexOf(':');
+        string email = creds.Substring(0, separator);
+        string password = creds.Substring(separator + 1);
 
-            var user = _dbContext.Users.Where(u => u.Email == email).FirstOrDefault();
-            var userRoles = _dbContext.UserRoles.Where(ur => ur.UserId == user.Id).ToList();
-            var hasher = new PasswordHasher<IdentityUser>();
-            var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
-            if (user != null && result == PasswordVerificationResult.Success)
+        var user = _dbContext.Users.FirstOrDefault(u => u.Email == email);
+
+        if (user == null)
+            return Unauthorized();
+
+        var userRoles = _dbContext.UserRoles.Where(ur => ur.UserId == user.Id).ToList();
+        var hasher = new PasswordHasher<IdentityUser>();
+        var result = hasher.VerifyHashedPassword(user, user.PasswordHash, password);
+
+        if (result == PasswordVerificationResult.Success)
+        {
+            var claims = new List<Claim>
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.UserName.ToString()),
-                    new Claim(ClaimTypes.Email, user.Email)
-                };
+                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Email, user.Email)
+            };
 
-                foreach (var userRole in userRoles)
-                {
-                    var role = _dbContext.Roles.FirstOrDefault(r => r.Id == userRole.RoleId);
+            foreach (var userRole in userRoles)
+            {
+                var role = _dbContext.Roles.FirstOrDefault(r => r.Id == userRole.RoleId);
+                if (role != null)
                     claims.Add(new Claim(ClaimTypes.Role, role.Name));
-                }
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                HttpContext.SignInAsync(
-                CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIdentity)).Wait();
-
-                return Ok();
             }
 
-            return new UnauthorizedResult();
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(claimsIdentity));
+
+            return Ok(new { message = "Login successful", username = user.UserName, email = user.Email });
         }
-        catch (Exception ex)
-        {
-            return StatusCode(500);
-        }
+
+        return Unauthorized();
     }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+        return StatusCode(500, $"Internal error: {ex.Message}");
+    }
+}
 
     [HttpGet]
     [Route("logout")]
@@ -101,25 +106,16 @@ public class AuthController : ControllerBase
         var roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
         if (profile != null)
         {
-            var userDto = new UserProfileDTO
-            {
-                Id = profile.Id,
-                FirstName = profile.FirstName,
-                LastName = profile.LastName,
-                Address = profile.Address,
-                IdentityUserId = identityUserId,
-                UserName = User.FindFirstValue(ClaimTypes.Name),
-                Email = User.FindFirstValue(ClaimTypes.Email),
-                Roles = roles
-            };
-
-            return Ok(userDto);
+            profile.UserName = User.FindFirstValue(ClaimTypes.Name);
+            profile.Email = User.FindFirstValue(ClaimTypes.Email);
+            profile.Roles = roles;
+            return Ok(profile);
         }
         return NotFound();
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegistrationDTO registration)
+    public async Task<IActionResult> Register(Registration registration)
     {
         var user = new IdentityUser
         {
@@ -134,18 +130,11 @@ public class AuthController : ControllerBase
         var result = await _userManager.CreateAsync(user, password);
         if (result.Succeeded)
         {
-            string assignedRole = "Member";
-            var roleResult = await _userManager.AddToRoleAsync(user, assignedRole);
-            if (!roleResult.Succeeded)
-            {
-                return StatusCode(500, "User created but failed to assign role.");
-            }
-
             _dbContext.UserProfiles.Add(new UserProfile
             {
                 FirstName = registration.FirstName,
                 LastName = registration.LastName,
-                Address = registration.Address,
+                CreateDateTime = DateTime.Now,
                 IdentityUserId = user.Id,
             });
             _dbContext.SaveChanges();
@@ -165,6 +154,6 @@ public class AuthController : ControllerBase
 
             return Ok();
         }
-        return StatusCode(500);
+        return BadRequest(new { Errors = result.Errors.Select(ir => ir.Description) });
     }
 }
