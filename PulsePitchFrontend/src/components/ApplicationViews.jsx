@@ -4,6 +4,7 @@ import Login from "./auth/Login";
 import Register from "./auth/Register";
 import App from "../App";
 import VideoUploader from "./SoccerVideo/SoccerVideo";
+import { Home } from "../Home/Home";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -12,7 +13,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
         index
         element={
           <AuthorizedRoute loggedInUser={loggedInUser}>
-            <VideoUploader/>
+            <Home/>
           </AuthorizedRoute>
         }
       />
