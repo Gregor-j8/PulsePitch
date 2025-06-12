@@ -8,7 +8,9 @@ public class AutoMapperProfiles : Profile
     public AutoMapperProfiles()
     {
         CreateMap<UserProfile, UserProfileDTO>().ReverseMap();
+        CreateMap<PlayerTeam, PlayerTeamDTO>().ReverseMap();
         CreateMap<Team, TeamDTO>().ReverseMap();
+        CreateMap<Team, EditTeamDTO>().ReverseMap();
         CreateMap<TeamEvent, TeamEventDTO>().ReverseMap();
         CreateMap<TeamGame, TeamGameDTO>().ReverseMap();
     }

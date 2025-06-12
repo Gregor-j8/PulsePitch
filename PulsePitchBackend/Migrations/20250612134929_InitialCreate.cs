@@ -61,8 +61,8 @@ namespace PulsePitchBackend.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    JoinCode = table.Column<string>(type: "text", nullable: false),
-                    CoachId = table.Column<string>(type: "text", nullable: true)
+                    JoinCode = table.Column<int>(type: "integer", nullable: false),
+                    CoachId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -241,7 +241,8 @@ namespace PulsePitchBackend.Migrations
                         name: "FK_TeamGames_Teams_AwayTeamId",
                         column: x => x.AwayTeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TeamGames_Teams_HomeTeamId",
                         column: x => x.HomeTeamId,
@@ -279,25 +280,30 @@ namespace PulsePitchBackend.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", null, "Admin", "admin" });
+                values: new object[,]
+                {
+                    { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", null, "Admin", "ADMIN" },
+                    { "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f", null, "Player", "PLAYER" },
+                    { "e9b4c5a4-76c6-44b7-88fb-35a0228c9572", null, "Coach", "COACH" }
+                });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "1438b3dd-c712-432c-af2a-e37b28b692fd", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEG/+E4GwxeON+GlAmiOROkItLNKrWUnT3l19aNzUgMMF5kTqhnpuq/PuqT5iVesBAQ==", null, false, "b3b9dbf3-8900-40c5-a5a1-82db4619af25", false, "BobWilliams" },
-                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "cac2ceaa-278c-48a7-b288-b34f60b3f5ce", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEM0OYDSVK9uMY+39X8WylZi/W3WnpWhM09o4MmuJBkN0X0sGJBAUzyF8QywcVH4SGw==", null, false, "0643ffcf-a104-4b61-8c70-72d6d9f5d40f", false, "JaneSmith" },
-                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "1e251ff7-a2b3-44ec-be73-dfdac5ec612d", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEOPto+eJ1fpDWtEjFQhfA6vG7BX7FRH1WoopX72TOkur8iHUVWUdGFF9aZzJlI735g==", null, false, "08c59bcc-7be0-44ef-890e-b11b3e79eaa5", false, "AliceJohnson" },
-                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "190c0f25-2e7f-4db9-b4ab-f8b0e29b05e4", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEN6NKYxMwnHRdovQNBxPrqmtyK+IMf2PlY3qs3NDgcImORlkL6s9zfS+7Ggv7WxMVw==", null, false, "f801fa96-5c4c-4499-a023-48d73fe4801a", false, "EveDavis" },
-                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "df0b68c5-ba84-4924-9ed6-55fc3f9a2d53", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEHLhPXgPT/pyWDquCGxJNIkWoxzFDPvyvZttz9yXEfGPmahIM53hrr2LX8Hhlt12Hw==", null, false, "fb9d73fa-2b37-4a4e-ac92-181489a24f51", false, "JohnDoe" },
-                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "3aae5dc1-0e07-4f3a-b7ad-8da00a61d8f0", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEA3F0FXGQ3wqNQTIXtwoNv8lUfaZdm1W0kHUl26C+NB1/NjLUQLxFfrZc6C+S/vZWA==", null, false, "d6c37e8b-a3f7-4a6b-856f-333f98caa4b6", false, "Administrator" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "0ede3b23-cf85-46f7-8c05-161b0d45c1ac", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECn/B9CXGdXvuxnK+XloLTRRBsguIYCXx4XATCxAfbh+8XpjKN8apbXM0IBAOgm9Iw==", null, false, "5cb071da-b5f4-4481-8ca5-b1ea3f178e86", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "15d94898-9b03-4f56-9d5a-743c2a239cb7", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAENbrx+Eqv5lYqm7c3+sGI0xKF+mkmz4zMniWL34EFcrHSRsJMuD7o8ITOYhEh4fmiQ==", null, false, "0774927c-83b7-44c7-85f0-a39f835c7a28", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "915f447d-b1ba-428b-8a6f-ea6928a96986", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEP0UipB6RVPSmE/8syZ2gyw2Yw23C8okszH4RXlPstaEvMuNOqt30RugfperoCrymg==", null, false, "47caed4c-7287-43a3-adfe-c58b8e46fbbb", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "3268ede3-b86d-4a7d-9c64-4ac3c849a16a", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEJC1DHG0YHAyKEThp1yrYbbhxwzaXH3iN5ACFB/eBDDJSIR77o0XomHkHhSUKLqGAw==", null, false, "00ee60c1-8ef3-4f99-869e-d26c13075200", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "77794c74-2f27-444c-aa3b-9fe8144881e6", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEN07jw+ON77AdxHYGGz5EVHvswTU86j7VJfYyt0bM9O/gs8pBbR0DEns6YZT5v3Nqg==", null, false, "4076032d-c26b-4384-8ade-a47f3368bbe5", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "7c486e38-2670-45f7-9ffc-c63dede8c3c7", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEAIpucKr8VRxHY5gnBzOgVKSArTGPGZJ+txLR209ay7UJzBbKUsQeEj8lenZIhzYRQ==", null, false, "f303a6a3-df67-4cbe-8815-459892ff824b", false, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Teams",
                 columns: new[] { "Id", "CoachId", "JoinCode", "Name" },
-                values: new object[] { 1, "coach-user-id", "JOIN123", "Eagles" });
+                values: new object[] { 1, 0, 123, "Eagles" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",

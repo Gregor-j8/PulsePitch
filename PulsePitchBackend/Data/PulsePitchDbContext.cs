@@ -25,12 +25,39 @@ namespace PulsePitch.Data
         {
             base.OnModelCreating(modelBuilder);
 
-             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
-        {
-            Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-            Name = "Admin",
-            NormalizedName = "admin"
-        });
+            modelBuilder.Entity<TeamGame>()
+                .HasOne(g => g.AwayTeam)
+                .WithMany()
+                .HasForeignKey(g => g.AwayTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TeamGame>()
+                .HasOne(g => g.HomeTeam)
+                .WithMany()
+                .HasForeignKey(g => g.HomeTeamId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f",
+                    Name = "Player",
+                    NormalizedName = "PLAYER"
+                },
+                new IdentityRole
+                {
+                    Id = "e9b4c5a4-76c6-44b7-88fb-35a0228c9572",
+                    Name = "Coach",
+                    NormalizedName = "COACH"
+                }
+            );
+
 
         modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser[]
         {
@@ -153,8 +180,8 @@ namespace PulsePitch.Data
             {
                 Id = 1,
                 Name = "Eagles",
-                JoinCode = "JOIN123",
-                CoachId = "coach-user-id"
+                JoinCode = 123,
+                CoachId = 0
             });
 
             modelBuilder.Entity<PlayerTeam>().HasData(
