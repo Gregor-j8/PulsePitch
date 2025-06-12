@@ -6,6 +6,8 @@ using PulsePitch.Data;
 using PulsePitch.Models;
 using PulsePitch.Mapper;
 using AutoMapper;
+using PulsePitch.Interfaces;
+using PulsePitch.Repository;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +62,9 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 // allows our api endpoints to access the database through Entity Framework Core
 builder.Services.AddNpgsql<PulsePitchDbContext>(builder.Configuration["PulsePitchDbConnectionString"]);
+
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+
 
 
 var app = builder.Build();
