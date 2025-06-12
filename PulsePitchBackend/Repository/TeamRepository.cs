@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using PulsePitch.Data;
 using PulsePitch.Interfaces;
 using PulsePitch.Models;
+using PulsePitch.DTO;
 using Microsoft.EntityFrameworkCore;
 
 namespace PulsePitch.Repository
@@ -62,6 +63,30 @@ namespace PulsePitch.Repository
             await _context.SaveChangesAsync();
 
             return existingTeam;
+        }
+        public async Task<PlayerTeam?> JoinTeams(JoinTeamDTO teamModel)
+        {
+                Team team = await _context.Teams.FirstOrDefaultAsync(t => t.Name == teamModel.TeamName && t.JoinCode == teamModel.JoinCode);
+                if (team == null)
+                {
+                    throw new InvalidOperationException("Team not found with provided name and join code.");
+                }
+
+                var alreadyJoined = await _context.PlayerTeams.AnyAsync(pt => pt.PlayerId == teamModel.PlayerId && pt.TeamId == team.Id);
+                if (alreadyJoined)
+                {
+                    throw new InvalidOperationException("Player already joined this team.");
+                }
+
+                PlayerTeam joinTeamData = new PlayerTeam
+                {
+                    PlayerId = teamModel.PlayerId,
+                    TeamId = team.Id,
+                };
+                await _context.PlayerTeams.AddAsync(joinTeamData);
+                await _context.SaveChangesAsync();
+                return joinTeamData;
+
         }
     }
 }

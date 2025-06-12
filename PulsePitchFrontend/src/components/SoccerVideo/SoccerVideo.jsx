@@ -76,7 +76,7 @@ export default function VideoUploader() {
   }, []);
 
   return (
-    <div style={{ fontFamily: "Arial", padding: "1rem" }}>
+    <div style={{ fontFamily: "Arial", padding: "4rem" }}>
       <h2>Video Uploader</h2>
       <input
         type="file"
