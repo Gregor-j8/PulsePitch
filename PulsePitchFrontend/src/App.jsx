@@ -9,9 +9,9 @@ function App() {
 
   useEffect(() => {
     tryGetLoggedInUser().then((user) => {
-      setLoggedInUser(user); // Will be null if unauthenticated
-    });
-  }, []);
+      setLoggedInUser(user)
+    })
+  }, [])
 
  if (loggedInUser === undefined) {
     return null

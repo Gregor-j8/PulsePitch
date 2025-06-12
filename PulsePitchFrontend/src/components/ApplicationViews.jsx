@@ -5,6 +5,7 @@ import Register from "./auth/Register";
 import App from "../App";
 import VideoUploader from "./SoccerVideo/SoccerVideo";
 import { Home } from "../Home/Home";
+import MyCalendar from "./Calendar/Calendar";
 
 export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
   return (
@@ -13,7 +14,7 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
         index
         element={
           <AuthorizedRoute loggedInUser={loggedInUser}>
-            <Home/>
+            <Home loggedInUser={loggedInUser}/>
           </AuthorizedRoute>
         }
       />
@@ -25,6 +26,14 @@ export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
       <Route
         path="register"
         element={<Register setLoggedInUser={setLoggedInUser} />}
+      />
+      <Route
+        path="main"
+        element={<MyCalendar setLoggedInUser={setLoggedInUser} />}
+      />
+      <Route
+        path="video"
+        element={<VideoUploader setLoggedInUser={setLoggedInUser} />}
       />
 
       <Route path="*" element={<p>Whoops, nothing here...</p>} />

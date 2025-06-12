@@ -59,7 +59,7 @@ public class TeamController : ControllerBase
     public async Task<ActionResult> EditTeams([FromBody] EditTeamDTO teamDTO, int id)
     {
         if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+            return BadRequest(ModelState);
 
         Team team = _mapper.Map<Team>(teamDTO);
 
@@ -71,5 +71,27 @@ public class TeamController : ControllerBase
     {
         await _teamRepo.DeleteTeams(id);
         return NoContent();
+    }
+
+    [HttpPost("joinTeam")]
+    public async Task<ActionResult> JoinTeam([FromBody] JoinTeamDTO joinTeam)
+    {
+        try
+        {
+            if (joinTeam.PlayerId == 0 || joinTeam.TeamName == null || joinTeam.JoinCode == 0)
+            {
+                return StatusCode(500);
+            }
+            var result = await _teamRepo.JoinTeams(joinTeam);
+            if (result == null)
+            {
+                return BadRequest(new { message = "Invalid team name or join code, or player already joined." });
+            }
+            return Ok();
+        }
+        catch (InvalidOperationException ex)
+        {
+                return BadRequest(new { message = ex.Message });
+        }
     }
 }
