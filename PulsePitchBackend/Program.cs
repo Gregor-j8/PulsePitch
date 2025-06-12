@@ -64,6 +64,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddNpgsql<PulsePitchDbContext>(builder.Configuration["PulsePitchDbConnectionString"]);
 
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IPlayerTeamRepository, PlayerTeamRepository>();
 
 
 
