@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PulsePitch.Repository
 {
-    public class EventRepository : IEventRepository
+    public class EventRepository : ITeamEventRepository
     {
         private readonly PulsePitchDbContext _context;
         public EventRepository(PulsePitchDbContext context)

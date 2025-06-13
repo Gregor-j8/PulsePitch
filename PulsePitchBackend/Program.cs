@@ -65,7 +65,8 @@ builder.Services.AddNpgsql<PulsePitchDbContext>(builder.Configuration["PulsePitc
 
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IPlayerTeamRepository, PlayerTeamRepository>();
-builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<ITeamEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventRepository, EventsRepository>();
 
 
 

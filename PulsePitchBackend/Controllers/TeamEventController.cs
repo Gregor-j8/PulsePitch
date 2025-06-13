@@ -13,10 +13,10 @@ namespace PulsePitch.Controllers;
 public class EventController : ControllerBase
 {
     private readonly PulsePitchDbContext _context;
-    private readonly IEventRepository _eventRepo;
+    private readonly ITeamEventRepository _eventRepo;
     private readonly IMapper _mapper;
 
-    public EventController(PulsePitchDbContext context, IEventRepository eventRepo, IMapper mapper)
+    public EventController(PulsePitchDbContext context, ITeamEventRepository eventRepo, IMapper mapper)
     {
         _context = context;
         _eventRepo = eventRepo;

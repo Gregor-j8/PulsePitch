@@ -6,7 +6,7 @@ using PulsePitch.Models;
 
 namespace PulsePitch.Interfaces
 {
-    public interface IEventRepository
+    public interface ITeamEventRepository
     {
         Task<List<TeamEvent>> GetAllEvent();
         Task<TeamEvent?> GetByIdEvent(int id);
