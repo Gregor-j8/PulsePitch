@@ -55,6 +55,51 @@ namespace PulsePitchBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlayerTeams",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    PlayerId = table.Column<int>(type: "integer", nullable: false),
+                    TeamId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayerTeams", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TeamEvents",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Start = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    End = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    TeamId = table.Column<int>(type: "integer", nullable: false),
+                    EventId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamEvents", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
                 {
@@ -62,7 +107,7 @@ namespace PulsePitchBackend.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     JoinCode = table.Column<int>(type: "integer", nullable: false),
-                    CoachId = table.Column<int>(type: "integer", nullable: false)
+                    CoachId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -201,29 +246,6 @@ namespace PulsePitchBackend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TeamEvents",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Start = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    End = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    TeamId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TeamEvents", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_TeamEvents_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TeamGames",
                 columns: table => new
                 {
@@ -251,32 +273,6 @@ namespace PulsePitchBackend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PlayerTeams",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    PlayerId = table.Column<int>(type: "integer", nullable: false),
-                    TeamId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PlayerTeams", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PlayerTeams_Teams_TeamId",
-                        column: x => x.TeamId,
-                        principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PlayerTeams_UserProfiles_PlayerId",
-                        column: x => x.PlayerId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -292,18 +288,38 @@ namespace PulsePitchBackend.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "0ede3b23-cf85-46f7-8c05-161b0d45c1ac", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECn/B9CXGdXvuxnK+XloLTRRBsguIYCXx4XATCxAfbh+8XpjKN8apbXM0IBAOgm9Iw==", null, false, "5cb071da-b5f4-4481-8ca5-b1ea3f178e86", false, "BobWilliams" },
-                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "15d94898-9b03-4f56-9d5a-743c2a239cb7", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAENbrx+Eqv5lYqm7c3+sGI0xKF+mkmz4zMniWL34EFcrHSRsJMuD7o8ITOYhEh4fmiQ==", null, false, "0774927c-83b7-44c7-85f0-a39f835c7a28", false, "JaneSmith" },
-                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "915f447d-b1ba-428b-8a6f-ea6928a96986", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEP0UipB6RVPSmE/8syZ2gyw2Yw23C8okszH4RXlPstaEvMuNOqt30RugfperoCrymg==", null, false, "47caed4c-7287-43a3-adfe-c58b8e46fbbb", false, "AliceJohnson" },
-                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "3268ede3-b86d-4a7d-9c64-4ac3c849a16a", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEJC1DHG0YHAyKEThp1yrYbbhxwzaXH3iN5ACFB/eBDDJSIR77o0XomHkHhSUKLqGAw==", null, false, "00ee60c1-8ef3-4f99-869e-d26c13075200", false, "EveDavis" },
-                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "77794c74-2f27-444c-aa3b-9fe8144881e6", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEN07jw+ON77AdxHYGGz5EVHvswTU86j7VJfYyt0bM9O/gs8pBbR0DEns6YZT5v3Nqg==", null, false, "4076032d-c26b-4384-8ade-a47f3368bbe5", false, "JohnDoe" },
-                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "7c486e38-2670-45f7-9ffc-c63dede8c3c7", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEAIpucKr8VRxHY5gnBzOgVKSArTGPGZJ+txLR209ay7UJzBbKUsQeEj8lenZIhzYRQ==", null, false, "f303a6a3-df67-4cbe-8815-459892ff824b", false, "Administrator" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "7fee7359-4642-4640-8489-7c3a10ff5695", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEP1YBlsYob48g2Es4ogGZcbh1qm7dofLHKqbp0rQVzM4yhKMdyaAIPUOt+cltShAxw==", null, false, "eafa61e6-0d2e-4189-84ba-ae2bcb3c1309", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "ab98a3dc-696a-4e65-b26a-a53d9e5ee730", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAENadHBQnNhKQ6cKR08obelGUumpLbo6YL3uPzMuDLh1ruId74OKFq8iRb8MGI74i0w==", null, false, "49f0cf7f-a0bf-4a34-82c9-d0790a4a79e3", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "2d8ea49d-1844-4378-a809-917a775e3c59", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEIJnrpKLoF7Eg30iOq9NO6NV2QFx2c3fBSA+HVsh1KGhgpqu51j3qsZqHaq8+pOU9g==", null, false, "1362e18c-1526-4ca1-a51d-5b64625f3220", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "f055df76-d2a4-4178-91bb-7cb59770b6c0", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEEzj6HirzQVfp17X4+DyeYM3I6FRkKWah/mI1x2nMGTH7sHgQXqv/2LMFoEmNsVlLQ==", null, false, "05722a25-9834-4c85-9c34-caaaa30d21f4", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "d975fb5c-62a1-4563-a744-8ac60182a48b", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEF4mDKU6ulCSO6Tee1jRGnP8VRJ4a0iB+nfGh40McJYroSA6Cd46OiC378mvul7v8A==", null, false, "43fefccf-e110-4db2-8c60-cf0992893f4e", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "47f4a0fa-bf58-411e-ba94-b0c49e4f0523", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEE1Txk0AMbFVKallTCePwR6x8rFReCCPCs32soeOkMAjvft6FRxXkrUCIYS7VlbGcw==", null, false, "8a19a2d3-2f0f-4b5b-8a4a-a38f94bec171", false, "Administrator" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Events",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Practice" },
+                    { 2, "Film" },
+                    { 3, "Meeting" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "PlayerTeams",
+                columns: new[] { "Id", "PlayerId", "TeamId" },
+                values: new object[] { 1, 2, 1 });
+
+            migrationBuilder.InsertData(
+                table: "TeamEvents",
+                columns: new[] { "Id", "Description", "End", "EventId", "Start", "TeamId", "Title" },
+                values: new object[] { 1, "Morning practice session", new DateTime(2025, 6, 6, 11, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), 1, "Practice" });
 
             migrationBuilder.InsertData(
                 table: "Teams",
                 columns: new[] { "Id", "CoachId", "JoinCode", "Name" },
-                values: new object[] { 1, 0, 123, "Eagles" });
+                values: new object[] { 1, "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 123, "Eagles" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -313,11 +329,6 @@ namespace PulsePitchBackend.Migrations
                     { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "d8d76512-74f1-43bb-b1fd-87d3a8aa36df" },
                     { "c3aaeb97-d2ba-4a53-a521-4eea61e59b35", "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f" }
                 });
-
-            migrationBuilder.InsertData(
-                table: "TeamEvents",
-                columns: new[] { "Id", "Description", "End", "Start", "TeamId", "Title" },
-                values: new object[] { 1, "Morning practice session", new DateTime(2025, 6, 6, 11, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2025, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), 1, "Practice" });
 
             migrationBuilder.InsertData(
                 table: "TeamGames",
@@ -336,11 +347,6 @@ namespace PulsePitchBackend.Migrations
                     { 5, new DateTime(2023, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Bob", "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", "https://robohash.org/quiundedignissimos.png?size=150x150&set=set1", "Williams", null, null },
                     { 6, new DateTime(2022, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified), null, "Eve", "d224a03d-bf0c-4a05-b728-e3521e45d74d", "https://robohash.org/hicnihilipsa.png?size=150x150&set=set1", "Davis", null, null }
                 });
-
-            migrationBuilder.InsertData(
-                table: "PlayerTeams",
-                columns: new[] { "Id", "PlayerId", "TeamId" },
-                values: new object[] { 1, 2, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -380,21 +386,6 @@ namespace PulsePitchBackend.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayerTeams_PlayerId",
-                table: "PlayerTeams",
-                column: "PlayerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PlayerTeams_TeamId",
-                table: "PlayerTeams",
-                column: "TeamId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TeamEvents_TeamId",
-                table: "TeamEvents",
-                column: "TeamId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TeamGames_AwayTeamId",
                 table: "TeamGames",
                 column: "AwayTeamId");
@@ -429,6 +420,9 @@ namespace PulsePitchBackend.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Events");
+
+            migrationBuilder.DropTable(
                 name: "PlayerTeams");
 
             migrationBuilder.DropTable(
@@ -438,10 +432,10 @@ namespace PulsePitchBackend.Migrations
                 name: "TeamGames");
 
             migrationBuilder.DropTable(
-                name: "AspNetRoles");
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Teams");

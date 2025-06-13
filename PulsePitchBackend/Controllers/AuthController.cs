@@ -130,6 +130,9 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
         var result = await _userManager.CreateAsync(user, password);
         if (result.Succeeded)
         {
+
+            await _userManager.AddToRoleAsync(user, "player");
+
             _dbContext.UserProfiles.Add(new UserProfile
             {
                 FirstName = registration.FirstName,
@@ -144,7 +147,6 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.UserName.ToString()),
                     new Claim(ClaimTypes.Email, user.Email)
-
                 };
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
