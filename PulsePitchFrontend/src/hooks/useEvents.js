@@ -45,9 +45,10 @@ export const useDeleteTeamEvent = () => {
 
   return useMutation({
     mutationFn: deleteTeamEvent,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['event'] })
-    },
+   onSuccess: () => {
+  queryClient.invalidateQueries(['event']);
+}
+
   })
 }
 export const useGetEventsForDropdown = () => {

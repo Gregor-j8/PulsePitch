@@ -6,15 +6,17 @@ import interactionPlugin from "@fullcalendar/interaction"
 import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
 import { EventDetailsModal } from "./EventDetailsModal"
+import { useAuth } from "../../Context/LoggedInUserContext"
 
 export default function MyCalendar() {
+  const { loggedInUser } = useAuth()
   const { data: calendarEvents } = useTeamEvents()
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [DetailsModal, setDetailsModal] = useState(false)
-  const [choosenEventId, setchoosenEventId] = useState(0)
+  const [choosenEventId, setchoosenEventId] = useState(null)
 
   const handleAddEvent = () => {
     const event = { title: createEvents.title, description: createEvents.description, 
@@ -26,10 +28,8 @@ export default function MyCalendar() {
 
   const handleEventClick = (info) => {
       setDetailsModal(true)
-      console.log(info)
       setchoosenEventId(info)
   }
-
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
       <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
@@ -60,7 +60,7 @@ export default function MyCalendar() {
         height="auto"
       />
 
-      {showCreateModal && (
+      {showCreateModal && loggedInUser.indentityUserId  && (
         <CreateEventModal
           formData={createEvents}
           setFormData={setCreateEvents}
@@ -69,7 +69,7 @@ export default function MyCalendar() {
         />
       )}
       {DetailsModal && (
-        <EventDetailsModal choosenEventId={choosenEventId} onClose={() => setDetailsModal(false)}/>
+        <EventDetailsModal choosenEventId={choosenEventId} setchoosenEventId={setchoosenEventId} onClose={() => setDetailsModal(false)}/>
       )}
     </div>
   )
