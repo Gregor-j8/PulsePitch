@@ -45,7 +45,7 @@ namespace PulsePitch.Repository
 
         public async Task<TeamEvent?> GetByIdEvent(int id)
         {
-            return await _context.TeamEvents.FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.TeamEvents.Include(te => te.Team).Include(te => te.Event).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<TeamEvent?> UpdateEvent(int id, TeamEvent TeamEventModel)

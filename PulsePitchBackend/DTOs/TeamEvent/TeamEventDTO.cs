@@ -1,3 +1,5 @@
+using PulsePitch.Models;
+
 namespace PulsePitch.DTO;
 
 public class TeamEventDTO
@@ -8,5 +10,7 @@ public class TeamEventDTO
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public int TeamId { get; set; }
+    public Team? Team { get; set; }
     public int EventId { get; set; }
+    public Events? Event { get; set; }
 }
