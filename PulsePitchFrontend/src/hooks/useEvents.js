@@ -12,7 +12,8 @@ export const useTeamEvent = (id) => {
   return useQuery({
     queryKey: ['event', id],
     queryFn: () => fetchTeamEventById(id),
-    enabled: !!id,
+    suspense: true,
+    enabled: !!id
   })
 }
 

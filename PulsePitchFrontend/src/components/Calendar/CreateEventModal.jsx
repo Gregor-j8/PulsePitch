@@ -1,4 +1,4 @@
-import { useGetEventsForDropdown } from "../../hooks/useEvents";
+import { useGetEventsForDropdown } from "../../hooks/useEvents"
 
 export default function CreateEventModal({ formData, setFormData, onClose, onSubmit }) {
       const { data: events, isLoading, isError } = useGetEventsForDropdown()
@@ -6,6 +6,7 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
     if (isError || isLoading ){
         return null
     }
+
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
@@ -36,5 +37,5 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -3,37 +3,32 @@ import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
-import { useCreateTeamEvent, useGetEventsForDropdown, useTeamEvents } from "../../hooks/useEvents"
+import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
+import { EventDetailsModal } from "./EventDetailsModal"
 
 export default function MyCalendar() {
-  const { data: events, isLoading, isError } = useGetEventsForDropdown()
   const { data: calendarEvents } = useTeamEvents()
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [DetailsModal, setDetailsModal] = useState(false)
+  const [choosenEventId, setchoosenEventId] = useState(0)
 
   const handleAddEvent = () => {
-    const event = {
-      title: createEvents.title,
-      description: createEvents.description,
-      start: createEvents.start,
-      end: createEvents.end,
-      eventId: createEvents.eventId,
-      teamId: 1
-    }
+    const event = { title: createEvents.title, description: createEvents.description, 
+      start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: 1}
     createEvent.mutate(event)
     setShowCreateModal(false)
     setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '' })
   }
 
   const handleEventClick = (info) => {
-    const event = info.event
-    alert(`Clicked on event: ${event.title}`)
+      setDetailsModal(true)
+      console.log(info)
+      setchoosenEventId(info)
   }
-
-  if (isLoading || isError) return null
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
@@ -59,7 +54,7 @@ export default function MyCalendar() {
           right: 'createEvent',
         }}
         events={calendarEvents}
-        eventClick={handleEventClick}
+        eventClick={(e) => handleEventClick(e.event._def.publicId)}
         selectable={true}
         editable={true}
         height="auto"
@@ -72,6 +67,9 @@ export default function MyCalendar() {
           onClose={() => setShowCreateModal(false)}
           onSubmit={handleAddEvent}
         />
+      )}
+      {DetailsModal && (
+        <EventDetailsModal choosenEventId={choosenEventId} onClose={() => setDetailsModal(false)}/>
       )}
     </div>
   )
