@@ -1,8 +1,11 @@
+import { useAuth } from "../../Context/LoggedInUserContext"
 import { useTeamEvent } from "../../hooks/useEvents"
 import { CalendarDays } from 'lucide-react'
 
 export const EventDetailsModal = ({ choosenEventId, onClose }) => {
     const {data: eventData } = useTeamEvent(choosenEventId)
+    const { loggedInUser } = useAuth();
+
     console.log(eventData)
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
@@ -17,6 +20,7 @@ export const EventDetailsModal = ({ choosenEventId, onClose }) => {
             <div className="block text-sm font-semibold text-gray-500">Team<p>{eventData?.team.name}</p></div>
         </div>
         <div className="flex justify-end mt-6">
+            {/* {loggedInUser === eventData.team.coachId} */}
             <button onClick={onClose} className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded">
                 Close
             </button>

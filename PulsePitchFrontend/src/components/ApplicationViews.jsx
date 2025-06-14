@@ -6,8 +6,11 @@ import App from "../App";
 import VideoUploader from "./SoccerVideo/SoccerVideo";
 import { Home } from "../Home/Home";
 import MyCalendar from "./Calendar/Calendar";
+import { useAuth } from "../Context/LoggedInUserContext";
 
-export default function ApplicationViews({ loggedInUser, setLoggedInUser }) {
+export default function ApplicationViews() {
+    const { loggedInUser, setLoggedInUser } = useAuth();
+  
   return (
     <Routes>
       <Route

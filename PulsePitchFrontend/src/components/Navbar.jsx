@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import { logout } from "../managers/authManagers";
+import { useAuth } from "../Context/LoggedInUserContext";
 
-export default function NavBar ({ loggedInUser, setLoggedInUser }) {
+export default function NavBar () {
+  const { loggedInUser,  setLoggedInUser } = useAuth();
+
   const [open, setOpen] = useState(false);
   const toggleNavbar = () => setOpen(!open);
 

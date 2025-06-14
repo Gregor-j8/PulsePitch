@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { CreateTeamModal } from "../components/Modals/CreateTeamModals"
 import { JoinTeamModal } from "../components/Modals/JoinTeamModal"
+import { useAuth } from "../Context/LoggedInUserContext";
 
-export const Home = ({loggedInUser}) => {
+export const Home = () => {
+  const { loggedInUser } = useAuth();
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
   const [showJoinTeamModal, setShowJoinTeamModal] = useState(false)
 

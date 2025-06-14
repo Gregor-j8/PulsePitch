@@ -1,11 +1,9 @@
 import { Navigate } from "react-router-dom";
+import { useAuth } from "../../Context/LoggedInUserContext";
 
-export const AuthorizedRoute = ({
-  children,
-  loggedInUser,
-  roles = [],
-  all = false,
-}) => {
+export const AuthorizedRoute = ({children, roles = [], all = false}) => {
+    const { loggedInUser } = useAuth();
+
   const userRoles = loggedInUser?.roles || [];
   const isLoggedIn = !!loggedInUser;
 
