@@ -67,9 +67,18 @@ public class PlayerTeamController : ControllerBase
         return Ok();
     }
     [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteTeams(int id)
+    public async Task<ActionResult<PlayerTeamDTO>> DeleteTeams(int id)
     {
         await _playerTeamRepo.DeletePlayerTeams(id);
         return NoContent();
+    }
+
+    [HttpGet("player/{id}")]
+    public async Task<ActionResult<List<GetTeamsByPlayerIdDTO>>> GetTeamsByPlayerId(int id)
+    {
+        List<PlayerTeam> teams = await _playerTeamRepo.GetTeamsByPlayerId(id);
+        if (teams.Count == 0) return NotFound();
+        List<GetTeamsByPlayerIdDTO> teamsDto = _mapper.Map<List<GetTeamsByPlayerIdDTO>>(teams);
+        return Ok(teamsDto);
     }
 }

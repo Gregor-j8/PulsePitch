@@ -7,6 +7,8 @@ public class PlayerTeam
     public int Id { get; set; }
     [Required]
     public int PlayerId { get; set; }
+    public UserProfile? Player { get; set; }
     [Required]
     public int TeamId { get; set; }
+    public Team? Team { get; set; }
 }
