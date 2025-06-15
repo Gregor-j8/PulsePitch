@@ -10,7 +10,7 @@ public class TeamEvent
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public int TeamId { get; set; }
-    public Team Team { get; set; }
+    public Team? Team { get; set; }
     public int EventId { get; set; }
-    public Events Event { get; set; }
+    public Events? Event { get; set; }
 }

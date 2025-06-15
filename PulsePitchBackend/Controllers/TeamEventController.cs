@@ -56,10 +56,10 @@ public class EventController : ControllerBase
         return Ok();
     }
     [HttpPatch("{id}")]
-    public async Task<ActionResult> EditEvents([FromBody] EditTeamDTO teamEventDTO, int id)
+    public async Task<ActionResult> EditEvents([FromBody] TeamEvent teamEventDTO, int id)
     {
         if (!ModelState.IsValid)
-        return BadRequest(ModelState);
+            return BadRequest(ModelState);
 
         TeamEvent teamEvent = _mapper.Map<TeamEvent>(teamEventDTO);
 
