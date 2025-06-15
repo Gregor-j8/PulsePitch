@@ -7,6 +7,7 @@ using PulsePitch.Interfaces;
 using AutoMapper;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace PulsePitch.Controllers;
 
@@ -14,15 +15,20 @@ namespace PulsePitch.Controllers;
 [ApiController]
 public class TeamController : ControllerBase
 {
+    private readonly UserManager<IdentityUser> _IdentityUser;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly PulsePitchDbContext _context;
     private readonly ITeamRepository _teamRepo;
     private readonly IMapper _mapper;
 
-    public TeamController(PulsePitchDbContext context, ITeamRepository teamRepo, IMapper mapper)
+    public TeamController(PulsePitchDbContext context, ITeamRepository teamRepo, IMapper mapper, UserManager<IdentityUser> IdentityUser,
+     RoleManager<IdentityRole> roleManager)
     {
         _context = context;
         _teamRepo = teamRepo;
         _mapper = mapper;
+        _IdentityUser = IdentityUser;
+        _roleManager = roleManager;
     }
 
     [HttpGet]
@@ -58,6 +64,18 @@ public class TeamController : ControllerBase
             return Unauthorized();
         }
         teamDTO.CoachId = coachId;
+
+        var user = await _IdentityUser.FindByIdAsync(coachId);
+        if (user == null)
+            return Unauthorized();
+        if (!await _roleManager.RoleExistsAsync("Coach"))
+        {
+            await _roleManager.CreateAsync(new IdentityRole("Coach"));
+        }
+        if (!await _IdentityUser.IsInRoleAsync(user, "Coach"))
+        {
+            await _IdentityUser.AddToRoleAsync(user, "Coach");
+        }
 
         Team team = _mapper.Map<Team>(teamDTO);
 
@@ -96,11 +114,19 @@ public class TeamController : ControllerBase
             {
                 return BadRequest(new { message = "Invalid team name or join code, or player already joined." });
             }
+            var user = await _IdentityUser.FindByIdAsync(joinTeam.PlayerId.ToString());
+            if (user == null)
+                return Unauthorized();
+            if (!await _roleManager.RoleExistsAsync("Player") && !await _roleManager.RoleExistsAsync("Coach"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Player"));
+            }
+
             return Ok();
         }
         catch (InvalidOperationException ex)
         {
-                return BadRequest(new { message = ex.Message });
+            return BadRequest(new { message = ex.Message });
         }
     }
 }
