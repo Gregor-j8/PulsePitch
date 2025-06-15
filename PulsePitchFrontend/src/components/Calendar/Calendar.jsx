@@ -7,6 +7,7 @@ import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
 import { EventDetailsModal } from "./EventDetailsModal"
 import { useAuth } from "../../Context/LoggedInUserContext"
+import EditEventModal from "./EditModal"
 
 export default function MyCalendar() {
   const { loggedInUser } = useAuth()
@@ -16,7 +17,9 @@ export default function MyCalendar() {
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [DetailsModal, setDetailsModal] = useState(false)
+  const [EditModel, setEditModel] = useState(false)
   const [choosenEventId, setchoosenEventId] = useState(null)
+  const [StarterFormData, SetStarterFormData] = useState({})
 
   const handleAddEvent = () => {
     const event = { title: createEvents.title, description: createEvents.description, 
@@ -69,7 +72,21 @@ export default function MyCalendar() {
         />
       )}
       {DetailsModal && (
-        <EventDetailsModal choosenEventId={choosenEventId} setchoosenEventId={setchoosenEventId} onClose={() => setDetailsModal(false)}/>
+        <EventDetailsModal 
+          choosenEventId={choosenEventId}
+          setchoosenEventId={setchoosenEventId}
+          onClose={() => setDetailsModal(false)}
+          setEditModel={setEditModel}
+          SetStarterFormData={SetStarterFormData}
+        />
+      )}
+      {EditModel && (
+        <EditEventModal
+          StarterFormData={StarterFormData}
+          choosenEventId={choosenEventId}
+          setchoosenEventId={setchoosenEventId}
+          onClose={() => setEditModel(false)}
+        />
       )}
     </div>
   )

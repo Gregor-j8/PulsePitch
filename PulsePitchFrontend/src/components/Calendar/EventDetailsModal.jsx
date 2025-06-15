@@ -2,8 +2,8 @@ import { useAuth } from "../../Context/LoggedInUserContext"
 import { useDeleteTeamEvent, useTeamEvent } from "../../hooks/useEvents"
 import { CalendarDays } from 'lucide-react'
 
-export const EventDetailsModal = ({ choosenEventId, setchoosenEventId, onClose }) => {
-    const {data: eventData, isLoading  } = useTeamEvent(choosenEventId, {enabled: !!choosenEventId})
+export const EventDetailsModal = ({ choosenEventId, setchoosenEventId, onClose, setEditModel, SetStarterFormData }) => {
+    const {data: eventData } = useTeamEvent(choosenEventId, {enabled: !!choosenEventId})
     const { loggedInUser } = useAuth()
     const {mutate: deleteTeamEvent} = useDeleteTeamEvent()
   return (
@@ -15,14 +15,18 @@ export const EventDetailsModal = ({ choosenEventId, setchoosenEventId, onClose }
             <div className="block text-sm font-semibold text-gray-500">Description<p>{eventData.description}</p></div>
             <div className="block text-sm font-semibold text-gray-500">Start<p>{eventData.start}</p></div>
             <div className="block text-sm font-semibold text-gray-500">End<p>{eventData.end}</p></div>
-            <div className="block text-sm font-semibold text-gray-500">Tvent<p>{eventData?.event.name}</p></div>
+            <div className="block text-sm font-semibold text-gray-500">Event<p>{eventData?.event.name}</p></div>
             <div className="block text-sm font-semibold text-gray-500">Team<p>{eventData?.team.name}</p></div>
         </div>
         <div className="flex justify-between mt-6">
             <div>
             {loggedInUser.identityUserId === eventData.team.coachId && (
                 <div className="flex gap-2">
-                <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded" >
+                <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded" onClick={() => {
+                    onClose()
+                    setEditModel(true)
+                    SetStarterFormData(eventData)
+                }}>
                     Edit
                 </button>
                 <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded" onClick={() => {
