@@ -32,11 +32,15 @@ export default function ApplicationViews() {
       />
       <Route
         path="main"
-        element={<MyCalendar setLoggedInUser={setLoggedInUser} />}
+        element={
+           <AuthorizedRoute loggedInUser={loggedInUser}>
+              <MyCalendar  />
+           </AuthorizedRoute>
+      }
       />
       <Route
         path="video"
-        element={<VideoUploader setLoggedInUser={setLoggedInUser} />}
+        element={ <AuthorizedRoute loggedInUser={loggedInUser}><VideoUploader/></AuthorizedRoute>}
       />
 
       <Route path="*" element={<p>Whoops, nothing here...</p>} />

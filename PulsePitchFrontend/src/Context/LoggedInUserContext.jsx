@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     tryGetLoggedInUser().then(user => setLoggedInUser(user))
   }, [])
-
+  console.log(loggedInUser)
   return (
     <AuthContext.Provider value={{ loggedInUser, setLoggedInUser }}>
       {children}

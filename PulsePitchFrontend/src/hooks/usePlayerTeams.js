@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import {fetchPlayerTeams, fetchPlayerTeamById, createPlayerTeam, editPlayerTeam, deletePlayerTeam} from '../managers/PlayerTeamManagers'
+import {fetchPlayerTeams, fetchPlayerTeamById, createPlayerTeam, editPlayerTeam, deletePlayerTeam, getCurrentPlayerTeams} from '../managers/PlayerTeamManagers'
 
 export const usePlayerTeams = () => {
   return useQuery({
@@ -12,6 +12,13 @@ export const usePlayerTeam = (id) => {
   return useQuery({
     queryKey: ['playerTeam', id],
     queryFn: () => fetchPlayerTeamById(id),
+    enabled: !!id,
+  })
+}
+export const useCurrentPlayerTeam = (id) => {
+  return useQuery({
+    queryKey: ['playerTeam', id],
+    queryFn: () => getCurrentPlayerTeams(id),
     enabled: !!id,
   })
 }
