@@ -5,6 +5,8 @@ using PulsePitch.Models;
 using PulsePitch.DTO;
 using PulsePitch.Interfaces;
 using AutoMapper;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PulsePitch.Controllers;
 
@@ -49,6 +51,13 @@ public class TeamController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
+
+        var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (coachId == null)
+        {
+            return Unauthorized();
+        }
+        teamDTO.CoachId = coachId;
 
         Team team = _mapper.Map<Team>(teamDTO);
 

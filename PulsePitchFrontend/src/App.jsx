@@ -1,31 +1,20 @@
-import { useEffect, useState } from "react";
-import { tryGetLoggedInUser } from "./managers/authManagers";
 import NavBar from "./components/NavBar";
 import ApplicationViews from "./components/ApplicationViews";
-
+import {useAuth} from "./Context/LoggedInUserContext"
 
 function App() {
-  const [loggedInUser, setLoggedInUser] = useState();
-
-  useEffect(() => {
-    tryGetLoggedInUser().then((user) => {
-      setLoggedInUser(user)
-    })
-  }, [])
-
+  const { loggedInUser } = useAuth();
  if (loggedInUser === undefined) {
     return null
   }
 
   return (
     <>
-      <NavBar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
+      <NavBar/>
       <ApplicationViews
-        loggedInUser={loggedInUser}
-        setLoggedInUser={setLoggedInUser}
       />
     </>
-  );
+  )
 }
 
 export default App;

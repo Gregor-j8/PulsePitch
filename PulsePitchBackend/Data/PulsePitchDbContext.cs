@@ -12,6 +12,7 @@ namespace PulsePitch.Data
         public DbSet<Team> Teams { get; set; }
         public DbSet<PlayerTeam> PlayerTeams { get; set; }
         public DbSet<TeamEvent> TeamEvents { get; set; }
+        public DbSet<Events> Events { get; set; }
         public DbSet<TeamGame> TeamGames { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
@@ -181,11 +182,16 @@ namespace PulsePitch.Data
                 Id = 1,
                 Name = "Eagles",
                 JoinCode = 123,
-                CoachId = 0
+                CoachId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df"
             });
 
             modelBuilder.Entity<PlayerTeam>().HasData(
                 new PlayerTeam { Id = 1, PlayerId = 2, TeamId = 1 }
+            );
+            modelBuilder.Entity<Events>().HasData(
+                new Events { Id = 1, Name = "Practice" },
+                new Events { Id = 2, Name = "Film" },
+                new Events { Id = 3, Name = "Meeting" }
             );
 
             modelBuilder.Entity<TeamEvent>().HasData(
@@ -196,7 +202,8 @@ namespace PulsePitch.Data
                     Description = "Morning practice session",
                     Start = new DateTime(2025, 6, 6, 9, 0, 0),
                     End = new DateTime(2025, 6, 6, 11, 0, 0),
-                    TeamId = 1
+                    TeamId = 1,
+                    EventId = 1
                 }
             );
 

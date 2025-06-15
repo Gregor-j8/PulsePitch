@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import { logout } from "../managers/authManagers";
+import { useAuth } from "../Context/LoggedInUserContext";
 
-export default function NavBar ({ loggedInUser, setLoggedInUser }) {
+export default function NavBar () {
+  const { loggedInUser,  setLoggedInUser } = useAuth();
+
   const [open, setOpen] = useState(false);
   const toggleNavbar = () => setOpen(!open);
 
@@ -40,14 +43,14 @@ export default function NavBar ({ loggedInUser, setLoggedInUser }) {
             </div>
 
             <div className="hidden lg:flex space-x-6 items-center">
-              {loggedInUser.roles.includes("Admin") && (
+              
                 <RRNavLink
                   to="/userprofiles"
                   className="text-gray-700 hover:text-blue-600"
                 >
                   User Profiles
                 </RRNavLink>
-              )}
+              
               <RRNavLink
                 to="/categories/manage"
                 className="text-gray-700 hover:text-blue-600"
@@ -78,7 +81,7 @@ export default function NavBar ({ loggedInUser, setLoggedInUser }) {
       {/* Mobile Menu */}
       {open && loggedInUser && (
         <div className="lg:hidden px-4 py-2 space-y-2 bg-white border-t shadow">
-          {loggedInUser.roles.includes("Admin") && (
+          
             <RRNavLink
               to="/userprofiles"
               className="block text-gray-700 hover:text-blue-600"
@@ -86,7 +89,6 @@ export default function NavBar ({ loggedInUser, setLoggedInUser }) {
             >
               User Profiles
             </RRNavLink>
-          )}
           <RRNavLink
             to="/categories/manage"
             className="block text-gray-700 hover:text-blue-600"
