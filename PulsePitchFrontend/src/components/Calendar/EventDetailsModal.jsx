@@ -1,10 +1,8 @@
-import { useAuth } from "../../Context/LoggedInUserContext"
 import { useDeleteTeamEvent, useTeamEvent } from "../../hooks/useEvents"
 import { CalendarDays } from 'lucide-react'
 
-export const EventDetailsModal = ({ choosenEventId, setchoosenEventId, onClose, setEditModel, SetStarterFormData }) => {
+export const EventDetailsModal = ({ loggedInUser, choosenEventId, setchoosenEventId, onClose, setEditModel, SetStarterFormData }) => {
     const {data: eventData } = useTeamEvent(choosenEventId, {enabled: !!choosenEventId})
-    const { loggedInUser } = useAuth()
     const {mutate: deleteTeamEvent} = useDeleteTeamEvent()
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">

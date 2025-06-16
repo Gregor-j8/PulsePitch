@@ -6,10 +6,8 @@ import App from "../App";
 import VideoUploader from "./SoccerVideo/SoccerVideo";
 import { Home } from "../Home/Home";
 import MyCalendar from "./Calendar/Calendar";
-import { useAuth } from "../Context/LoggedInUserContext";
 
-export default function ApplicationViews() {
-    const { loggedInUser, setLoggedInUser } = useAuth();
+export default function ApplicationViews({loggedInUser, setLoggedInUser}) {
   
   return (
     <Routes>
@@ -34,7 +32,7 @@ export default function ApplicationViews() {
         path="main"
         element={
            <AuthorizedRoute loggedInUser={loggedInUser}>
-              <MyCalendar  />
+              <MyCalendar loggedInUser={loggedInUser} />
            </AuthorizedRoute>
       }
       />
