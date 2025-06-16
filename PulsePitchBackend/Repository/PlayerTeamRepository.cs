@@ -6,6 +6,7 @@ using PulsePitch.Data;
 using PulsePitch.Interfaces;
 using PulsePitch.Models;
 using Microsoft.EntityFrameworkCore;
+using PulsePitch.DTO;
 
 namespace PulsePitch.Repository
 {
@@ -62,6 +63,14 @@ namespace PulsePitch.Repository
             await _context.SaveChangesAsync();
 
             return existingTeam;
+        }
+        public async Task<List<PlayerTeam?>> GetTeamsByPlayerId(int id)
+        {
+            var playerTeams = await _context.PlayerTeams
+            .Where(pt => pt.PlayerId == id).Include(pt => pt.Team).Include(pt => pt.Player).ToListAsync();
+            if (playerTeams.Count == 0) return null;
+
+            return playerTeams;
         }
     }
 }

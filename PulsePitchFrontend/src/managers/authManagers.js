@@ -14,8 +14,7 @@ export const login = (email, password) => {
     if (!res.ok) {
       return null;
     }
-    console.log(res)
-    return res.json(); // Only call if you know it's valid JSON
+    return res.json(); 
   })
   .catch((err) => {
     console.error("Login failed:", err);

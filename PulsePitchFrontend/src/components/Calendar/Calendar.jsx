@@ -6,11 +6,9 @@ import interactionPlugin from "@fullcalendar/interaction"
 import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
 import { EventDetailsModal } from "./EventDetailsModal"
-import { useAuth } from "../../Context/LoggedInUserContext"
 import EditEventModal from "./EditModal"
 
-export default function MyCalendar() {
-  const { loggedInUser } = useAuth()
+export default function MyCalendar({loggedInUser}) {
   const { data: calendarEvents } = useTeamEvents()
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)

@@ -23,3 +23,8 @@ export const editPlayerTeam = async (id, playerTeamData) => {
 export const deletePlayerTeam = async (id) => {
   await axiosClient.delete(`/playerteam/${id}`);
 };
+
+export const getCurrentPlayerTeams = async(id) => {
+  const team = await axiosClient.get(`/PlayerTeam/player/${id}`);
+  return team
+}

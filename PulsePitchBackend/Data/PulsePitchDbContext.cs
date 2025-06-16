@@ -41,12 +41,6 @@ namespace PulsePitch.Data
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {
-                    Id = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                    Name = "Admin",
-                    NormalizedName = "ADMIN"
-                },
-                new IdentityRole
-                {
                     Id = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f",
                     Name = "Player",
                     NormalizedName = "PLAYER"
@@ -105,20 +99,13 @@ namespace PulsePitch.Data
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
         });
-
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>[]
             {
                 new IdentityUserRole<string>
                 {
-                    RoleId = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
+                    RoleId = "e9b4c5a4-76c6-44b7-88fb-35a0228c9572",
                     UserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
                 },
-                new IdentityUserRole<string>
-                {
-                    RoleId = "c3aaeb97-d2ba-4a53-a521-4eea61e59b35",
-                    UserId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df"
-                },
-
             });
             modelBuilder.Entity<UserProfile>().HasData(new UserProfile[]
             {
@@ -182,7 +169,7 @@ namespace PulsePitch.Data
                 Id = 1,
                 Name = "Eagles",
                 JoinCode = 123,
-                CoachId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df"
+                CoachId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
             });
 
             modelBuilder.Entity<PlayerTeam>().HasData(

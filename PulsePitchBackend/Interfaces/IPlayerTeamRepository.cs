@@ -13,5 +13,6 @@ namespace PulsePitch.Interfaces
         Task<PlayerTeam> CreatePlayerTeams(PlayerTeam playerTeam);
         Task<PlayerTeam?> UpdatePlayerTeams(int id, PlayerTeam playerTeam);
         Task<PlayerTeam?> DeletePlayerTeams(int id);
+        Task<List<PlayerTeam>> GetTeamsByPlayerId(int id);
     }
 }
