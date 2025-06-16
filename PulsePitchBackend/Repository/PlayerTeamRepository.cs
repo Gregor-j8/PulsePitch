@@ -46,7 +46,7 @@ namespace PulsePitch.Repository
 
         public async Task<PlayerTeam?> GetByIdPlayerTeams(int id)
         {
-            return await _context.PlayerTeams.FirstOrDefaultAsync(pt => pt.Id == id);
+            return await _context.PlayerTeams.Include(pt => pt.Player).Include(pt => pt.Team).FirstOrDefaultAsync(pt => pt.TeamId == id);
         }
 
         public async Task<PlayerTeam?> UpdatePlayerTeams(int id, PlayerTeam teamModel)
