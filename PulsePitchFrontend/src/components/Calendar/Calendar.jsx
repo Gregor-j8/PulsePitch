@@ -9,7 +9,7 @@ import { EventDetailsModal } from "./EventDetailsModal"
 import EditEventModal from "./EditModal"
 
 export default function MyCalendar({loggedInUser}) {
-  const { data: calendarEvents } = useTeamEvents()
+  const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
@@ -23,10 +23,9 @@ export default function MyCalendar({loggedInUser}) {
     const event = { title: createEvents.title, description: createEvents.description, 
       start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: 1}
     createEvent.mutate(event)
-    setShowCreateModal(false)
+    // setShowCreateModal(false)
     setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '' })
   }
-
   const handleEventClick = (info) => {
       setDetailsModal(true)
       setchoosenEventId(info)
@@ -38,7 +37,6 @@ export default function MyCalendar({loggedInUser}) {
           Create Event
         </button>
       </div>
-
       <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -61,7 +59,7 @@ export default function MyCalendar({loggedInUser}) {
         height="auto"
       />
 
-      {showCreateModal && loggedInUser.indentityUserId  && (
+      {showCreateModal  && (
         <CreateEventModal
           formData={createEvents}
           setFormData={setCreateEvents}
@@ -71,6 +69,7 @@ export default function MyCalendar({loggedInUser}) {
       )}
       {DetailsModal && (
         <EventDetailsModal 
+          loggedInUser={loggedInUser}
           choosenEventId={choosenEventId}
           setchoosenEventId={setchoosenEventId}
           onClose={() => setDetailsModal(false)}
