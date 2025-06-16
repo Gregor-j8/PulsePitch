@@ -33,13 +33,13 @@ public class PlayerTeamController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<PlayerTeamDTO>> GetTeamsById(int id)
+    public async Task<ActionResult<IEnumerable<PlayerTeamDTO>>> GetTeamsById(int id)
     {
         var Playerteam = await _playerTeamRepo.GetByIdPlayerTeams(id);
         if (Playerteam == null)
             return NotFound();
 
-        var playerTeamsDto = _mapper.Map<PlayerTeamDTO>(Playerteam);
+        var playerTeamsDto = _mapper.Map<List<PlayerTeamDTO>>(Playerteam);
 
         return Ok(playerTeamsDto);
     }
