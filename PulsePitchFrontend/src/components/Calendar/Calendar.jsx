@@ -9,7 +9,9 @@ import { EventDetailsModal } from "./EventDetailsModal"
 import EditEventModal from "./EditModal"
 
 export default function MyCalendar({loggedInUser}) {
-  const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
+
+  const { data: calendarEvents } = useTeamEvents(1)
+  console.log("calendarEvents", calendarEvents)
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
@@ -23,7 +25,7 @@ export default function MyCalendar({loggedInUser}) {
     const event = { title: createEvents.title, description: createEvents.description, 
       start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: 1}
     createEvent.mutate(event)
-    // setShowCreateModal(false)
+    setShowCreateModal(false)
     setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '' })
   }
   const handleEventClick = (info) => {

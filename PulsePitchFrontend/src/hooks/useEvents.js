@@ -47,10 +47,10 @@ export const useDeleteTeamEvent = () => {
     mutationFn: deleteTeamEvent,
    onSuccess: () => {
   queryClient.invalidateQueries(['event']);
-}
-
+    }
   })
 }
+
 export const useGetEventsForDropdown = () => {
   return useQuery({
     queryKey: ['eventDropDown'],
