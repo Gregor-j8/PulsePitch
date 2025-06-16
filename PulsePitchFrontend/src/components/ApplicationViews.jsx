@@ -6,6 +6,7 @@ import App from "../App";
 import VideoUploader from "./SoccerVideo/SoccerVideo";
 import { Home } from "../Home/Home";
 import MyCalendar from "./Calendar/Calendar";
+import { TeamHome } from "./TeamHome/TeamHome";
 
 export default function ApplicationViews({loggedInUser, setLoggedInUser}) {
   
@@ -33,6 +34,14 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser}) {
         element={
            <AuthorizedRoute loggedInUser={loggedInUser}>
               <MyCalendar loggedInUser={loggedInUser} />
+           </AuthorizedRoute>
+      }
+      />
+      <Route
+        path="team"
+        element={
+           <AuthorizedRoute loggedInUser={loggedInUser}>
+              <TeamHome loggedInUser={loggedInUser} />
            </AuthorizedRoute>
       }
       />

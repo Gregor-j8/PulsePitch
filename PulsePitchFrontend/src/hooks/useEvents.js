@@ -1,10 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import {getEvents, fetchTeamEvents, fetchTeamEventById, createTeamEvent, editTeamEvent, deleteTeamEvent} from '../managers/EventsManager'
 
-export const useTeamEvents = () => {
+export const useTeamEvents = (id) => {
   return useQuery({
-    queryKey: ['event'],
-    queryFn: fetchTeamEvents,
+    queryKey: ['event', id],
+    queryFn: () => fetchTeamEvents(id),
   })
 }
 

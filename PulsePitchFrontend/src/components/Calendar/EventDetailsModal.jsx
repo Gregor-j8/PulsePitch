@@ -18,12 +18,12 @@ export const EventDetailsModal = ({ loggedInUser, choosenEventId, setchoosenEven
         </div>
         <div className="flex justify-between mt-6">
             <div>
-            {loggedInUser.identityUserId === eventData.team.coachId && (
+            {loggedInUser?.id === eventData.team.coachId && (
                 <div className="flex gap-2">
                 <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded" onClick={() => {
-                    onClose()
                     setEditModel(true)
                     SetStarterFormData(eventData)
+                    onClose()
                 }}>
                     Edit
                 </button>

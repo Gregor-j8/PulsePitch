@@ -97,7 +97,7 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
         }
     }
 
-    [HttpGet("Me")]
+    [HttpGet("me")]
     [Authorize]
     public IActionResult Me()
     {

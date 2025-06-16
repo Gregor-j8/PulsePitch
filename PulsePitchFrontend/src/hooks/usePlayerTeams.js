@@ -8,7 +8,7 @@ export const usePlayerTeams = () => {
   })
 }
 
-export const usePlayerTeam = (id) => {
+export const useGetPlayersFromTeam = (id) => {
   return useQuery({
     queryKey: ['playerTeam', id],
     queryFn: () => fetchPlayerTeamById(id),
@@ -52,7 +52,7 @@ export const useDeletePlayerTeam = () => {
   return useMutation({
     mutationFn: deletePlayerTeam,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['playerTeams'] })
+      queryClient.invalidateQueries({ queryKey: ['playerTeam'] })
     },
   })
 }

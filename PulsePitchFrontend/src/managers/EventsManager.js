@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient';
 
-export const fetchTeamEvents = async () => {
-  const { data } = await axiosClient.get('/event');
+export const fetchTeamEvents = async (userId) => {
+  const { data } = await axiosClient.get(`/event/user/${userId}`);
   return data;
 };
 
@@ -16,7 +16,6 @@ export const createTeamEvent = async (teamEventData) => {
 };
 
 export const editTeamEvent = async (id, teamEventData) => {
-  console.log(teamEventData)
   const { data } = await axiosClient.patch(`/event/${id}`, teamEventData);
   return data;
 };

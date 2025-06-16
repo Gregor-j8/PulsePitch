@@ -6,6 +6,8 @@ export const Home = ({loggedInUser}) => {
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
   const [showJoinTeamModal, setShowJoinTeamModal] = useState(false)
 
+  if (!loggedInUser) return null
+
   return (
     <div className="w-full flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white rounded-2xl shadow-xl p-10 w-full max-w-md text-center">

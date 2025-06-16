@@ -9,7 +9,7 @@ namespace PulsePitch.Interfaces
     public interface IPlayerTeamRepository
     {
         Task<List<PlayerTeam>> GetAllPlayerTeams();
-        Task<PlayerTeam?> GetByIdPlayerTeams(int id);
+        Task<List<PlayerTeam?>> GetByIdPlayerTeams(int id);
         Task<PlayerTeam> CreatePlayerTeams(PlayerTeam playerTeam);
         Task<PlayerTeam?> UpdatePlayerTeams(int id, PlayerTeam playerTeam);
         Task<PlayerTeam?> DeletePlayerTeams(int id);
