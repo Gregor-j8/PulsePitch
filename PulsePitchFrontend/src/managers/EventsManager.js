@@ -16,7 +16,6 @@ export const createTeamEvent = async (teamEventData) => {
 };
 
 export const editTeamEvent = async (id, teamEventData) => {
-  console.log(teamEventData)
   const { data } = await axiosClient.patch(`/event/${id}`, teamEventData);
   return data;
 };

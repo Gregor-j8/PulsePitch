@@ -4,7 +4,6 @@ import { CalendarDays } from 'lucide-react'
 export const EventDetailsModal = ({ loggedInUser, choosenEventId, setchoosenEventId, onClose, setEditModel, SetStarterFormData }) => {
     const {data: eventData } = useTeamEvent(choosenEventId, {enabled: !!choosenEventId})
     const {mutate: deleteTeamEvent} = useDeleteTeamEvent()
-    console.log(eventData)
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
         <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-2xl">
@@ -22,9 +21,9 @@ export const EventDetailsModal = ({ loggedInUser, choosenEventId, setchoosenEven
             {loggedInUser?.id === eventData.team.coachId && (
                 <div className="flex gap-2">
                 <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded" onClick={() => {
-                    onClose()
                     setEditModel(true)
                     SetStarterFormData(eventData)
+                    onClose()
                 }}>
                     Edit
                 </button>
