@@ -14,22 +14,28 @@ public class EventController : ControllerBase
 {
     private readonly PulsePitchDbContext _context;
     private readonly ITeamEventRepository _eventRepo;
+    private readonly IPlayerTeamRepository _PlayerTeamRepo;
     private readonly IMapper _mapper;
 
-    public EventController(PulsePitchDbContext context, ITeamEventRepository eventRepo, IMapper mapper)
+    public EventController(PulsePitchDbContext context, ITeamEventRepository eventRepo, IPlayerTeamRepository PlayerTeamRepo, IMapper mapper)
     {
         _context = context;
         _eventRepo = eventRepo;
+        _PlayerTeamRepo = PlayerTeamRepo;
         _mapper = mapper;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<TeamEventDTO>>> GetAllTeamsEvent()
+    [HttpGet("user/{userId}")]
+    public async Task<ActionResult<IEnumerable<TeamEventDTO>>> GetAllTeamsEvent(int userId)
     {
         var events = await _eventRepo.GetAllEvent();
+        var playerTeams = await _PlayerTeamRepo.GetAllPlayerTeams();
         var teamEventDtos = _mapper.Map<List<TeamEventDTO>>(events);
 
-        return Ok(teamEventDtos);
+        var teams = playerTeams.Where(pt => pt.PlayerId == userId).ToList();
+        var currentTeamEvents = teamEventDtos.Where(te => teams.Any(t => te.TeamId == t.TeamId)).ToList();
+
+        return Ok(currentTeamEvents);
     }
 
     [HttpGet("{id}")]

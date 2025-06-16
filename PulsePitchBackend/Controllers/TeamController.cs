@@ -115,13 +115,10 @@ public class TeamController : ControllerBase
                 return BadRequest(new { message = "Invalid team name or join code, or player already joined." });
             }
             var user = await _IdentityUser.FindByIdAsync(joinTeam.PlayerId.ToString());
-            if (user == null)
-                return Unauthorized();
             if (!await _roleManager.RoleExistsAsync("Player") && !await _roleManager.RoleExistsAsync("Coach"))
             {
                 await _roleManager.CreateAsync(new IdentityRole("Player"));
             }
-
             return Ok();
         }
         catch (InvalidOperationException ex)

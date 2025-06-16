@@ -72,17 +72,18 @@ namespace PulsePitch.Repository
                     throw new InvalidOperationException("Team not found with provided name and join code.");
                 }
 
-                var alreadyJoined = await _context.PlayerTeams.AnyAsync(pt => pt.PlayerId == teamModel.PlayerId && pt.TeamId == team.Id);
-                if (alreadyJoined)
-                {
-                    throw new InvalidOperationException("Player already joined this team.");
-                }
-
                 PlayerTeam joinTeamData = new PlayerTeam
                 {
                     PlayerId = teamModel.PlayerId,
                     TeamId = team.Id,
                 };
+
+                var alreadyJoined = await _context.PlayerTeams.AnyAsync(pt => pt.PlayerId == joinTeamData.PlayerId && pt.TeamId == joinTeamData.TeamId);
+                if (alreadyJoined)
+                {
+                return joinTeamData;
+                }
+
                 await _context.PlayerTeams.AddAsync(joinTeamData);
                 await _context.SaveChangesAsync();
                 return joinTeamData;
