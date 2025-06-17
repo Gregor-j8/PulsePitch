@@ -106,6 +106,16 @@ namespace PulsePitch.Data
                     RoleId = "e9b4c5a4-76c6-44b7-88fb-35a0228c9572",
                     UserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
                 },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f",
+                    UserId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f",
+                    UserId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                },
             });
             modelBuilder.Entity<UserProfile>().HasData(new UserProfile[]
             {
@@ -210,7 +220,14 @@ namespace PulsePitch.Data
             );
 
             modelBuilder.Entity<PlayerTeam>().HasData(
-                new PlayerTeam { Id = 1, PlayerId = 2, TeamId = 1 }
+                new PlayerTeam { Id = 1, PlayerId = 1, TeamId = 1 },
+                new PlayerTeam { Id = 2, PlayerId = 2, TeamId = 6 },
+                new PlayerTeam { Id = 3, PlayerId = 2, TeamId = 2 }, 
+                new PlayerTeam { Id = 4, PlayerId = 3, TeamId = 4 },
+                new PlayerTeam { Id = 5, PlayerId = 4, TeamId = 3 },
+                new PlayerTeam { Id = 6, PlayerId = 5, TeamId = 4 },
+                new PlayerTeam { Id = 7, PlayerId = 5, TeamId = 6 },
+                new PlayerTeam { Id = 8, PlayerId = 6, TeamId = 5 }
             );
             modelBuilder.Entity<Events>().HasData(
                 new Events { Id = 1, Name = "Practice" },
@@ -227,6 +244,106 @@ namespace PulsePitch.Data
                     Start = new DateTime(2025, 6, 6, 9, 0, 0),
                     End = new DateTime(2025, 6, 6, 11, 0, 0),
                     TeamId = 1,
+                    EventId = 1
+                },
+                new TeamEvent
+                {
+                    Id = 2,
+                    Title = "film",
+                    Description = "Afternoon film",
+                    Start = new DateTime(2025, 6, 10, 14, 0, 0),
+                    End = new DateTime(2025, 6, 10, 16, 0, 0),
+                    TeamId = 2,
+                    EventId = 2
+                },
+                new TeamEvent
+                {
+                    Id = 3,
+                    Title = "Practice",
+                    Description = "Early morning drills",
+                    Start = new DateTime(2025, 6, 5, 7, 0, 0),
+                    End = new DateTime(2025, 6, 5, 9, 0, 0),
+                    TeamId = 3,
+                    EventId = 1
+                },
+                new TeamEvent
+                {
+                    Id = 4,
+                    Title = "meeting",
+                    Description = "team meeting",
+                    Start = new DateTime(2025, 6, 8, 10, 0, 0),
+                    End = new DateTime(2025, 6, 8, 12, 0, 0),
+                    TeamId = 4,
+                    EventId = 3
+                },
+                new TeamEvent
+                {
+                    Id = 5,
+                    Title = "film",
+                    Description = "Tactical strategy session",
+                    Start = new DateTime(2025, 6, 9, 15, 0, 0),
+                    End = new DateTime(2025, 6, 9, 17, 0, 0),
+                    TeamId = 5,
+                    EventId = 2
+                },
+                new TeamEvent
+                {
+                    Id = 6,
+                    Title = "Practice",
+                    Description = "Shooting practice",
+                    Start = new DateTime(2025, 6, 4, 16, 0, 0),
+                    End = new DateTime(2025, 6, 4, 18, 0, 0),
+                    TeamId = 6,
+                    EventId = 1
+                },
+                new TeamEvent
+                {
+                    Id = 7,
+                    Title = "Practice",
+                    Description = "Ball control and drills",
+                    Start = new DateTime(2025, 6, 3, 13, 0, 0),
+                    End = new DateTime(2025, 6, 3, 15, 0, 0),
+                    TeamId = 1,
+                    EventId = 1
+                },
+                new TeamEvent
+                {
+                    Id = 8,
+                    Title = "meeting",
+                    Description = "Defensive coordination",
+                    Start = new DateTime(2025, 6, 11, 9, 0, 0),
+                    End = new DateTime(2025, 6, 11, 11, 0, 0),
+                    TeamId = 2,
+                    EventId = 3
+                },
+                new TeamEvent
+                {
+                    Id = 9,
+                    Title = "Practice",
+                    Description = "Midfield passing accuracy",
+                    Start = new DateTime(2025, 6, 7, 10, 0, 0),
+                    End = new DateTime(2025, 6, 7, 12, 0, 0),
+                    TeamId = 3,
+                    EventId = 1
+                },
+                new TeamEvent
+                {
+                    Id = 10,
+                    Title = "film",
+                    Description = "Set-piece rehearsals",
+                    Start = new DateTime(2025, 6, 6, 17, 0, 0),
+                    End = new DateTime(2025, 6, 6, 19, 0, 0),
+                    TeamId = 4,
+                    EventId = 2
+                },
+                new TeamEvent
+                {
+                    Id = 11,
+                    Title = "Practice",
+                    Description = "Evening conditioning session",
+                    Start = new DateTime(2025, 6, 12, 18, 0, 0),
+                    End = new DateTime(2025, 6, 12, 20, 0, 0),
+                    TeamId = 5,
                     EventId = 1
                 }
             );

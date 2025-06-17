@@ -2,7 +2,6 @@ import { useGetEventsForDropdown } from "../../hooks/useEvents"
 
 export default function CreateEventModal({ formData, setFormData, onClose, onSubmit }) {
       const { data: events, isLoading, isError } = useGetEventsForDropdown()
-    
     if (isError || isLoading ){
         return null
     }

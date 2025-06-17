@@ -2,6 +2,7 @@ import NavBar from "./components/NavBar";
 import ApplicationViews from "./components/ApplicationViews";
 import { useEffect, useState } from "react";
 import { tryGetLoggedInUser } from "./managers/authManagers";
+import { LoadingSpinner } from "./components/Loading/LoadingPage";
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState();
@@ -12,10 +13,8 @@ function App() {
       setLoggedInUser(user);
     });
   }, []);
-
-  // wait to get a definite logged-in state before rendering
   if (loggedInUser === undefined) {
-    return null
+    return <LoadingSpinner/>
   }
 
   return (

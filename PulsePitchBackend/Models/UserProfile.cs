@@ -17,9 +17,11 @@ namespace PulsePitch.Models;
     [DataType(DataType.Url)]
     [MaxLength(255)]
     public string ImageLocation { get; set; }
+    public List<PlayerTeam>? Teams { get; set; }
     public List<string> Roles { get; set; }
     public string IdentityUserId { get; set; }
     public IdentityUser IdentityUser { get; set; }
+
     public string FullName
     {
         get

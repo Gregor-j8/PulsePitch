@@ -1,24 +1,18 @@
-
 const _apiUrl = "/api/auth";
 
 export const login = (email, password) => {
-  console.log(email, password)
   return fetch(_apiUrl + "/login", {
-  method: "POST",
-  credentials: "same-origin",
-  headers: {
-    Authorization: `Basic ${btoa(`${email}:${password}`)}`,
-  },
-})
-  .then((res) => {
-    if (!res.ok) {
-      return null;
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      Authorization: `Basic ${btoa(`${email}:${password}`)}`,
+    },
+  }).then((res) => {
+    if (res.status !== 200) {
+      return Promise.resolve(null);
+    } else {
+      return tryGetLoggedInUser();
     }
-    return res.json(); 
-  })
-  .catch((err) => {
-    console.error("Login failed:", err);
-    return null;
   });
 };
 

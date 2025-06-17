@@ -83,7 +83,7 @@ namespace PulsePitch.Repository
                 {
                 return joinTeamData;
                 }
-
+                
                 await _context.PlayerTeams.AddAsync(joinTeamData);
                 await _context.SaveChangesAsync();
                 return joinTeamData;

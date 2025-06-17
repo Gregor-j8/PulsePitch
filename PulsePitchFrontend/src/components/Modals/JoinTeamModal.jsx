@@ -11,10 +11,10 @@ export const JoinTeamModal = ({ onClose, loggedInUser }) => {
 
   const handleCreate = () => {
   JoinTeam.mutate(
-    { TeamName: name, JoinCode: parseInt(code), PlayerId: loggedInUser?.id },
+    { TeamName: name, JoinCode: code, PlayerId: loggedInUser?.id },
     {
       onSuccess: () => {
-        Navigate("/main")
+        Navigate("/")
       },
       onerror: () => {
         toast.error("Your team code or team name is incorrect please try again")

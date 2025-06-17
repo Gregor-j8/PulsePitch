@@ -13,7 +13,7 @@ export const CreateTeamModal = ({ onClose }) => {
     { name, joincode: code },
     {
       onSuccess: () => {
-        Navigate("/main")
+        Navigate("/")
     },
     })}
 
