@@ -2,7 +2,6 @@ import axiosClient from './axiosClient';
 
 export const fetchTeamEvents = async (userId) => {
   const { data } = await axiosClient.get(`/event/user/${userId}`);
-  console.log(data)
   return data;
 };
 

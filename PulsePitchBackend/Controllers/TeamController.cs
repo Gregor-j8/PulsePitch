@@ -105,7 +105,7 @@ public class TeamController : ControllerBase
     {
         try
         {
-            if (joinTeam.PlayerId == 0 || joinTeam.TeamName == null || joinTeam.JoinCode == 0)
+            if (joinTeam.PlayerId == 0 || joinTeam.TeamName == null || joinTeam.JoinCode == null)
             {
                 return StatusCode(500);
             }
