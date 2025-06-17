@@ -1,13 +1,22 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { CreateTeamModal } from "../components/Modals/CreateTeamModals"
 import { JoinTeamModal } from "../components/Modals/JoinTeamModal"
+import { useNavigate } from "react-router-dom"
+import { useLocation } from "react-router-dom";
 
 export const Home = ({loggedInUser}) => {
+  const navigate = useNavigate()
+  const location = useLocation();
+  const joiningNewTeam = location.state?.joiningNewTeam;
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
   const [showJoinTeamModal, setShowJoinTeamModal] = useState(false)
 
-  if (!loggedInUser) return null
-
+  useEffect(() => {
+    if (!loggedInUser) return
+    if (loggedInUser?.teams?.length > 0 && !joiningNewTeam) {
+      navigate("/main")
+    }}, [loggedInUser, joiningNewTeam, navigate])
+    
   return (
     <div className="w-full flex justify-center items-center min-h-screen bg-gray-100">
       <div className="bg-white rounded-2xl shadow-xl p-10 w-full max-w-md text-center">

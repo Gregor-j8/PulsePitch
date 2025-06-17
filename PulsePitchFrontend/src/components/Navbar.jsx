@@ -2,6 +2,7 @@ import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import { logout } from "../managers/authManagers";
 
+
 export default function NavBar ({loggedInUser,  setLoggedInUser}) {
   const [open, setOpen] = useState(false);
   const toggleNavbar = () => setOpen(!open);
@@ -10,7 +11,7 @@ export default function NavBar ({loggedInUser,  setLoggedInUser}) {
     <nav className="bg-white border-b shadow fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center">
-          <RRNavLink to="/" className="text-xl font-bold text-gray-800">
+          <RRNavLink to="/" state={{ joiningNewTeam: "true" }} className="text-xl font-bold text-gray-800">
             ✍️ PulsePitch
           </RRNavLink>
         </div>

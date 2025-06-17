@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 
-export const AuthorizedRoute = ({ children, loggedInUser, roles, all }) => {
+export const AuthorizedRoute = ({ children, loggedInUser, roles,  all }) => {
   let authed = false;
   if (loggedInUser) {
     if (roles && roles.length) {
