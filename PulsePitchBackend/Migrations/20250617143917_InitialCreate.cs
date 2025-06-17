@@ -312,12 +312,12 @@ namespace PulsePitchBackend.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "cfe2f75f-2dd3-494d-b875-f4e297ccc7eb", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECwA3qaK/ZGi3pVsxYHIJtgQNmgE9BYnH/Mj1fd70A5DSxjn4nYK1kjIlVnv1yzAgQ==", null, false, "46d7bda4-d87b-4016-9761-fdf47d52fc61", false, "BobWilliams" },
-                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "e710f638-2d89-4a1f-9267-eeaa70845c43", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEES4vIjZvIEdED81xK5XTDept0qFX8cLS3OvXdbbzlfIMg6Kr2DZG13GFj+0G2F8/Q==", null, false, "e99544f6-989a-48bc-81b8-7c2f8bbf8d64", false, "JaneSmith" },
-                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "c5469cd8-4664-482a-8367-f762897cd03f", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEFuAhLBgy/e262gmUhqrwxwlzS8RD3Mti8l2e49oVtEScCFJgToRUQkG91+Jds9nGA==", null, false, "87a52c81-92fe-449a-a4a0-9907a06bb673", false, "AliceJohnson" },
-                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "3e5088b6-48cd-4b8c-9a25-cfbc99506cc0", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEB1TKMoE1Tkmve3rpFLHpaFNG2G5Lr8O8keopbnvxgIFPkStN60Ald/stjd9CQ4eXg==", null, false, "1b98cf81-32b3-40eb-9e79-dbe54fa1daf7", false, "EveDavis" },
-                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "0e987cda-9585-4b34-8413-0943beb70f60", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAENcdTl4TBrXJuJBhIGnCjn/x6i4TNzHe8d0u6FdYUvy2UnOBxVk9ggi6Gzy4ZG1YLw==", null, false, "848ff280-af23-4a2c-8328-2ffc891107db", false, "JohnDoe" },
-                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "31250124-246b-421d-9cba-ccabd8c965a8", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAELzhT5RFD5LkolJ5u0Om3Y/TbR7CHVOSiFQbxU/PxBoh6hYpNFzJmXanIqTRFsPdYQ==", null, false, "3691f537-3be9-4279-9b44-612126d2bc29", false, "Administrator" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "9fab5034-4ea7-4a9c-a4d1-ab2820c5d83f", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAELMhhMr1Bo2kFyDi5peqsdQ8V7TOvymyuEhz591lIqrdyIDkHsmnf03fvEGvt05QMQ==", null, false, "bd13a731-9194-47c8-882a-27e63311b727", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "747f250a-2ee5-4c1d-816b-501ea2776305", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECjdmQXZazq3r7Dv++bvqmjucujInj3HL0e3LZ34cYi25x6fUQKjyavZW8NrYj4KXw==", null, false, "d1f784b3-51bd-48ef-94d1-fa17bac2070f", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "be792ca7-a1bf-4ffb-8f7f-53bbab71398d", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEOGT3LYqFAsYWpkSDuqOcEqe3uTb2QIxuuw0M8xnIfO0vgumtFLnD3BOZXfVCBUMEg==", null, false, "45b1c989-220e-48bb-bedf-d8285c52c6b9", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "39375b36-dfd5-4ad6-b5c2-b45e048976c8", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEAlRB4ZrGjTNTXkZZViILotOUrAV3EIpUlhaC76KvL9EjV7InOmXE5HUn7DHLkCpMQ==", null, false, "c8fae236-0e18-43bc-b8df-de9ce734562b", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "cb4ee6ee-f41a-4972-84da-de8a7181b349", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAELwBv5vUyGP3rWvU2NvlzfVeI9+rZRYcKjFUMr7ocMM6cZnXRXnzKXy5EJsFMOooBw==", null, false, "3f80e41c-834d-4f9e-a179-33f8563cdd61", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "1abd55dc-8e5c-404a-9c14-8b8ddcf92659", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEN6YhPDi9RjAecMKUm3iD1zjSgepRFQm4VNp0eXMeqqsAPlGV8OWoklw5+r/RcIpsQ==", null, false, "72edc1fc-e8ed-4444-bc99-45035cc0af79", false, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
@@ -387,7 +387,17 @@ namespace PulsePitchBackend.Migrations
             migrationBuilder.InsertData(
                 table: "PlayerTeams",
                 columns: new[] { "Id", "PlayerId", "TeamId" },
-                values: new object[] { 1, 2, 1 });
+                values: new object[,]
+                {
+                    { 1, 1, 1 },
+                    { 2, 2, 6 },
+                    { 3, 2, 2 },
+                    { 4, 3, 4 },
+                    { 5, 4, 3 },
+                    { 6, 5, 4 },
+                    { 7, 5, 6 },
+                    { 8, 6, 5 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using PulsePitch.Models;
 using PulsePitch.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PulsePitch.Controllers;
 
@@ -103,12 +104,14 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _dbContext.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
+        var playerTeams = _dbContext.PlayerTeams.Where(pt => pt.PlayerId == profile.Id).ToList();
         var roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
         if (profile != null)
         {
             profile.UserName = User.FindFirstValue(ClaimTypes.Name);
             profile.Email = User.FindFirstValue(ClaimTypes.Email);
             profile.Roles = roles;
+            profile.Teams = playerTeams;
             return Ok(profile);
         }
         return NotFound();

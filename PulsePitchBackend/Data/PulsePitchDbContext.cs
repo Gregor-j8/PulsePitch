@@ -210,7 +210,14 @@ namespace PulsePitch.Data
             );
 
             modelBuilder.Entity<PlayerTeam>().HasData(
-                new PlayerTeam { Id = 1, PlayerId = 2, TeamId = 1 }
+                new PlayerTeam { Id = 1, PlayerId = 1, TeamId = 1 },
+                new PlayerTeam { Id = 2, PlayerId = 2, TeamId = 6 },
+                new PlayerTeam { Id = 3, PlayerId = 2, TeamId = 2 }, 
+                new PlayerTeam { Id = 4, PlayerId = 3, TeamId = 4 },
+                new PlayerTeam { Id = 5, PlayerId = 4, TeamId = 3 },
+                new PlayerTeam { Id = 6, PlayerId = 5, TeamId = 4 },
+                new PlayerTeam { Id = 7, PlayerId = 5, TeamId = 6 },
+                new PlayerTeam { Id = 8, PlayerId = 6, TeamId = 5 }
             );
             modelBuilder.Entity<Events>().HasData(
                 new Events { Id = 1, Name = "Practice" },
