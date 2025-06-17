@@ -13,7 +13,7 @@ using PulsePitch.Data;
 namespace PulsePitchBackend.Migrations
 {
     [DbContext(typeof(PulsePitchDbContext))]
-    [Migration("20250617143917_InitialCreate")]
+    [Migration("20250617195942_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -159,13 +159,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1abd55dc-8e5c-404a-9c14-8b8ddcf92659",
+                            ConcurrencyStamp = "a82b0f81-d1a3-42b3-88d0-afaf3339fdc8",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEN6YhPDi9RjAecMKUm3iD1zjSgepRFQm4VNp0eXMeqqsAPlGV8OWoklw5+r/RcIpsQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELqeqUZc/JTkLITEEDozSIPDM+dk5EuR15mMOyoo5wuvkb9BXqQvZNmQF+4/uk28Eg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "72edc1fc-e8ed-4444-bc99-45035cc0af79",
+                            SecurityStamp = "197bdd3a-a032-41c0-8c57-70f5b97a98f7",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         },
@@ -173,13 +173,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cb4ee6ee-f41a-4972-84da-de8a7181b349",
+                            ConcurrencyStamp = "7d5b4dde-8369-442c-806b-978011bfafc8",
                             Email = "john@doe.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAELwBv5vUyGP3rWvU2NvlzfVeI9+rZRYcKjFUMr7ocMM6cZnXRXnzKXy5EJsFMOooBw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECs4zpJIAummPwVwR5xdn5DhaF+HQ94ft2Q7XpHB5Z7hWqDK9eEApK1uhnI0HsmLSQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3f80e41c-834d-4f9e-a179-33f8563cdd61",
+                            SecurityStamp = "92a50d99-e12a-419b-bca5-902010eed5f6",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -187,13 +187,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "747f250a-2ee5-4c1d-816b-501ea2776305",
+                            ConcurrencyStamp = "00c9b250-291e-45fa-934e-3d8df9fc4b73",
                             Email = "jane@smith.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAECjdmQXZazq3r7Dv++bvqmjucujInj3HL0e3LZ34cYi25x6fUQKjyavZW8NrYj4KXw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIGi2X7qAUHNBIF0Ldq+fIlSsTXSEgqGDbFgdE1WrBv+740k8gEUu4BQvy353SlD+g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d1f784b3-51bd-48ef-94d1-fa17bac2070f",
+                            SecurityStamp = "01c3677a-a666-4052-a1b5-a54a3ee24752",
                             TwoFactorEnabled = false,
                             UserName = "JaneSmith"
                         },
@@ -201,13 +201,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be792ca7-a1bf-4ffb-8f7f-53bbab71398d",
+                            ConcurrencyStamp = "76655139-6bda-4ccd-906f-9d0d67cc1d8e",
                             Email = "alice@johnson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEOGT3LYqFAsYWpkSDuqOcEqe3uTb2QIxuuw0M8xnIfO0vgumtFLnD3BOZXfVCBUMEg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEsre+MSO5MLhcIyiD2Yiz/CNkWQr2NaydIcWtehKeJNJNscXOsJuWIOGENZF9GkJA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "45b1c989-220e-48bb-bedf-d8285c52c6b9",
+                            SecurityStamp = "b30ef60c-4c9d-4c09-9951-a9a60c3653ac",
                             TwoFactorEnabled = false,
                             UserName = "AliceJohnson"
                         },
@@ -215,13 +215,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9fab5034-4ea7-4a9c-a4d1-ab2820c5d83f",
+                            ConcurrencyStamp = "e8f7597a-18cf-40a5-a319-30ed1e018bb6",
                             Email = "bob@williams.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAELMhhMr1Bo2kFyDi5peqsdQ8V7TOvymyuEhz591lIqrdyIDkHsmnf03fvEGvt05QMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOyoQPiiK+0cyz/Dxq/Y0/gLKZpfDwvQ1zy5/JYtc/K6y7CxCuFJaw9W8k5NOX1ghg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bd13a731-9194-47c8-882a-27e63311b727",
+                            SecurityStamp = "8eae96eb-85b0-49b8-ba2f-3f6cff9707c7",
                             TwoFactorEnabled = false,
                             UserName = "BobWilliams"
                         },
@@ -229,13 +229,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "39375b36-dfd5-4ad6-b5c2-b45e048976c8",
+                            ConcurrencyStamp = "7c6c37fe-10a4-4946-8c77-a50ca6d1fb88",
                             Email = "Eve@Davis.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEAlRB4ZrGjTNTXkZZViILotOUrAV3EIpUlhaC76KvL9EjV7InOmXE5HUn7DHLkCpMQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJYooS7pBEAfoE7pdKm7l05u/oMwbYdj2vVmT08dt7YcJP+d7tAdB5hD9E30gSUH6Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c8fae236-0e18-43bc-b8df-de9ce734562b",
+                            SecurityStamp = "458f769a-f093-4c76-bfdc-15aa846cbbeb",
                             TwoFactorEnabled = false,
                             UserName = "EveDavis"
                         });
@@ -548,6 +548,106 @@ namespace PulsePitchBackend.Migrations
                             EventId = 1,
                             Start = new DateTime(2025, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
                             TeamId = 1,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Afternoon film",
+                            End = new DateTime(2025, 6, 10, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 2,
+                            Start = new DateTime(2025, 6, 10, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 2,
+                            Title = "film"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Early morning drills",
+                            End = new DateTime(2025, 6, 5, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 6, 5, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 3,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "team meeting",
+                            End = new DateTime(2025, 6, 8, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 3,
+                            Start = new DateTime(2025, 6, 8, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 4,
+                            Title = "meeting"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Tactical strategy session",
+                            End = new DateTime(2025, 6, 9, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 2,
+                            Start = new DateTime(2025, 6, 9, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 5,
+                            Title = "film"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Shooting practice",
+                            End = new DateTime(2025, 6, 4, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 6, 4, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 6,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Ball control and drills",
+                            End = new DateTime(2025, 6, 3, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 6, 3, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 1,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Defensive coordination",
+                            End = new DateTime(2025, 6, 11, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 3,
+                            Start = new DateTime(2025, 6, 11, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 2,
+                            Title = "meeting"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Midfield passing accuracy",
+                            End = new DateTime(2025, 6, 7, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 6, 7, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 3,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Set-piece rehearsals",
+                            End = new DateTime(2025, 6, 6, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 2,
+                            Start = new DateTime(2025, 6, 6, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 4,
+                            Title = "film"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Description = "Evening conditioning session",
+                            End = new DateTime(2025, 6, 12, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 6, 12, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 5,
                             Title = "Practice"
                         });
                 });

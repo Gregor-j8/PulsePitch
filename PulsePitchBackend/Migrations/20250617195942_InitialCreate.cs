@@ -312,12 +312,12 @@ namespace PulsePitchBackend.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "9fab5034-4ea7-4a9c-a4d1-ab2820c5d83f", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAELMhhMr1Bo2kFyDi5peqsdQ8V7TOvymyuEhz591lIqrdyIDkHsmnf03fvEGvt05QMQ==", null, false, "bd13a731-9194-47c8-882a-27e63311b727", false, "BobWilliams" },
-                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "747f250a-2ee5-4c1d-816b-501ea2776305", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECjdmQXZazq3r7Dv++bvqmjucujInj3HL0e3LZ34cYi25x6fUQKjyavZW8NrYj4KXw==", null, false, "d1f784b3-51bd-48ef-94d1-fa17bac2070f", false, "JaneSmith" },
-                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "be792ca7-a1bf-4ffb-8f7f-53bbab71398d", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEOGT3LYqFAsYWpkSDuqOcEqe3uTb2QIxuuw0M8xnIfO0vgumtFLnD3BOZXfVCBUMEg==", null, false, "45b1c989-220e-48bb-bedf-d8285c52c6b9", false, "AliceJohnson" },
-                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "39375b36-dfd5-4ad6-b5c2-b45e048976c8", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEAlRB4ZrGjTNTXkZZViILotOUrAV3EIpUlhaC76KvL9EjV7InOmXE5HUn7DHLkCpMQ==", null, false, "c8fae236-0e18-43bc-b8df-de9ce734562b", false, "EveDavis" },
-                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "cb4ee6ee-f41a-4972-84da-de8a7181b349", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAELwBv5vUyGP3rWvU2NvlzfVeI9+rZRYcKjFUMr7ocMM6cZnXRXnzKXy5EJsFMOooBw==", null, false, "3f80e41c-834d-4f9e-a179-33f8563cdd61", false, "JohnDoe" },
-                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "1abd55dc-8e5c-404a-9c14-8b8ddcf92659", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEN6YhPDi9RjAecMKUm3iD1zjSgepRFQm4VNp0eXMeqqsAPlGV8OWoklw5+r/RcIpsQ==", null, false, "72edc1fc-e8ed-4444-bc99-45035cc0af79", false, "Administrator" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "e8f7597a-18cf-40a5-a319-30ed1e018bb6", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEOyoQPiiK+0cyz/Dxq/Y0/gLKZpfDwvQ1zy5/JYtc/K6y7CxCuFJaw9W8k5NOX1ghg==", null, false, "8eae96eb-85b0-49b8-ba2f-3f6cff9707c7", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "00c9b250-291e-45fa-934e-3d8df9fc4b73", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEIGi2X7qAUHNBIF0Ldq+fIlSsTXSEgqGDbFgdE1WrBv+740k8gEUu4BQvy353SlD+g==", null, false, "01c3677a-a666-4052-a1b5-a54a3ee24752", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "76655139-6bda-4ccd-906f-9d0d67cc1d8e", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEEsre+MSO5MLhcIyiD2Yiz/CNkWQr2NaydIcWtehKeJNJNscXOsJuWIOGENZF9GkJA==", null, false, "b30ef60c-4c9d-4c09-9951-a9a60c3653ac", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "7c6c37fe-10a4-4946-8c77-a50ca6d1fb88", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEJYooS7pBEAfoE7pdKm7l05u/oMwbYdj2vVmT08dt7YcJP+d7tAdB5hD9E30gSUH6Q==", null, false, "458f769a-f093-4c76-bfdc-15aa846cbbeb", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "7d5b4dde-8369-442c-806b-978011bfafc8", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECs4zpJIAummPwVwR5xdn5DhaF+HQ94ft2Q7XpHB5Z7hWqDK9eEApK1uhnI0HsmLSQ==", null, false, "92a50d99-e12a-419b-bca5-902010eed5f6", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "a82b0f81-d1a3-42b3-88d0-afaf3339fdc8", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAELqeqUZc/JTkLITEEDozSIPDM+dk5EuR15mMOyoo5wuvkb9BXqQvZNmQF+4/uk28Eg==", null, false, "197bdd3a-a032-41c0-8c57-70f5b97a98f7", false, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
@@ -351,7 +351,20 @@ namespace PulsePitchBackend.Migrations
             migrationBuilder.InsertData(
                 table: "TeamEvents",
                 columns: new[] { "Id", "Description", "End", "EventId", "Start", "TeamId", "Title" },
-                values: new object[] { 1, "Morning practice session", new DateTime(2025, 6, 6, 11, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), 1, "Practice" });
+                values: new object[,]
+                {
+                    { 1, "Morning practice session", new DateTime(2025, 6, 6, 11, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 6, 9, 0, 0, 0, DateTimeKind.Unspecified), 1, "Practice" },
+                    { 2, "Afternoon film", new DateTime(2025, 6, 10, 16, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2025, 6, 10, 14, 0, 0, 0, DateTimeKind.Unspecified), 2, "film" },
+                    { 3, "Early morning drills", new DateTime(2025, 6, 5, 9, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 5, 7, 0, 0, 0, DateTimeKind.Unspecified), 3, "Practice" },
+                    { 4, "team meeting", new DateTime(2025, 6, 8, 12, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2025, 6, 8, 10, 0, 0, 0, DateTimeKind.Unspecified), 4, "meeting" },
+                    { 5, "Tactical strategy session", new DateTime(2025, 6, 9, 17, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2025, 6, 9, 15, 0, 0, 0, DateTimeKind.Unspecified), 5, "film" },
+                    { 6, "Shooting practice", new DateTime(2025, 6, 4, 18, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 4, 16, 0, 0, 0, DateTimeKind.Unspecified), 6, "Practice" },
+                    { 7, "Ball control and drills", new DateTime(2025, 6, 3, 15, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 3, 13, 0, 0, 0, DateTimeKind.Unspecified), 1, "Practice" },
+                    { 8, "Defensive coordination", new DateTime(2025, 6, 11, 11, 0, 0, 0, DateTimeKind.Unspecified), 3, new DateTime(2025, 6, 11, 9, 0, 0, 0, DateTimeKind.Unspecified), 2, "meeting" },
+                    { 9, "Midfield passing accuracy", new DateTime(2025, 6, 7, 12, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 7, 10, 0, 0, 0, DateTimeKind.Unspecified), 3, "Practice" },
+                    { 10, "Set-piece rehearsals", new DateTime(2025, 6, 6, 19, 0, 0, 0, DateTimeKind.Unspecified), 2, new DateTime(2025, 6, 6, 17, 0, 0, 0, DateTimeKind.Unspecified), 4, "film" },
+                    { 11, "Evening conditioning session", new DateTime(2025, 6, 12, 20, 0, 0, 0, DateTimeKind.Unspecified), 1, new DateTime(2025, 6, 12, 18, 0, 0, 0, DateTimeKind.Unspecified), 5, "Practice" }
+                });
 
             migrationBuilder.InsertData(
                 table: "TeamGames",

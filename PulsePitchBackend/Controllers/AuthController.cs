@@ -70,7 +70,7 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity));
 
-            return Ok(new { message = "Login successful", username = user.UserName, email = user.Email });
+            return Ok();
         }
 
         return Unauthorized();
@@ -100,21 +100,27 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
 
     [HttpGet("me")]
     [Authorize]
-    public IActionResult Me()
+    public async Task<IActionResult> Me()
     {
         var identityUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var profile = _dbContext.UserProfiles.SingleOrDefault(up => up.IdentityUserId == identityUserId);
-        var playerTeams = _dbContext.PlayerTeams.Where(pt => pt.PlayerId == profile.Id).ToList();
-        var roles = User.FindAll(ClaimTypes.Role).Select(r => r.Value).ToList();
-        if (profile != null)
-        {
-            profile.UserName = User.FindFirstValue(ClaimTypes.Name);
-            profile.Email = User.FindFirstValue(ClaimTypes.Email);
-            profile.Roles = roles;
-            profile.Teams = playerTeams;
-            return Ok(profile);
-        }
-        return NotFound();
+
+        if (profile == null)
+            return NotFound();
+
+        var identityUser = await _userManager.FindByIdAsync(identityUserId);
+        var roles = await _userManager.GetRolesAsync(identityUser);
+
+        var playerTeams = _dbContext.PlayerTeams
+            .Where(pt => pt.PlayerId == profile.Id)
+            .ToList();
+
+        profile.UserName = identityUser.UserName;
+        profile.Email = identityUser.Email;
+        profile.Roles = roles.ToList();
+        profile.Teams = playerTeams;
+
+        return Ok(profile);
     }
 
     [HttpPost("register")]
@@ -133,8 +139,7 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
         var result = await _userManager.CreateAsync(user, password);
         if (result.Succeeded)
         {
-
-            await _userManager.AddToRoleAsync(user, "player");
+            await _userManager.AddToRoleAsync(user, "Player");
 
             _dbContext.UserProfiles.Add(new UserProfile
             {
@@ -151,6 +156,14 @@ public async Task<IActionResult> Login([FromHeader(Name = "Authorization")] stri
                     new Claim(ClaimTypes.Name, user.UserName.ToString()),
                     new Claim(ClaimTypes.Email, user.Email)
                 };
+
+                var userRoles = await _userManager.GetRolesAsync(user);
+                foreach (var role in userRoles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
+
+
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             HttpContext.SignInAsync(
