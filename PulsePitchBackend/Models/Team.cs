@@ -8,7 +8,7 @@ public class Team
     [Required]
     public string Name { get; set; }
     [Required]
-    public int JoinCode { get; set; }
+    public string JoinCode { get; set; }
     [Required]
 
     public string? CoachId { get; set; }

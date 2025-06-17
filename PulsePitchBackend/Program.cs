@@ -68,6 +68,7 @@ builder.Services.AddScoped<IPlayerTeamRepository, PlayerTeamRepository>();
 builder.Services.AddScoped<ITeamEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventRepository, EventsRepository>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
+builder.Services.AddScoped<ITeamGameRepository, TeamGameRepository>();
 
 var app = builder.Build();
 

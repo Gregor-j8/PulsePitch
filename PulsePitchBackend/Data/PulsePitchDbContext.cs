@@ -54,8 +54,8 @@ namespace PulsePitch.Data
             );
 
 
-        modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser[]
-        {
+            modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser[]
+            {
             new IdentityUser
             {
                 Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
@@ -98,7 +98,7 @@ namespace PulsePitch.Data
                 Email = "Eve@Davis.comx",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
-        });
+            });
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(new IdentityUserRole<string>[]
             {
                 new IdentityUserRole<string>
@@ -164,13 +164,50 @@ namespace PulsePitch.Data
                     IdentityUserId = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                 }
             });
-            modelBuilder.Entity<Team>().HasData(new Team
-            {
-                Id = 1,
-                Name = "Eagles",
-                JoinCode = 123,
-                CoachId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
-            });
+            modelBuilder.Entity<Team>().HasData(
+                new Team
+                {
+                    Id = 1,
+                    Name = "Eagles",
+                    JoinCode = "EGL123",
+                    CoachId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
+                },
+                new Team
+                {
+                    Id = 2,
+                    Name = "Falcons",
+                    JoinCode = "FLC123",
+                    CoachId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df"
+                },
+                new Team
+                {
+                    Id = 3,
+                    Name = "Wolves",
+                    JoinCode = "WLV456",
+                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                },
+                new Team
+                {
+                    Id = 4,
+                    Name = "Sharks",
+                    JoinCode = "SHK789",
+                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                },
+                new Team
+                {
+                    Id = 5,
+                    Name = "Titans",
+                    JoinCode = "TTN321",
+                    CoachId = ""
+                },
+                new Team
+                {
+                    Id = 6,
+                    Name = "Panthers",
+                    JoinCode = "PNR654",
+                    CoachId = ""
+                }
+            );
 
             modelBuilder.Entity<PlayerTeam>().HasData(
                 new PlayerTeam { Id = 1, PlayerId = 2, TeamId = 1 }
@@ -198,10 +235,101 @@ namespace PulsePitch.Data
                 new TeamGame
                 {
                     Id = 1,
-                    GameDate = new DateTime(2025, 6, 10, 18, 0, 0),
+                    Start = new DateTime(2025, 6, 10, 18, 0, 0),
+                    End = new DateTime(2025, 6, 10, 19, 0, 0),
                     HomeTeamId = 1,
-                    AwayTeamId = 1,
+                    AwayTeamId = 4,
                     Result = "TBD"
+                },
+                new TeamGame
+                {
+                    Id = 11,
+                    Start = new DateTime(2025, 6, 10, 18, 0, 0),
+                    End = new DateTime(2025, 6, 10, 19, 0, 0),
+                    HomeTeamId = 1,
+                    AwayTeamId = 2,
+                    Result = "2-1"
+                },
+                new TeamGame
+                {
+                    Id = 2,
+                    Start = new DateTime(2025, 6, 12, 17, 30, 0),
+                    End = new DateTime(2025, 6, 12, 18, 30, 0),
+                    HomeTeamId = 3,
+                    AwayTeamId = 4,
+                    Result = "0-0"
+                },
+                new TeamGame
+                {
+                    Id = 3,
+                    Start = new DateTime(2025, 6, 14, 20, 0, 0),
+                    End = new DateTime(2025, 6, 14, 21, 0, 0),
+                    HomeTeamId = 5,
+                    AwayTeamId = 6,
+                    Result = "1-3"
+                },
+                new TeamGame
+                {
+                    Id = 4,
+                    Start = new DateTime(2025, 6, 15, 19, 0, 0),
+                    End = new DateTime(2025, 6, 15, 20, 0, 0),
+                    HomeTeamId = 2,
+                    AwayTeamId = 4,
+                    Result = "4-2"
+                },
+                new TeamGame
+                {
+                    Id = 5,
+                    Start = new DateTime(2025, 6, 17, 16, 0, 0),
+                    End = new DateTime(2025, 6, 17, 17, 0, 0),
+                    HomeTeamId = 6,
+                    AwayTeamId = 1,
+                    Result = "1-1"
+                },
+                new TeamGame
+                {
+                    Id = 6,
+                    Start = new DateTime(2025, 6, 18, 18, 0, 0),
+                    End = new DateTime(2025, 6, 18, 19, 0, 0),
+                    HomeTeamId = 3,
+                    AwayTeamId = 5,
+                    Result = "0-2"
+                },
+                new TeamGame
+                {
+                    Id = 7,
+                    Start = new DateTime(2025, 6, 19, 18, 30, 0),
+                    End = new DateTime(2025, 6, 19, 19, 30, 0),
+                    HomeTeamId = 4,
+                    AwayTeamId = 1,
+                    Result = "3-3"
+                },
+                new TeamGame
+                {
+                    Id = 8,
+                    Start = new DateTime(2025, 6, 20, 17, 0, 0),
+                    End = new DateTime(2025, 6, 20, 18, 0, 0),
+                    HomeTeamId = 2,
+                    AwayTeamId = 5,
+                    Result = "1-0"
+                },
+                new TeamGame
+                {
+                    Id = 9,
+                    Start = new DateTime(2025, 6, 21, 20, 0, 0),
+                    End = new DateTime(2025, 6, 21, 21, 0, 0),
+                    HomeTeamId = 6,
+                    AwayTeamId = 3,
+                    Result = "2-2"
+                },
+                new TeamGame
+                {
+                    Id = 10,
+                    Start = new DateTime(2025, 6, 22, 19, 0, 0),
+                    End = new DateTime(2025, 6, 22, 20, 0, 0),
+                    HomeTeamId = 5,
+                    AwayTeamId = 2,
+                    Result = "3-1"
                 }
             );
         }

@@ -13,7 +13,7 @@ using PulsePitch.Data;
 namespace PulsePitchBackend.Migrations
 {
     [DbContext(typeof(PulsePitchDbContext))]
-    [Migration("20250615130625_InitialCreate")]
+    [Migration("20250617005212_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -159,13 +159,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6d46deab-2f00-4f04-a7d9-2318a702a9b5",
+                            ConcurrencyStamp = "31250124-246b-421d-9cba-ccabd8c965a8",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEG6XM+xZWgAiuxV1k0EENFWSBf5x3ZhkQ+VcrglS5RezhuhWfK3YVuTyOcb0ubdz8A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELzhT5RFD5LkolJ5u0Om3Y/TbR7CHVOSiFQbxU/PxBoh6hYpNFzJmXanIqTRFsPdYQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "4fbaf3dc-3801-4f3d-b9bb-3a3769fbc69b",
+                            SecurityStamp = "3691f537-3be9-4279-9b44-612126d2bc29",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         },
@@ -173,13 +173,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6407524c-b88a-405b-93fc-bb457a420938",
+                            ConcurrencyStamp = "0e987cda-9585-4b34-8413-0943beb70f60",
                             Email = "john@doe.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEODhlfWJfcGxi3HJsFErQaqqGTixyAcC00JpZESIt9Dp6gmaYAKAB1Mh2Pr32PabOg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENcdTl4TBrXJuJBhIGnCjn/x6i4TNzHe8d0u6FdYUvy2UnOBxVk9ggi6Gzy4ZG1YLw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7d0838ff-46a5-4ac9-96d0-455b61b24ea9",
+                            SecurityStamp = "848ff280-af23-4a2c-8328-2ffc891107db",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -187,13 +187,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1ea52e46-d262-4430-9517-dd8ff0f7d929",
+                            ConcurrencyStamp = "e710f638-2d89-4a1f-9267-eeaa70845c43",
                             Email = "jane@smith.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEBt3gOcNhObcM7Y4L7wzgDDNHeEGTlxLLLEXGzx1oSKEKumSjqRCV2+sD/XjTEm93w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEES4vIjZvIEdED81xK5XTDept0qFX8cLS3OvXdbbzlfIMg6Kr2DZG13GFj+0G2F8/Q==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "da89f076-0ca6-4687-be82-11030e2e39fe",
+                            SecurityStamp = "e99544f6-989a-48bc-81b8-7c2f8bbf8d64",
                             TwoFactorEnabled = false,
                             UserName = "JaneSmith"
                         },
@@ -201,13 +201,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "394887ac-5f55-484a-b6d0-f1fd7f122637",
+                            ConcurrencyStamp = "c5469cd8-4664-482a-8367-f762897cd03f",
                             Email = "alice@johnson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEK68jExg/gdzfvHaA2II4MJ1iPTol3w+qqsLkzoz5az0oA+uyTVAZiq0JPACScujEA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFuAhLBgy/e262gmUhqrwxwlzS8RD3Mti8l2e49oVtEScCFJgToRUQkG91+Jds9nGA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "54ae5d4b-9620-4b72-b538-0578dfd9b057",
+                            SecurityStamp = "87a52c81-92fe-449a-a4a0-9907a06bb673",
                             TwoFactorEnabled = false,
                             UserName = "AliceJohnson"
                         },
@@ -215,13 +215,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d61c2c2e-c6f5-44d8-8e24-7d307936f084",
+                            ConcurrencyStamp = "cfe2f75f-2dd3-494d-b875-f4e297ccc7eb",
                             Email = "bob@williams.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAECZUu2IrKtstf908lWViQBDgUUX8z0oFQ5XsKYUEx40cRLCrqF9e/yQGh193fd6YbQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECwA3qaK/ZGi3pVsxYHIJtgQNmgE9BYnH/Mj1fd70A5DSxjn4nYK1kjIlVnv1yzAgQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "22d5a357-5a2d-4641-9004-77203003efa3",
+                            SecurityStamp = "46d7bda4-d87b-4016-9761-fdf47d52fc61",
                             TwoFactorEnabled = false,
                             UserName = "BobWilliams"
                         },
@@ -229,13 +229,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4363bc28-6661-45e1-b7d9-2801cd448e53",
+                            ConcurrencyStamp = "3e5088b6-48cd-4b8c-9a25-cfbc99506cc0",
                             Email = "Eve@Davis.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAECU3GXpyS6yk5nNnwGzDRH7fp8iIjACpv8u1ziZ/zjaZhvtI6ghiV0EzMBaL3ZhktA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB1TKMoE1Tkmve3rpFLHpaFNG2G5Lr8O8keopbnvxgIFPkStN60Ald/stjd9CQ4eXg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "69dc9b80-b743-42d2-b6e8-0476b1100712",
+                            SecurityStamp = "1b98cf81-32b3-40eb-9e79-dbe54fa1daf7",
                             TwoFactorEnabled = false,
                             UserName = "EveDavis"
                         });
@@ -379,6 +379,10 @@ namespace PulsePitchBackend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PlayerId");
+
+                    b.HasIndex("TeamId");
+
                     b.ToTable("PlayerTeams");
 
                     b.HasData(
@@ -402,8 +406,9 @@ namespace PulsePitchBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("JoinCode")
-                        .HasColumnType("integer");
+                    b.Property<string>("JoinCode")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -418,8 +423,43 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = 1,
                             CoachId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
-                            JoinCode = 123,
+                            JoinCode = "EGL123",
                             Name = "Eagles"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CoachId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
+                            JoinCode = "FLC123",
+                            Name = "Falcons"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3",
+                            JoinCode = "WLV456",
+                            Name = "Wolves"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3",
+                            JoinCode = "SHK789",
+                            Name = "Sharks"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CoachId = "",
+                            JoinCode = "TTN321",
+                            Name = "Titans"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CoachId = "",
+                            JoinCode = "PNR654",
+                            Name = "Panthers"
                         });
                 });
 
@@ -481,7 +521,7 @@ namespace PulsePitchBackend.Migrations
                     b.Property<int?>("AwayTeamId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("GameDate")
+                    b.Property<DateTime>("End")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("HomeTeamId")
@@ -489,6 +529,9 @@ namespace PulsePitchBackend.Migrations
 
                     b.Property<string>("Result")
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");
 
@@ -502,10 +545,101 @@ namespace PulsePitchBackend.Migrations
                         new
                         {
                             Id = 1,
-                            AwayTeamId = 1,
-                            GameDate = new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            AwayTeamId = 4,
+                            End = new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             HomeTeamId = 1,
-                            Result = "TBD"
+                            Result = "TBD",
+                            Start = new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AwayTeamId = 2,
+                            End = new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 1,
+                            Result = "2-1",
+                            Start = new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AwayTeamId = 4,
+                            End = new DateTime(2025, 6, 12, 18, 30, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 3,
+                            Result = "0-0",
+                            Start = new DateTime(2025, 6, 12, 17, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AwayTeamId = 6,
+                            End = new DateTime(2025, 6, 14, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 5,
+                            Result = "1-3",
+                            Start = new DateTime(2025, 6, 14, 20, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AwayTeamId = 4,
+                            End = new DateTime(2025, 6, 15, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 2,
+                            Result = "4-2",
+                            Start = new DateTime(2025, 6, 15, 19, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AwayTeamId = 1,
+                            End = new DateTime(2025, 6, 17, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 6,
+                            Result = "1-1",
+                            Start = new DateTime(2025, 6, 17, 16, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AwayTeamId = 5,
+                            End = new DateTime(2025, 6, 18, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 3,
+                            Result = "0-2",
+                            Start = new DateTime(2025, 6, 18, 18, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AwayTeamId = 1,
+                            End = new DateTime(2025, 6, 19, 19, 30, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 4,
+                            Result = "3-3",
+                            Start = new DateTime(2025, 6, 19, 18, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AwayTeamId = 5,
+                            End = new DateTime(2025, 6, 20, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 2,
+                            Result = "1-0",
+                            Start = new DateTime(2025, 6, 20, 17, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AwayTeamId = 3,
+                            End = new DateTime(2025, 6, 21, 21, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 6,
+                            Result = "2-2",
+                            Start = new DateTime(2025, 6, 21, 20, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AwayTeamId = 2,
+                            End = new DateTime(2025, 6, 22, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 5,
+                            Result = "3-1",
+                            Start = new DateTime(2025, 6, 22, 19, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -658,6 +792,25 @@ namespace PulsePitchBackend.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("PulsePitch.Models.PlayerTeam", b =>
+                {
+                    b.HasOne("PulsePitch.Models.UserProfile", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PulsePitch.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+
+                    b.Navigation("Team");
                 });
 
             modelBuilder.Entity("PulsePitch.Models.TeamEvent", b =>
