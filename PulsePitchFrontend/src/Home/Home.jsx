@@ -1,21 +1,13 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { CreateTeamModal } from "../components/Modals/CreateTeamModals"
 import { JoinTeamModal } from "../components/Modals/JoinTeamModal"
-import { useNavigate } from "react-router-dom"
-import { useLocation } from "react-router-dom";
+import { LoadingSpinner } from "../components/Loading/LoadingPage"
 
 export const Home = ({loggedInUser}) => {
-  const navigate = useNavigate()
-  const location = useLocation();
-  const joiningNewTeam = location.state?.joiningNewTeam;
   const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
   const [showJoinTeamModal, setShowJoinTeamModal] = useState(false)
 
-  useEffect(() => {
-    if (!loggedInUser) return
-    if (loggedInUser?.teams?.length > 0 && !joiningNewTeam) {
-      navigate("/main")
-    }}, [loggedInUser, joiningNewTeam, navigate])
+  if (!loggedInUser) return <LoadingSpinner/>
     
   return (
     <div className="w-full flex justify-center items-center min-h-screen bg-gray-100">

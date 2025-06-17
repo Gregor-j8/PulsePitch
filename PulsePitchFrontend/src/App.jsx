@@ -13,8 +13,6 @@ function App() {
       setLoggedInUser(user);
     });
   }, []);
-console.log("App.jsx: loggedInUser", loggedInUser);
-  // wait to get a definite logged-in state before rendering
   if (loggedInUser === undefined) {
     return <LoadingSpinner/>
   }

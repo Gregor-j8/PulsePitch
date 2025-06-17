@@ -14,7 +14,7 @@ export const JoinTeamModal = ({ onClose, loggedInUser }) => {
     { TeamName: name, JoinCode: code, PlayerId: loggedInUser?.id },
     {
       onSuccess: () => {
-        Navigate("/main")
+        Navigate("/")
       },
       onerror: () => {
         toast.error("Your team code or team name is incorrect please try again")
