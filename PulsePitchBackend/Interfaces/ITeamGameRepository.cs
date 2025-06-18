@@ -8,7 +8,7 @@ namespace PulsePitch.Interfaces
 {
     public interface ITeamGameRepository
     {
-        Task<List<TeamGame>> GetTeamGameByTeamId(string home, int id);
+        Task<List<TeamGame>> GetTeamGameByTeamId(string home, List<int> id);
         Task<TeamGame?> GetByIdTeamGame(int id);
         Task<TeamGame> CreateTeamGame(TeamGame teamTeamGameModel);
         Task<TeamGame?> UpdateTeamGame(int id, TeamGame teamTeamGameModel);
