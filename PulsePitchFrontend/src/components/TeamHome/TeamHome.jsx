@@ -4,8 +4,7 @@ import { useDeletePlayerTeam, useGetPlayersFromTeam } from "../../hooks/usePlaye
 export const TeamHome = () => {
     const {data: teams} = useGetPlayersFromTeam(1);
     const {mutate: deletePlayerTeam} = useDeletePlayerTeam()
-
-    console.log(teams);
+    
   return (
     <div className="flex flex-col items-center justify-center h-full pt-40">
          {teams?.map(team => (

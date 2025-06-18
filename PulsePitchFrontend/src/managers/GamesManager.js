@@ -5,7 +5,7 @@ export const fetchTeamGameByTeamId = async (home, teamIds) => {
   return data;
 };
 
-export const fetchTeamGametById = async (id) => {
+export const fetchTeamGamesById = async (id) => {
   const { data } = await axiosClient.get(`/teamgame/${id}`);
   return data;
 };

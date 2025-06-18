@@ -7,7 +7,6 @@ export const CreateGameModal = ({ onClose, loggedInUser }) => {
   const { data: teams, isLoading, isError } = useTeams()
   const createTeamEvent = useCreateTeamGame()
     const [formData, setFormData] = useState({start: "", end: "", homeTeamId: "", awayTeamId: ""})
-console.log("formdata", formData)
   if (isLoading || isError) return <LoadingSpinner/>
 
   const handleSubmit = () => {
