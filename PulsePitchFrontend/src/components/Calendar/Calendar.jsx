@@ -7,15 +7,17 @@ import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
 import { EventDetailsModal } from "./EventDetailsModal"
 import EditEventModal from "./EditModal"
+import { CreateGameModal } from "./CreateGameModal"
+import { useTeamGames } from "../../hooks/UseGames"
 
 export default function MyCalendar({loggedInUser}) {
-
-  const { data: calendarEvents } = useTeamEvents(1)
-  console.log("calendarEvents", calendarEvents)
+  const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
+  const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId).join(''))
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showCreateGameModal, setshowCreateGameModal] = useState(false)
   const [DetailsModal, setDetailsModal] = useState(false)
   const [EditModel, setEditModel] = useState(false)
   const [choosenEventId, setchoosenEventId] = useState(null)
@@ -48,19 +50,22 @@ export default function MyCalendar({loggedInUser}) {
             text: 'Create Event',
             click: () => setShowCreateModal(true),
           },
+          createGame: {
+            text: 'Create Game',
+            click: () => setshowCreateGameModal(true),
+          }
         }}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'createEvent',
+          right: 'createEvent createGame', 
         }}
-        events={calendarEvents}
+        events={calendarEvents && calenderGames}
         eventClick={(e) => handleEventClick(e.event._def.publicId)}
         selectable={true}
         editable={true}
         height="auto"
       />
-
       {showCreateModal  && (
         <CreateEventModal
           formData={createEvents}
@@ -85,6 +90,12 @@ export default function MyCalendar({loggedInUser}) {
           choosenEventId={choosenEventId}
           setchoosenEventId={setchoosenEventId}
           onClose={() => setEditModel(false)}
+        />
+      )}
+      {showCreateGameModal  && (
+        <CreateGameModal
+          loggedInUser={loggedInUser}
+          onClose={() => setshowCreateGameModal(false)}
         />
       )}
     </div>

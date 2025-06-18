@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient';
 
-export const fetchTeamGameByTeamId = async (home, userId) => {
-  const { data } = await axiosClient.get(`/teamgame/team/home=${home}&${userId}`);
+export const fetchTeamGameByTeamId = async (home, teamIds) => {
+  const { data } = await axiosClient.get(`/teamgame/team`, {params: { home: home, id: teamIds}});
   return data;
 };
 
