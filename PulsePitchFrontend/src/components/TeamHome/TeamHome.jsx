@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"
 import { useDeletePlayerTeam, useGetPlayersFromTeam } from "../../hooks/usePlayerTeams";
-import { useState } from "react";
-import { useTeams } from "../../hooks/useTeams";
+import { useState } from "react"
+import { useTeams } from "../../hooks/useTeams"
 
 export const TeamHome = ({loggedInUser}) => {
-  const [teamId, setTeamId] = useState();
+  const [teamId, setTeamId] = useState()
     const { data: teamNames } = useTeams()
-    const {data: teams} = useGetPlayersFromTeam(teamId, {enabled: !!teamId});
+    const {data: teams} = useGetPlayersFromTeam(teamId, {enabled: !!teamId})
     const {mutate: deletePlayerTeam} = useDeletePlayerTeam()
   return (
     <div className="flex flex-col items-center justify-center h-full pt-20">
