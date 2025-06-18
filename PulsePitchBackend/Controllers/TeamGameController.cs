@@ -24,7 +24,7 @@ public class TeamGameController : ControllerBase
     }
 
     [HttpGet("team")]
-    public async Task<ActionResult<IEnumerable<TeamGame>>> GetTeamGameByTeamId([FromQuery] string? home, [FromQuery] int id)
+    public async Task<ActionResult<IEnumerable<TeamGame>>> GetTeamGameByTeamId([FromQuery] string? home, [FromQuery] List<int> id)
     {
         var events = await _TeamGameRepo.GetTeamGameByTeamId(home, id);
         var teamGameDtos = _mapper.Map<List<TeamGame>>(events);

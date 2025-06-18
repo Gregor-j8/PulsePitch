@@ -1,22 +1,19 @@
 import { Navigate } from "react-router-dom";
 
-export const AuthorizedRoute = ({ children, loggedInUser, roles, teams,   all }) => {
-  let authed = false;
-  if (loggedInUser) {
-    if (roles && roles.length) {
-      authed = all
-        ? roles.every((r) => loggedInUser.roles.includes(r))
-        : roles.some((r) => loggedInUser.roles.includes(r));
-    } else {
-      authed = true;
-    }
+export const AuthorizedRoute = ({ children, loggedInUser, roles, teams, all }) => {
+  if (!loggedInUser) {
+    return <Navigate to="/login" />
   }
 
-  if (authed) {
-    if (teams?.length === 0 && (roles.includes("Player") || roles.includes("Coach"))) {
-      return <Navigate to="/home" />
-    }
-}
+  const roleCheck = roles?.length
+    ? (all ? roles.every((r) => loggedInUser.roles.includes(r)) : roles.some((r) => loggedInUser.roles.includes(r))) : true
 
-  return authed ? children : <Navigate to="/login" />;
+  const teamCheck = Array.isArray(teams) ? teams.length > 0 : true
+
+  if (roleCheck && teamCheck) {
+    return children
+  }
+
+    return <Navigate to="/home" />
+
 };

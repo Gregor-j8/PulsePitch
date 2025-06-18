@@ -1,14 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createTeamGame, deleteTeamGame, editTeamGame, fetchTeamGameByTeamId, fetchTeamGametById } from '../managers/GamesManager'
 
-export const useTeamEvents = (id) => {
+export const useTeamGames = (home, teamIds) => {
+  console.log(home, teamIds)
   return useQuery({
-    queryKey: ['teamgame', id],
-    queryFn: () => fetchTeamGameByTeamId(id),
+    queryKey: ['teamgame', teamIds],
+    queryFn: () => fetchTeamGameByTeamId(home, teamIds),
   })
 }
 
-export const useTeamEvent = (id) => {
+export const useTeamGame = (id) => {
   return useQuery({
     queryKey: ['teamgame', id],
     queryFn: () => fetchTeamGametById(id),
@@ -17,7 +18,7 @@ export const useTeamEvent = (id) => {
   })
 }
 
-export const useCreateTeamEvent = () => {
+export const useCreateTeamGame = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -28,7 +29,7 @@ export const useCreateTeamEvent = () => {
   })
 }
 
-export const useEditTeamEvent = () => {
+export const useEditTeamGame = () => {
   const queryClient = useQueryClient()
 
   return useMutation({

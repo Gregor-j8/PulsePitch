@@ -16,21 +16,21 @@ namespace PulsePitch.Repository
         {
             _context = context;
         }
-        public async Task<List<TeamGame>> GetTeamGameByTeamId(string home, int id)
+        public async Task<List<TeamGame>> GetTeamGameByTeamId(string home, List<int> id)
         {
             List<TeamGame> teamGame = await _context.TeamGames.Include(te => te.HomeTeam).Include(te => te.AwayTeam).ToListAsync();
 
             if (home == "home")
             {
-                List<TeamGame> filteredGames = teamGame.Where(tg => tg.HomeTeamId == id).ToList();
+                List<TeamGame> filteredGames = teamGame.Where(tg => id.Contains(tg.HomeTeamId)).ToList();
                 return filteredGames;
             }
             else if (home == "away")
             {
-                List<TeamGame> filteredGames = teamGame.Where(tg => tg.AwayTeamId == id).ToList();
+                List<TeamGame> filteredGames = teamGame.Where(tg => id.Contains(tg.AwayTeamId)).ToList();
                 return filteredGames;
             }
-            List<TeamGame> allGames = teamGame.Where(tg => tg.HomeTeamId == id || tg.AwayTeamId == id).ToList();
+            List<TeamGame> allGames = teamGame.Where(tg => id.Any(teamId => tg.HomeTeamId == teamId || tg.AwayTeamId == teamId)).ToList();
             return allGames;
         }
 
