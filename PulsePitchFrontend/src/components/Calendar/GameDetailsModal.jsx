@@ -2,12 +2,11 @@ import { useDeleteTeamGame, useTeamGame } from "../../hooks/UseGames"
 import { CalendarDays } from 'lucide-react'
 import { LoadingSpinner } from "../Loading/LoadingPage"
 
-export const GameDetailsModals = ({ loggedInUser, choosenGameId, setChosenGameId, onClose, setEditModal, setStarterFormData }) => {
+export const GameDetailsModals = ({ loggedInUser, choosenGameId, setchoosenGameId, onClose, setEditGameModel, SetStarterFormData }) => {
   const { data: gameData } = useTeamGame(choosenGameId, { enabled: !!choosenGameId })
   const { mutate: deleteTeamGame } = useDeleteTeamGame()
 
 if (!loggedInUser || !gameData) return <LoadingSpinner/>
-
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
       <div className="bg-white p-6 rounded-xl w-full max-w-md shadow-2xl">
@@ -34,11 +33,14 @@ if (!loggedInUser || !gameData) return <LoadingSpinner/>
             {loggedInUser?.id && (
               <div className="flex gap-2">
                 <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded"
-                  onClick={() => { setEditModal(true); setStarterFormData(gameData); onClose()}}>
+                  onClick={() => { 
+                   SetStarterFormData(gameData)
+                   setEditGameModel(true)
+                    onClose()}}>
                   Edit
                 </button>
                 <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded"
-                  onClick={() => { deleteTeamGame(gameData.id); setChosenGameId(null); onClose()}}>
+                  onClick={() => { deleteTeamGame(gameData.id); setchoosenGameId(null); onClose()}}>
                   Delete
                 </button>
               </div>

@@ -10,12 +10,11 @@ import EditEventModal from "./EditModal"
 import { CreateGameModal } from "./CreateGameModal"
 import { GameDetailsModals } from "./GameDetailsModal"
 import { useTeamGames } from "../../hooks/UseGames"
+import { GameEditModal } from "./GameEditModal"
 
 export default function MyCalendar({loggedInUser}) {
   const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
   const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId).join(''))
-  console.log("calenderGames", calenderGames)
-  console.log("calendarEvents", calendarEvents)
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
@@ -24,10 +23,10 @@ export default function MyCalendar({loggedInUser}) {
   const [DetailsModal, setDetailsModal] = useState(false)
   const [GameDetailsModal, setGameDetailsModal] = useState(false)
   const [EditModel, setEditModel] = useState(false)
+  const [EditGameModel, setEditGameModel] = useState(false)
   const [choosenEventId, setchoosenEventId] = useState(null)
   const [choosenGameId, setchoosenGameId] = useState(null)
   const [StarterFormData, SetStarterFormData] = useState({})
-
   const handleAddEvent = () => {
     const event = { title: createEvents.title, description: createEvents.description, 
       start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: 1}
@@ -41,7 +40,6 @@ export default function MyCalendar({loggedInUser}) {
   }
   const handleGameClick = (info) => {
       setGameDetailsModal(true)
-      console.log("info", info)
       setchoosenGameId(info)
   }
 
@@ -127,7 +125,7 @@ export default function MyCalendar({loggedInUser}) {
           choosenGameId={choosenGameId}
           setchoosenGameId={setchoosenGameId}
           onClose={() => setGameDetailsModal(false)}
-          setEditModel={setEditModel}
+          setEditGameModel={setEditGameModel}
           SetStarterFormData={SetStarterFormData}
         />
       )}
@@ -137,6 +135,14 @@ export default function MyCalendar({loggedInUser}) {
           choosenEventId={choosenEventId}
           setchoosenEventId={setchoosenEventId}
           onClose={() => setEditModel(false)}
+        />
+      )}
+      {EditGameModel && (
+        <GameEditModal
+          StarterFormData={StarterFormData}
+          choosenGameId={choosenGameId}
+          setchoosenGameId={setchoosenGameId}
+          onClose={() => setEditGameModel(false)}
         />
       )}
       {showCreateGameModal  && (

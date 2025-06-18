@@ -2,10 +2,14 @@ import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import { logout } from "../managers/authManagers";
 
-
-export default function NavBar ({loggedInUser,  setLoggedInUser}) {
+export default function NavBar({ loggedInUser, setLoggedInUser }) {
   const [open, setOpen] = useState(false);
   const toggleNavbar = () => setOpen(!open);
+
+  const handleLogout = () => {
+    setOpen(false);
+    logout().then(() => setLoggedInUser(null));
+  };
 
   return (
     <nav className="bg-white border-b shadow fixed w-full z-50">
@@ -16,13 +20,10 @@ export default function NavBar ({loggedInUser,  setLoggedInUser}) {
           </RRNavLink>
         </div>
 
-        {loggedInUser ? (
+        {loggedInUser && (
           <>
             <div className="lg:hidden">
-              <button
-                onClick={toggleNavbar}
-                className="text-gray-700 focus:outline-none"
-              >
+              <button onClick={toggleNavbar} className="text-gray-700 focus:outline-none">
                 <svg
                   className="w-6 h-6"
                   fill="none"
@@ -39,72 +40,34 @@ export default function NavBar ({loggedInUser,  setLoggedInUser}) {
                 </svg>
               </button>
             </div>
-
             <div className="hidden lg:flex space-x-6 items-center">
-              
-                <RRNavLink
-                  to="/userprofiles"
-                  className="text-gray-700 hover:text-blue-600"
-                >
-                  User Profiles
-                </RRNavLink>
-              
-              <RRNavLink
-                to="/categories/manage"
-                className="text-gray-700 hover:text-blue-600"
-              >
-                Manage Categories
-              </RRNavLink>
-
-              <button
-                onClick={() => {
-                  setOpen(false);
-                  logout().then(() => setLoggedInUser(null));
-                }}
-                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-              >
+              <RRNavLink to="/home" className="text-gray-700 hover:text-blue-600">Join Team</RRNavLink>
+              <RRNavLink to="/team" className="text-gray-700 hover:text-blue-600">Team</RRNavLink>
+              {loggedInUser.roles?.includes("Coach") && (
+                <RRNavLink to="/video" className="text-gray-700 hover:text-blue-600">Video Upload</RRNavLink>
+              )}
+              <RRNavLink to={`/profile/${loggedInUser.id}`} className="text-gray-700 hover:text-blue-600">Profile</RRNavLink>
+              <button onClick={handleLogout} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 Logout
               </button>
             </div>
           </>
-        ) : (
-          <RRNavLink to="/login">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
-              Login
-            </button>
-          </RRNavLink>
         )}
       </div>
-
-      {/* Mobile Menu */}
       {open && loggedInUser && (
         <div className="lg:hidden px-4 py-2 space-y-2 bg-white border-t shadow">
-          
-            <RRNavLink
-              to="/userprofiles"
-              className="block text-gray-700 hover:text-blue-600"
-              onClick={() => setOpen(false)}
-            >
-              User Profiles
-            </RRNavLink>
-          <RRNavLink
-            to="/categories/manage"
-            className="block text-gray-700 hover:text-blue-600"
-            onClick={() => setOpen(false)}
-          >
-            Video
-          </RRNavLink>
-          <button
-            onClick={() => {
-              setOpen(false);
-              logout().then(() => setLoggedInUser(null));
-            }}
-            className="w-full text-left px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
-          >
+          <RRNavLink to="/home" className="block text-gray-700 hover:text-blue-600" onClick={() => setOpen(false)}>Join Team</RRNavLink>
+          <RRNavLink to={`/profile/${loggedInUser.id}`} className="block text-gray-700 hover:text-blue-600" onClick={() => setOpen(false)}>Profile</RRNavLink>
+          <RRNavLink to="/team" className="block text-gray-700 hover:text-blue-600" onClick={() => setOpen(false)}>Team</RRNavLink>
+          {loggedInUser.roles?.includes("Coach") && (
+            <RRNavLink to="/video" className="block text-gray-700 hover:text-blue-600" onClick={() => setOpen(false)}>Video Upload</RRNavLink>
+          )}
+          <RRNavLink to={`/profile/${loggedInUser.id}`} className="block text-gray-700 hover:text-blue-600" onClick={() => setOpen(false)}>Profile</RRNavLink>
+          <button onClick={handleLogout} className="w-full text-left px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
             Logout
           </button>
         </div>
       )}
     </nav>
-  );
+  )
 }

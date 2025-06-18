@@ -8,7 +8,6 @@ function App() {
   const [loggedInUser, setLoggedInUser] = useState();
 
   useEffect(() => {
-    // user will be null if not authenticated
     tryGetLoggedInUser().then((user) => {
       setLoggedInUser(user);
     });
