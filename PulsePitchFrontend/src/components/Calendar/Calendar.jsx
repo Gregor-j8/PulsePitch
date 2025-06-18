@@ -7,18 +7,25 @@ import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
 import { EventDetailsModal } from "./EventDetailsModal"
 import EditEventModal from "./EditModal"
+import { CreateGameModal } from "./CreateGameModal"
+import { GameDetailsModals } from "./GameDetailsModal"
+import { useTeamGames } from "../../hooks/UseGames"
 
 export default function MyCalendar({loggedInUser}) {
-
-  const { data: calendarEvents } = useTeamEvents(1)
+  const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
+  const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId).join(''))
+  console.log("calenderGames", calenderGames)
   console.log("calendarEvents", calendarEvents)
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
   const [showCreateModal, setShowCreateModal] = useState(false)
+  const [showCreateGameModal, setshowCreateGameModal] = useState(false)
   const [DetailsModal, setDetailsModal] = useState(false)
+  const [GameDetailsModal, setGameDetailsModal] = useState(false)
   const [EditModel, setEditModel] = useState(false)
   const [choosenEventId, setchoosenEventId] = useState(null)
+  const [choosenGameId, setchoosenGameId] = useState(null)
   const [StarterFormData, SetStarterFormData] = useState({})
 
   const handleAddEvent = () => {
@@ -32,6 +39,12 @@ export default function MyCalendar({loggedInUser}) {
       setDetailsModal(true)
       setchoosenEventId(info)
   }
+  const handleGameClick = (info) => {
+      setGameDetailsModal(true)
+      console.log("info", info)
+      setchoosenGameId(info)
+  }
+
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
       <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
@@ -48,19 +61,48 @@ export default function MyCalendar({loggedInUser}) {
             text: 'Create Event',
             click: () => setShowCreateModal(true),
           },
+          createGame: {
+            text: 'Create Game',
+            click: () => setshowCreateGameModal(true),
+          }
         }}
         headerToolbar={{
           left: 'prev,next today',
           center: 'title',
-          right: 'createEvent',
+          right: 'createEvent createGame', 
         }}
-        events={calendarEvents}
-        eventClick={(e) => handleEventClick(e.event._def.publicId)}
+        events={[  
+            ...(calenderGames ?? []).map(game => ({
+            id: game.id,
+            title: `${game.homeTeam?.name} vs ${game.awayTeam?.name}`,
+            start: game.start,
+            end: game.end,
+            color: 'green',
+            type: 'game'
+          })),
+          ...(calendarEvents ?? []).map(event => ({
+            id: event.id,
+            title: event.title,
+            start: event.start,
+            end: event.end,
+            color: 'blue',
+            type: 'calendarEvent'
+          })),
+        ]}
+        eventDisplay="block"
+        eventClick={(e) => {
+          const event = e.event;
+          const type = event.extendedProps.type;
+          if (type === 'game') {
+            handleGameClick(event._def.publicId);
+          } else {
+            handleEventClick(event._def.publicId);
+          }
+        }}
         selectable={true}
         editable={true}
         height="auto"
       />
-
       {showCreateModal  && (
         <CreateEventModal
           formData={createEvents}
@@ -79,12 +121,28 @@ export default function MyCalendar({loggedInUser}) {
           SetStarterFormData={SetStarterFormData}
         />
       )}
+      {GameDetailsModal && (
+        <GameDetailsModals
+          loggedInUser={loggedInUser}
+          choosenGameId={choosenGameId}
+          setchoosenGameId={setchoosenGameId}
+          onClose={() => setGameDetailsModal(false)}
+          setEditModel={setEditModel}
+          SetStarterFormData={SetStarterFormData}
+        />
+      )}
       {EditModel && (
         <EditEventModal
           StarterFormData={StarterFormData}
           choosenEventId={choosenEventId}
           setchoosenEventId={setchoosenEventId}
           onClose={() => setEditModel(false)}
+        />
+      )}
+      {showCreateGameModal  && (
+        <CreateGameModal
+          loggedInUser={loggedInUser}
+          onClose={() => setshowCreateGameModal(false)}
         />
       )}
     </div>
