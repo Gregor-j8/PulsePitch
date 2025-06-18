@@ -20,7 +20,7 @@ export const TeamHome = ({loggedInUser}) => {
       </select>
          {teams && teams?.map(team => (
              <div key={team.id} className="flex justify-between bg-white shadow-md rounded-lg p-6 mb-4 w-1/2">
-                <h2 className="text-xl font-bold mb-2"><Link to={`/profile/${team.id}`}>{team?.player.firstName} {team?.player.lastName}</Link></h2>
+                <h2 className="text-xl font-bold mb-2"><Link to={`/profile/${team.playerId}`}>{team?.player.firstName} {team?.player.lastName}</Link></h2>
                 {loggedInUser.roles.includes("Coach") && (
                 <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" onClick={() => deletePlayerTeam(team.id)}>Delete</button>
             )}</div>

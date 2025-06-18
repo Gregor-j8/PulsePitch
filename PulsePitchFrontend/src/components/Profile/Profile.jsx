@@ -5,6 +5,7 @@ import { useEditUserProfile } from "../../hooks/UseUserProfile"
 
 export const Profile = ({ loggedInUser }) => {
   const { id } = useParams()
+  console.log("Profile ID:", id)
   const { data: userProfile } = useUserProile(id)
   const { mutate: updateUserProfile } = useEditUserProfile()
   const [showModal, setShowModal] = useState(false)
