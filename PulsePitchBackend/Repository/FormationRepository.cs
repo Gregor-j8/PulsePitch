@@ -21,13 +21,13 @@ namespace PulsePitch.Repository
 
         public async Task<List<Formations>> GetAllFormations(int id)
         {
-            List<Formations> formations = await _context.Formations.Where(f => f.TeamId == id).ToListAsync();
+            List<Formations> formations = await _context.Formations.Include(f => f.Players).Where(f => f.TeamId == id).ToListAsync();
             return formations;
         }
 
         public async Task<Formations?> GetFormationsById(int id)
         {
-            Formations formation = await _context.Formations.FirstOrDefaultAsync(f => f.Id == id);
+            Formations formation = await _context.Formations.Include(f => f.Players).FirstOrDefaultAsync(f => f.Id == id);
             if (formation == null)
             {
                 return null;

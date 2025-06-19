@@ -70,6 +70,7 @@ builder.Services.AddScoped<IEventRepository, EventsRepository>();
 builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<ITeamGameRepository, TeamGameRepository>();
 builder.Services.AddScoped<IFormationRepository, FormationRepository>();
+builder.Services.AddScoped<IPlayersInFormationRepository, PlayersInFormationRepository>();
 
 var app = builder.Build();
 
