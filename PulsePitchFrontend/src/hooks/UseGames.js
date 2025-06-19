@@ -5,6 +5,7 @@ export const useTeamGames = (home, teamIds) => {
   return useQuery({
     queryKey: ['teamgame', teamIds],
     queryFn: () => fetchTeamGameByTeamId(home, teamIds),
+    enabled: !(teamIds.length === 0),
   })
 }
 
