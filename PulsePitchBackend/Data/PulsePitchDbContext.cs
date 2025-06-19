@@ -14,6 +14,8 @@ namespace PulsePitch.Data
         public DbSet<TeamEvent> TeamEvents { get; set; }
         public DbSet<Events> Events { get; set; }
         public DbSet<TeamGame> TeamGames { get; set; }
+        public DbSet<Formations> Formations { get; set; }
+        public DbSet<PlayersInFormation> PlayersInFormation { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
         public PulsePitchDbContext(DbContextOptions<PulsePitchDbContext> options, IConfiguration configuration)
