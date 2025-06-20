@@ -34,7 +34,7 @@ export const useEditPlayersInFormations = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: ({ id, data }) => editPlayersinformation(id, data),
+    mutationFn: (data) => editPlayersinformation(data),
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ['PlayersInFormations'] })
       queryClient.invalidateQueries({ queryKey: ['PlayersInFormations', variables.id] })

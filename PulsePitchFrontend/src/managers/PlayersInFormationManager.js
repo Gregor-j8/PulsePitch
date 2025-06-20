@@ -14,8 +14,9 @@ export const createPlayersinformation = async (playersinformationData) => {
   return data;
 };
 
-export const editPlayersinformation = async (id, playersinformationData) => {
-  const { data } = await axiosClient.patch(`/playersinformations/${id}`, playersinformationData);
+export const editPlayersinformation = async (playersinformationData) => {
+  console.log("data has arrived", playersinformationData);
+  const { data } = await axiosClient.patch(`/playersinformations/${playersinformationData.id}`, playersinformationData);
   return data;
 };
 

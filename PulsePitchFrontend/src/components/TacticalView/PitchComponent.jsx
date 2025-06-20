@@ -1,11 +1,12 @@
 import Rabona from "rabonajs"
 import { useCallback, useEffect, useRef } from "react"
 import { useImmer } from "use-immer"
-import { usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
+import { useEditPlayersInFormations, usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
 
 export const PitchComponent = ({ formationId }) => {
   const [players, setPlayers] = useImmer([])
   const { data: Players } = usePlayersByFormationId(formationId)
+  const mutation = useEditPlayersInFormations()
   const containerRef = useRef(null)
   const playerRefs = useRef({})
   const draggedPlayerRef = useRef(null)
@@ -27,6 +28,13 @@ export const PitchComponent = ({ formationId }) => {
     })
   }, [])
 
+    const handlePlayerUpdate = useCallback((id, x, y) => {
+    const player = players.find((p) => p.id === id)
+    if (player) {
+    if (player.x !== x && player.y !== y) { player.x = x, player.y = y}
+      mutation.mutate(player)
+    }}, [players, mutation])
+
   const startDrag = useCallback((e, id) => {
     e.preventDefault()
     const rect = containerRef.current.getBoundingClientRect()
@@ -46,7 +54,7 @@ export const PitchComponent = ({ formationId }) => {
   }
 
     const up = () => {
-      const { id, x, y } = draggedPlayerRef.current || {}
+      const { id, x, y } = draggedPlayerRef.current
       if (id !== null && x !== null && y !== null) {
         setPlayers((draft) => {
           const player = draft.find((p) => p.id === id)
@@ -56,13 +64,16 @@ export const PitchComponent = ({ formationId }) => {
           }
         })
       }
+      console.log("Updating player ID in handlePlayerUpdate:", id)
+
+      handlePlayerUpdate(id, x, y)
       window.removeEventListener("mousemove", move)
       window.removeEventListener("mouseup", up)
       draggedPlayerRef.current = null
     }
     window.addEventListener("mousemove", move)
     window.addEventListener("mouseup", up)
-  }, [setPlayers])
+  }, [setPlayers, handlePlayerUpdate])
 
   return (
     <div className="p-4">
