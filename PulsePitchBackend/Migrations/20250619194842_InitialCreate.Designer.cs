@@ -13,7 +13,7 @@ using PulsePitch.Data;
 namespace PulsePitchBackend.Migrations
 {
     [DbContext(typeof(PulsePitchDbContext))]
-    [Migration("20250617195942_InitialCreate")]
+    [Migration("20250619194842_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -159,13 +159,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "a82b0f81-d1a3-42b3-88d0-afaf3339fdc8",
+                            ConcurrencyStamp = "65f7f17c-23e4-4e6e-aa12-006c63de804f",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAELqeqUZc/JTkLITEEDozSIPDM+dk5EuR15mMOyoo5wuvkb9BXqQvZNmQF+4/uk28Eg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK0RZCIADyUsc3vl96X+un5sscAB2KbuF4wvb4UyaEscWSMvilKKvifhgzCJy/sBYQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "197bdd3a-a032-41c0-8c57-70f5b97a98f7",
+                            SecurityStamp = "a6014847-015b-4704-a1b7-6c5eee21d1e0",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         },
@@ -173,13 +173,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7d5b4dde-8369-442c-806b-978011bfafc8",
+                            ConcurrencyStamp = "238188e9-65c8-499f-a424-d74d73743859",
                             Email = "john@doe.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAECs4zpJIAummPwVwR5xdn5DhaF+HQ94ft2Q7XpHB5Z7hWqDK9eEApK1uhnI0HsmLSQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECi47DGnV4JIRSqra3Ihhfnc5NLnk90z/97FN/PaA9C/yuIMbggynR26aLB8+zqwng==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "92a50d99-e12a-419b-bca5-902010eed5f6",
+                            SecurityStamp = "863a5a8e-1580-49ed-8cb7-284508014fbf",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -187,13 +187,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00c9b250-291e-45fa-934e-3d8df9fc4b73",
+                            ConcurrencyStamp = "02205d2f-2881-43f1-8136-5047e97a060e",
                             Email = "jane@smith.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEIGi2X7qAUHNBIF0Ldq+fIlSsTXSEgqGDbFgdE1WrBv+740k8gEUu4BQvy353SlD+g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECceabGrAbCEqQWZxwpzVTAJrtbobbhVy2A6N/b6ffkXzqyZckP/kjwVy3zTVmBIVg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "01c3677a-a666-4052-a1b5-a54a3ee24752",
+                            SecurityStamp = "80bc631a-f371-4b73-83f1-137d6eb5382c",
                             TwoFactorEnabled = false,
                             UserName = "JaneSmith"
                         },
@@ -201,13 +201,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "76655139-6bda-4ccd-906f-9d0d67cc1d8e",
+                            ConcurrencyStamp = "229c7eb8-3356-4589-9724-54747645b114",
                             Email = "alice@johnson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEEsre+MSO5MLhcIyiD2Yiz/CNkWQr2NaydIcWtehKeJNJNscXOsJuWIOGENZF9GkJA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEA7uoQoxmn1cTnGJUkweN8CeM1ErytSjlDqrY67fAWmAjVTNcdW8Y/dU+qx9rwITBA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b30ef60c-4c9d-4c09-9951-a9a60c3653ac",
+                            SecurityStamp = "f9becae8-b9ef-4432-9331-03199723fc19",
                             TwoFactorEnabled = false,
                             UserName = "AliceJohnson"
                         },
@@ -215,13 +215,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e8f7597a-18cf-40a5-a319-30ed1e018bb6",
+                            ConcurrencyStamp = "6ff74de9-99a3-4426-b84d-836a08a4a7a0",
                             Email = "bob@williams.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEOyoQPiiK+0cyz/Dxq/Y0/gLKZpfDwvQ1zy5/JYtc/K6y7CxCuFJaw9W8k5NOX1ghg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEO+/vKvLdbybdJFqxBlV32MVVbh107w1FEtIrUrMXkuFZvXxnpDWcB4+l5/GC27KBw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "8eae96eb-85b0-49b8-ba2f-3f6cff9707c7",
+                            SecurityStamp = "c9236e77-112d-48ce-8af3-dbf94497af26",
                             TwoFactorEnabled = false,
                             UserName = "BobWilliams"
                         },
@@ -229,13 +229,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7c6c37fe-10a4-4946-8c77-a50ca6d1fb88",
+                            ConcurrencyStamp = "0980d456-71c0-40c1-b54f-e5d35dc55ba9",
                             Email = "Eve@Davis.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEJYooS7pBEAfoE7pdKm7l05u/oMwbYdj2vVmT08dt7YcJP+d7tAdB5hD9E30gSUH6Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIZT1r4HIvGZgGJ+urbXdaEj0toXRQQSI8CZOP7Ed3pF7FMGjK6GwM1ww2vM4xSEaw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "458f769a-f093-4c76-bfdc-15aa846cbbeb",
+                            SecurityStamp = "6f3f15b8-e39e-4a4f-9e79-44d8c75b758c",
                             TwoFactorEnabled = false,
                             UserName = "EveDavis"
                         });
@@ -307,6 +307,16 @@ namespace PulsePitchBackend.Migrations
                         {
                             UserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             RoleId = "e9b4c5a4-76c6-44b7-88fb-35a0228c9572"
+                        },
+                        new
+                        {
+                            UserId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "a7d21fac-3b21-454a-a747-075f072d0cf3",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
                         });
                 });
 
@@ -360,6 +370,39 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = 3,
                             Name = "Meeting"
+                        });
+                });
+
+            modelBuilder.Entity("PulsePitch.Models.Formations", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TeamId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TeamId");
+
+                    b.ToTable("Formations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "A standard 4-3-3 attacking formation",
+                            Name = "4-3-3 Default",
+                            TeamId = 1
                         });
                 });
 
@@ -433,6 +476,92 @@ namespace PulsePitchBackend.Migrations
                             Id = 8,
                             PlayerId = 6,
                             TeamId = 5
+                        });
+                });
+
+            modelBuilder.Entity("PulsePitch.Models.PlayersInFormation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Color")
+                        .HasColumnType("text");
+
+                    b.Property<int>("FormationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PositionId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("text");
+
+                    b.Property<double>("X")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FormationId");
+
+                    b.ToTable("PlayersInFormation");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FormationId = 1,
+                            Note = "Left Winger",
+                            PositionId = 1,
+                            X = 30.0,
+                            Y = 40.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FormationId = 1,
+                            Note = "Striker",
+                            PositionId = 2,
+                            X = 50.0,
+                            Y = 40.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            FormationId = 1,
+                            Note = "Right Winger",
+                            PositionId = 3,
+                            X = 70.0,
+                            Y = 40.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            FormationId = 1,
+                            Note = "Central Midfielder",
+                            PositionId = 4,
+                            X = 45.0,
+                            Y = 60.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            FormationId = 1,
+                            Note = "Defender",
+                            PositionId = 5,
+                            X = 45.0,
+                            Y = 20.0
                         });
                 });
 
@@ -660,7 +789,7 @@ namespace PulsePitchBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AwayTeamId")
+                    b.Property<int>("AwayTeamId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("End")
@@ -936,6 +1065,17 @@ namespace PulsePitchBackend.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PulsePitch.Models.Formations", b =>
+                {
+                    b.HasOne("PulsePitch.Models.Team", "Team")
+                        .WithMany()
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team");
+                });
+
             modelBuilder.Entity("PulsePitch.Models.PlayerTeam", b =>
                 {
                     b.HasOne("PulsePitch.Models.UserProfile", "Player")
@@ -953,6 +1093,17 @@ namespace PulsePitchBackend.Migrations
                     b.Navigation("Player");
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("PulsePitch.Models.PlayersInFormation", b =>
+                {
+                    b.HasOne("PulsePitch.Models.Formations", "Formation")
+                        .WithMany("Players")
+                        .HasForeignKey("FormationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Formation");
                 });
 
             modelBuilder.Entity("PulsePitch.Models.TeamEvent", b =>
@@ -979,7 +1130,8 @@ namespace PulsePitchBackend.Migrations
                     b.HasOne("PulsePitch.Models.Team", "AwayTeam")
                         .WithMany()
                         .HasForeignKey("AwayTeamId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PulsePitch.Models.Team", "HomeTeam")
                         .WithMany()
@@ -999,6 +1151,11 @@ namespace PulsePitchBackend.Migrations
                         .HasForeignKey("IdentityUserId");
 
                     b.Navigation("IdentityUser");
+                });
+
+            modelBuilder.Entity("PulsePitch.Models.Formations", b =>
+                {
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("PulsePitch.Models.UserProfile", b =>

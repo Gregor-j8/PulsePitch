@@ -17,7 +17,7 @@ export const Profile = ({ loggedInUser }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-full pt-40">
-      <div className="bg-white shadow-md rounded-lg p-6 mb-4 w-1/2">
+      <div className="bg-gray-500 shadow-md rounded-lg p-6 mb-4 w-1/2">
         <h2 className="text-xl font-bold mb-2">{userProfile.firstName} {userProfile.lastName}</h2>
         <h2 className="text-xl font-bold mb-2">{userProfile.email}</h2>
         {loggedInUser.id === userProfile.id && (

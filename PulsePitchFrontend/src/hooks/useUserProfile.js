@@ -3,7 +3,7 @@ import { deleteUserProfile, editUserProfile, fetchUserProfileById } from "../man
 
 export const useUserProile = (id) => {
   return useQuery({
-    queryKey: ['userprofile', id],
+    queryKey: ['userprofiles', id],
     queryFn: () => fetchUserProfileById(id),
     enabled: !!id,
   })
@@ -15,6 +15,7 @@ export const useEditUserProfile = () => {
   return useMutation({
     mutationFn: ({ id, data }) => editUserProfile(id, data),
     onSuccess: (_, variables) => {
+      console.log(variables)
       queryClient.invalidateQueries({ queryKey: ['userprofiles'] })
       queryClient.invalidateQueries({ queryKey: ['userprofile', variables.id] })
     },

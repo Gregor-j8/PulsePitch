@@ -14,6 +14,8 @@ namespace PulsePitch.Data
         public DbSet<TeamEvent> TeamEvents { get; set; }
         public DbSet<Events> Events { get; set; }
         public DbSet<TeamGame> TeamGames { get; set; }
+        public DbSet<Formations> Formations { get; set; }
+        public DbSet<PlayersInFormation> PlayersInFormation { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
 
         public PulsePitchDbContext(DbContextOptions<PulsePitchDbContext> options, IConfiguration configuration)
@@ -53,7 +55,62 @@ namespace PulsePitch.Data
                 }
             );
 
-
+            modelBuilder.Entity<Formations>().HasData(new Formations[]{
+                new Formations
+                {
+                    Id = 1,
+                    TeamId = 1,
+                    Name = "4-3-3 Default",
+                    Description = "A standard 4-3-3 attacking formation"
+                }
+            });
+            modelBuilder.Entity<PlayersInFormation>().HasData(
+                new PlayersInFormation
+                {
+                    Id = 1,
+                    FormationId = 1,
+                    PositionId = 1,
+                    X = 30,
+                    Y = 40,
+                    Note = "Left Winger"
+                },
+                new PlayersInFormation
+                {
+                    Id = 2,
+                    FormationId = 1,
+                    PositionId = 2,
+                    X = 50,
+                    Y = 40,
+                    Note = "Striker"
+                },
+                new PlayersInFormation
+                {
+                    Id = 3,
+                    FormationId = 1,
+                    PositionId = 3,
+                    X = 70,
+                    Y = 40,
+                    Note = "Right Winger"
+                },
+                new PlayersInFormation
+                {
+                    Id = 4,
+                    FormationId = 1,
+                    PositionId = 4,
+                    X = 45,
+                    Y = 60,
+                    Note = "Central Midfielder"
+                },
+                new PlayersInFormation
+                {
+                    Id = 5,
+                    FormationId = 1,
+                    PositionId = 5,
+                    X = 45,
+                    Y = 20,
+                    Note = "Defender"
+                }
+            );
             modelBuilder.Entity<IdentityUser>().HasData(new IdentityUser[]
             {
             new IdentityUser

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
@@ -12,8 +12,8 @@ import { GameDetailsModals } from "./GameDetailsModal"
 import { useTeamGames } from "../../hooks/UseGames"
 import { GameEditModal } from "./GameEditModal"
 
-export default function MyCalendar({loggedInUser}) {
-  const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
+export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
+  const { data: calendarEvents } = useTeamEvents(loggedInUser.id, {enabled: !!loggedInUser.id})
   const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId).join(''))
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
@@ -42,6 +42,13 @@ export default function MyCalendar({loggedInUser}) {
       setGameDetailsModal(true)
       setchoosenGameId(info)
   }
+
+  useEffect(() => {
+    const refreshUser = async () => {
+    await refreshLoggedInUser();
+    }
+    refreshUser()
+  },[])
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4">

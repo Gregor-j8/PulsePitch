@@ -22,7 +22,7 @@ export default function Login({ setLoggedInUser }) {
 
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border border-gray-200 rounded-lg shadow-md bg-white">
-      <h3 className="text-2xl font-semibold mb-6 text-center">Login</h3>
+      <h3 className="text-2xl mt-20 font-semibold mb-6 text-center">Login</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block mb-1 text-sm font-medium text-gray-700">Email</label>

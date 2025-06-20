@@ -30,7 +30,7 @@ if (!loggedInUser || !gameData) return <LoadingSpinner/>
         </div>
         <div className="flex justify-between mt-6">
           <div>
-            {loggedInUser?.id && (
+            {loggedInUser.roles.includes("Coach") && (
               <div className="flex gap-2">
                 <button className="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded"
                   onClick={() => { 
