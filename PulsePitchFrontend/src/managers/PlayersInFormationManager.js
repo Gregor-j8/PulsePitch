@@ -4,6 +4,10 @@ export const fetchPlayersinformationsById = async (id) => {
   const { data } = await axiosClient.get(`/playersinformations/${id}`);
   return data;
 };
+export const fetchPlayerByFormationId = async (id) => {
+  const { data } = await axiosClient.get(`/playersinformations/formation/${id}`);
+  return data;
+};
 
 export const createPlayersinformation = async (playersinformationData) => {
   const { data } = await axiosClient.post('/playersinformations', playersinformationData);

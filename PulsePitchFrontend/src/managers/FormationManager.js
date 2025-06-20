@@ -1,8 +1,10 @@
 import axiosClient from './axiosClient';
 
-export const fetchFormationsByTeamId = async (teamIds) => {
-  const { data } = await axiosClient.get(`/formations/team/${teamIds}`);
-  return data;
+export const fetchFormationsByTeamId = async (id) => {
+    console.log("before request", id);
+  const { data } = await axiosClient.get(`/formations/team`, {
+    params: { id: id.join(',')}});
+  return data
 };
 
 export const fetchFormationsById = async (id) => {

@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createFormations, deleteFormations, editFormations, fetchFormationsById, fetchFormationsByTeamId } from '../managers/FormationManager'
 
-export const useGetFormationsByTeamId = (id) => {
+export const useGetFormationsByTeamId = (teamIds) => {
   return useQuery({
-    queryKey: ['formations', id],
-    queryFn: () => fetchFormationsByTeamId(),
-    enabled: !(id.length === 0),
+    queryKey: ['formations', teamIds],
+    queryFn: () => fetchFormationsByTeamId(teamIds),
+    enabled: !(teamIds[0] === undefined || teamIds.length === 0),
+    suspense: true,
   })
 }
 

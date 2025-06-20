@@ -1,10 +1,19 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { createPlayersinformation, deletePlayersinformation, editPlayersinformation, fetchPlayersinformationsById } from '../managers/PlayersInFormationManager'
+import { createPlayersinformation, deletePlayersinformation, editPlayersinformation, fetchPlayerByFormationId, fetchPlayersinformationsById } from '../managers/PlayersInFormationManager'
 
 export const usePlayersInFormations = (id) => {
   return useQuery({
     queryKey: ['PlayersInFormations', id],
     queryFn: () => fetchPlayersinformationsById(id),
+    suspense: true,
+    enabled: !!id
+  })
+}
+
+export const usePlayersByFormationId = (id) => {
+  return useQuery({
+    queryKey: ['PlayersInFormations', id],
+    queryFn: () => fetchPlayerByFormationId(id),
     suspense: true,
     enabled: !!id
   })

@@ -8,16 +8,17 @@ import { Home } from "../Home/Home";
 import MyCalendar from "./Calendar/Calendar";
 import { TeamHome } from "./TeamHome/TeamHome";
 import { Profile } from "./Profile/Profile";
+import {TacticalView} from "./TacticalView/TacticalView";
 
-export default function ApplicationViews({loggedInUser, setLoggedInUser}) {
+export default function ApplicationViews({loggedInUser, setLoggedInUser, refreshLoggedInUser}) {
   
   return (
     <Routes>
       <Route
         index
         element={
-          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]} teams={loggedInUser?.teams}>
-            <MyCalendar loggedInUser={loggedInUser} />
+          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
+            <MyCalendar loggedInUser={loggedInUser} refreshLoggedInUser={refreshLoggedInUser}/>
           </AuthorizedRoute>
         }
       />
@@ -44,6 +45,12 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser}) {
           <AuthorizedRoute loggedInUser={loggedInUser}>
               <TeamHome loggedInUser={loggedInUser} />
            </AuthorizedRoute>
+      }
+      />
+      <Route
+        path="pitch"
+        element={
+              <TacticalView loggedInUser={loggedInUser} />
       }
       />
       <Route

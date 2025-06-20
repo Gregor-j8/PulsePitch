@@ -16,12 +16,18 @@ function App() {
     return <LoadingSpinner/>
   }
 
+  const refreshLoggedInUser = async () => {
+  const user = await tryGetLoggedInUser();
+  setLoggedInUser(user);
+};
+
   return (
     <>
       <NavBar loggedInUser={loggedInUser} setLoggedInUser={setLoggedInUser} />
       <ApplicationViews
         loggedInUser={loggedInUser}
         setLoggedInUser={setLoggedInUser}
+        refreshLoggedInUser={refreshLoggedInUser}
       />
     </>
   );
