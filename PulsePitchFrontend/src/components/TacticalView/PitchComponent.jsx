@@ -1,9 +1,11 @@
 import Rabona from "rabonajs"
-import { useCallback, useEffect, useRef } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { useImmer } from "use-immer"
 import { useEditPlayersInFormations, usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
+import {EditPlayerModal} from "./EditPlayerModal" 
 
 export const PitchComponent = ({ formationId }) => {
+  const [selectedPlayer, setSelectedPlayer] = useState(null)
   const [players, setPlayers] = useImmer([])
   const { data: Players } = usePlayersByFormationId(formationId)
   const mutation = useEditPlayersInFormations()
@@ -28,22 +30,27 @@ export const PitchComponent = ({ formationId }) => {
     })
   }, [])
 
-    const handlePlayerUpdate = useCallback((id, x, y) => {
-    const player = players.find((p) => p.id === id)
-    if (player) {
-    if (player.x !== x && player.y !== y) { player.x = x, player.y = y}
-      mutation.mutate(player)
-    }}, [players, mutation])
+const handlePlayerUpdate = useCallback((id, x, y) => {
+  const player = players.find((p) => p.id === id)
+  if (!player) return
+  if (player.x === x && player.y === y) return
+  const updatedPlayer = { ...player, x, y }
+  mutation.mutate(updatedPlayer)
+}, [players, mutation])
 
   const startDrag = useCallback((e, id) => {
+    if (selectedPlayer) return
     e.preventDefault()
     const rect = containerRef.current.getBoundingClientRect()
     draggedPlayerRef.current = { id }
+    let hasMoved = false
 
   const move = (ev) => {
     const newX = ev.clientX - rect.left
     const newY = ev.clientY - rect.top
-  
+    const distance = Math.sqrt(newX * newX + newY * newY)
+    if (distance < 3) return 
+    hasMoved = true
     const playerId = playerRefs.current[id]
     if (playerId) {
       playerId.style.left = `${newX}px`
@@ -54,6 +61,7 @@ export const PitchComponent = ({ formationId }) => {
   }
 
     const up = () => {
+      if (hasMoved && draggedPlayerRef.current?.x != null && draggedPlayerRef.current?.y != null) {
       const { id, x, y } = draggedPlayerRef.current
       if (id !== null && x !== null && y !== null) {
         setPlayers((draft) => {
@@ -64,9 +72,8 @@ export const PitchComponent = ({ formationId }) => {
           }
         })
       }
-      console.log("Updating player ID in handlePlayerUpdate:", id)
-
       handlePlayerUpdate(id, x, y)
+    }
       window.removeEventListener("mousemove", move)
       window.removeEventListener("mouseup", up)
       draggedPlayerRef.current = null
@@ -90,6 +97,10 @@ export const PitchComponent = ({ formationId }) => {
             }}
             title={`${p.name} - ${p.role}`}
             onMouseDown={(e) => startDrag(e, p.id)}
+            onDoubleClick={(e) => {
+                e.stopPropagation()
+                setSelectedPlayer(p)
+              }}
             style={{
               position: "absolute",
               left: p.x,
@@ -105,13 +116,30 @@ export const PitchComponent = ({ formationId }) => {
               userSelect: "none",
               cursor: "grab",
               transform: "translate(-50%, -50%)",
-              zIndex: 100000,
+              zIndex: 10,
             }}
           >
             {p.name}
           </div>
         ))}
       </div>
+
+          {selectedPlayer && (
+          <EditPlayerModal
+            player={selectedPlayer}
+            onClose={() => setSelectedPlayer(null)}
+            onSave={(updatedPlayer) => {
+              setPlayers((draft) => {
+                const index = draft.findIndex((p) => p.id === updatedPlayer.id)
+                if (index !== -1) {
+                  draft[index] = updatedPlayer
+                }
+              })
+              mutation.mutate(updatedPlayer)
+              setSelectedPlayer(null)
+            }}
+          />
+        )}
     </div>
   )
 }
