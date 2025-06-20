@@ -24,15 +24,27 @@ public class PlayersInFormationsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<IEnumerable<PlayerTeamDTO>>> GetTeamsById(int id)
+    public async Task<ActionResult<PlayersInFormationDTO>> GetPlayersInFormationsById(int id)
     {
-        var Playerteam = await _PlayersInFormationRepo.GetPlayersInFormationsById(id);
-        if (Playerteam == null)
+        var PlayersInFormation = await _PlayersInFormationRepo.GetPlayersInFormationsById(id);
+        if (PlayersInFormation == null)
             return NotFound();
 
-        var playerTeamsDto = _mapper.Map<List<PlayerTeamDTO>>(Playerteam);
+        var PlayersInFormationDto = _mapper.Map<PlayersInFormationDTO>(PlayersInFormation);
 
-        return Ok(playerTeamsDto);
+        return Ok(PlayersInFormationDto);
+    }
+
+    [HttpGet("formation/{id}")]
+    public async Task<ActionResult<IEnumerable<PlayersInFormationDTO>>> GetPlayersByFormationId(int id)
+    {
+        var PlayersInFormation = await _PlayersInFormationRepo.GetPlayersByFormationId(id);
+        if (PlayersInFormation == null)
+            return NotFound();
+
+        var PlayersInFormationDto = _mapper.Map<List<PlayersInFormationDTO>>(PlayersInFormation);
+
+        return Ok(PlayersInFormationDto);
     }
 
     [HttpPost]

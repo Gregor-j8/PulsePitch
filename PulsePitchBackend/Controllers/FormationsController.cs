@@ -23,8 +23,8 @@ public class FormationsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet("team/{id}")]
-    public async Task<ActionResult<IEnumerable<FormationsDTO>>> GetAllFormations(int id)
+    [HttpGet("team")]
+    public async Task<ActionResult<IEnumerable<FormationsDTO>>> GetAllFormations([FromQuery] List<int> id)
     {
         var formations = await _FormationRepo.GetAllFormations(id);
         var formationsDtos = _mapper.Map<List<FormationsDTO>>(formations);
@@ -44,7 +44,7 @@ public class FormationsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> CreateTeams([FromBody] FormationsDTO formationDTO)
+    public async Task<ActionResult> CreateFormations([FromBody] FormationsDTO formationDTO)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
@@ -66,7 +66,7 @@ public class FormationsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<FormationsDTO>> DeleteTeams(int id)
+    public async Task<ActionResult<FormationsDTO>> DeleteFormations(int id)
     {
         await _FormationRepo.DeleteFormation(id);
         return NoContent();

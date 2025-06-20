@@ -9,7 +9,7 @@ namespace PulsePitch.Interfaces
 {
     public interface IFormationRepository
     {
-        Task<List<Formations>> GetAllFormations(int id);
+        Task<List<Formations>> GetAllFormations(List<int> id);
         Task<Formations> GetFormationsById(int id);
         Task<Formations> CreateFormation(Formations formation);
         Task<Formations> EditFormation(int id, EditFormationDTO editFormation);

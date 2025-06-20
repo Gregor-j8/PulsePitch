@@ -19,9 +19,9 @@ namespace PulsePitch.Repository
             _context = context;
         }
 
-        public async Task<List<Formations>> GetAllFormations(int id)
+        public async Task<List<Formations>> GetAllFormations(List<int> id)
         {
-            List<Formations> formations = await _context.Formations.Include(f => f.Players).Where(f => f.TeamId == id).ToListAsync();
+            List<Formations> formations = await _context.Formations.Include(f => f.Players).Where(f => id.Any(id => f.TeamId == id)).ToListAsync();
             return formations;
         }
 
@@ -43,7 +43,7 @@ namespace PulsePitch.Repository
                 return null;
             }
 
-            await _context.Formations.AddRangeAsync(formation);
+             _context.Formations.Add(formation);
             await _context.SaveChangesAsync();
             return formation;
         }
@@ -58,6 +58,7 @@ namespace PulsePitch.Repository
             }
 
             existingFormation.Name = formation.Name;
+            existingFormation.Description = formation.Description;
             await _context.SaveChangesAsync();
 
             return existingFormation;

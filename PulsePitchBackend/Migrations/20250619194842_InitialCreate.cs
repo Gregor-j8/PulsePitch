@@ -220,6 +220,7 @@ namespace PulsePitchBackend.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
                     TeamId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -324,23 +325,24 @@ namespace PulsePitchBackend.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    FormationId = table.Column<int>(type: "integer", nullable: false),
                     PositionId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Role = table.Column<string>(type: "text", nullable: true),
                     Color = table.Column<string>(type: "text", nullable: true),
                     X = table.Column<double>(type: "double precision", nullable: false),
                     Y = table.Column<double>(type: "double precision", nullable: false),
-                    Note = table.Column<string>(type: "text", nullable: true),
-                    FormationsId = table.Column<int>(type: "integer", nullable: true)
+                    Note = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PlayersInFormation", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PlayersInFormation_Formations_FormationsId",
-                        column: x => x.FormationsId,
+                        name: "FK_PlayersInFormation_Formations_FormationId",
+                        column: x => x.FormationId,
                         principalTable: "Formations",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -357,12 +359,12 @@ namespace PulsePitchBackend.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "80b0b71c-dc85-44d9-9e7d-cfdcd7453912", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEGfyc484GOaYkePexmPjffWsvQZKFLWhghF0ykXelcj61bL4EZdX/JGhk2syYfihmQ==", null, false, "03fb6c50-6248-4239-ab56-bc260020c751", false, "BobWilliams" },
-                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "d77ee419-95df-4a9c-917f-76703c27f7a0", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAENU9H/6sU/bAGdb9lltcSxDxB1SGgXf8OfqKKy4jn/TxCrS8yG9fONaoBo8nXysYlQ==", null, false, "d3a33b9b-f888-4473-a982-948a3e2a9a64", false, "JaneSmith" },
-                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "acf0db07-7e4e-4fcc-a2b9-842d823d4e38", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEOBugbV5ys4WsJ66m5cbaf2OnpCmUYchMFyuYcqdcch0GIMaVKLU/ZqHgq8dJPVqyQ==", null, false, "2e1aa012-d9bc-4d6e-8df1-0644eee7228e", false, "AliceJohnson" },
-                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "e0c7b799-6544-4516-8484-4b94b4dcd7f1", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEDl5rMRlXsnSwjQMWAfgGvLGidzkd4lDaiZk5ZAjifHeVaCVDkXpTQaCCWpYoRjihA==", null, false, "735c0c30-a98b-40c6-b811-1c40fbc27239", false, "EveDavis" },
-                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "572f706b-7799-4bdc-bf6e-3d61b79f1f65", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAENtwRmavKi55Uy3iTklkjlxm7pwxl+6Il9kWuffnLXSFdSN1e0TVAG0iQu6ch0R1Vw==", null, false, "7ff06333-84e3-4086-ae6d-f07ab96318fe", false, "JohnDoe" },
-                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "ee0e4454-e242-4cc6-b93e-d14601ab35f2", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEChco+bkXCYtW9YeWCgKkzkKTWclFbrl4B1DSftzxKgfqPvDbY/fAcIeYkOPD3Pvhw==", null, false, "917fec0c-4a9b-45f2-bb43-b2152a0dbea4", false, "Administrator" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "6ff74de9-99a3-4426-b84d-836a08a4a7a0", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEO+/vKvLdbybdJFqxBlV32MVVbh107w1FEtIrUrMXkuFZvXxnpDWcB4+l5/GC27KBw==", null, false, "c9236e77-112d-48ce-8af3-dbf94497af26", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "02205d2f-2881-43f1-8136-5047e97a060e", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECceabGrAbCEqQWZxwpzVTAJrtbobbhVy2A6N/b6ffkXzqyZckP/kjwVy3zTVmBIVg==", null, false, "80bc631a-f371-4b73-83f1-137d6eb5382c", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "229c7eb8-3356-4589-9724-54747645b114", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEA7uoQoxmn1cTnGJUkweN8CeM1ErytSjlDqrY67fAWmAjVTNcdW8Y/dU+qx9rwITBA==", null, false, "f9becae8-b9ef-4432-9331-03199723fc19", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "0980d456-71c0-40c1-b54f-e5d35dc55ba9", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEIZT1r4HIvGZgGJ+urbXdaEj0toXRQQSI8CZOP7Ed3pF7FMGjK6GwM1ww2vM4xSEaw==", null, false, "6f3f15b8-e39e-4a4f-9e79-44d8c75b758c", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "238188e9-65c8-499f-a424-d74d73743859", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECi47DGnV4JIRSqra3Ihhfnc5NLnk90z/97FN/PaA9C/yuIMbggynR26aLB8+zqwng==", null, false, "863a5a8e-1580-49ed-8cb7-284508014fbf", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "65f7f17c-23e4-4e6e-aa12-006c63de804f", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEK0RZCIADyUsc3vl96X+un5sscAB2KbuF4wvb4UyaEscWSMvilKKvifhgzCJy/sBYQ==", null, false, "a6014847-015b-4704-a1b7-6c5eee21d1e0", false, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
@@ -397,6 +399,11 @@ namespace PulsePitchBackend.Migrations
                     { "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f", "d8d76512-74f1-43bb-b1fd-87d3a8aa36df" },
                     { "e9b4c5a4-76c6-44b7-88fb-35a0228c9572", "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Formations",
+                columns: new[] { "Id", "Description", "Name", "TeamId" },
+                values: new object[] { 1, "A standard 4-3-3 attacking formation", "4-3-3 Default", 1 });
 
             migrationBuilder.InsertData(
                 table: "TeamEvents",
@@ -462,6 +469,18 @@ namespace PulsePitchBackend.Migrations
                     { 8, 6, 5 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "PlayersInFormation",
+                columns: new[] { "Id", "Color", "FormationId", "Name", "Note", "PositionId", "Role", "X", "Y" },
+                values: new object[,]
+                {
+                    { 1, null, 1, null, "Left Winger", 1, null, 30.0, 40.0 },
+                    { 2, null, 1, null, "Striker", 2, null, 50.0, 40.0 },
+                    { 3, null, 1, null, "Right Winger", 3, null, 70.0, 40.0 },
+                    { 4, null, 1, null, "Central Midfielder", 4, null, 45.0, 60.0 },
+                    { 5, null, 1, null, "Defender", 5, null, 45.0, 20.0 }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -515,9 +534,9 @@ namespace PulsePitchBackend.Migrations
                 column: "TeamId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PlayersInFormation_FormationsId",
+                name: "IX_PlayersInFormation_FormationId",
                 table: "PlayersInFormation",
-                column: "FormationsId");
+                column: "FormationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamEvents_EventId",

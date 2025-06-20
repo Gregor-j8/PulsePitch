@@ -29,6 +29,10 @@ namespace PulsePitch.Repository
 
             return formation;
         }
+        public async Task<List<PlayersInFormation>> GetPlayersByFormationId(int id)
+        {
+            return await _context.PlayersInFormation.Where(f => f.FormationId == id).ToListAsync();
+        }
 
         public async Task<PlayersInFormation> CreatePlayersInFormation(PlayersInFormation Playersformation)
         {
@@ -51,7 +55,13 @@ namespace PulsePitch.Repository
                 return null;
             }
 
+            existingPlayersformation.PositionId = Playersformation.PositionId;
             existingPlayersformation.Name = Playersformation.Name;
+            existingPlayersformation.Role = Playersformation.Role;
+            existingPlayersformation.Color = Playersformation.Color;
+            existingPlayersformation.X = Playersformation.X;
+            existingPlayersformation.Y = Playersformation.Y;
+            existingPlayersformation.Note = Playersformation.Note;
             await _context.SaveChangesAsync();
 
             return existingPlayersformation;

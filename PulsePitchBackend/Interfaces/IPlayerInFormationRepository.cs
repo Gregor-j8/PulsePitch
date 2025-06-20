@@ -10,6 +10,7 @@ namespace PulsePitch.Interfaces
     public interface IPlayersInFormationRepository
     {
         Task<PlayersInFormation> GetPlayersInFormationsById(int id);
+        Task<List<PlayersInFormation>> GetPlayersByFormationId(int id);
         Task<PlayersInFormation> CreatePlayersInFormation(PlayersInFormation PlayersInFormation);
         Task<PlayersInFormation> EditPlayersInFormation(int id, PlayersInFormation PlayersInFormation);
         Task<PlayersInFormation> DeletePlayersInFormation(int id);
