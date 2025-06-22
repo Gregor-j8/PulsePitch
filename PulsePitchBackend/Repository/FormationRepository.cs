@@ -38,13 +38,34 @@ namespace PulsePitch.Repository
 
         public async Task<Formations> CreateFormation(Formations formation)
         {
-            if (formation != null)
+            if (formation == null)
             {
                 return null;
             }
 
              _context.Formations.Add(formation);
             await _context.SaveChangesAsync();
+
+             var positions = new List<PlayersInFormation>();
+
+            for (int i = 1; i <= 22; i++)
+            {
+                positions.Add(new PlayersInFormation
+                {
+                    FormationId = formation.Id,
+                    PositionId = i,
+                    Name = (i > 11 ? i - 11 : i).ToString(),
+                    Role = "TBD",
+                    Color = i > 11 ? "#FF0000" :"#0000FF", 
+                    X = 0.0,
+                    Y = 0.0,
+                    Note = ""
+                });
+            }
+
+            _context.PlayersInFormation.AddRange(positions);
+            await _context.SaveChangesAsync();
+
             return formation;
         }
 
@@ -74,6 +95,7 @@ namespace PulsePitch.Repository
             }
 
             _context.Formations.Remove(formation);
+            await _context.SaveChangesAsync();
             return formation;
         }
     }

@@ -2,10 +2,12 @@ import Rabona from "rabonajs"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useImmer } from "use-immer"
 import { useEditPlayersInFormations, usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
-import {EditPlayerModal} from "./EditPlayerModal" 
+import {EditPlayerModal} from "./EditPlayerModal"
+import { EditFormationModal } from "./EditFormationModal"
 
-export const PitchComponent = ({ formationId }) => {
+export const PitchComponent = ({ formationId, setFormationId, setFormationModal, setCreateFormationModal }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null)
+  const [editFormationModal, setEditFormationModal] = useState(false)
   const [players, setPlayers] = useImmer([])
   const { data: Players } = usePlayersByFormationId(formationId)
   const mutation = useEditPlayersInFormations()
@@ -84,9 +86,23 @@ const handlePlayerUpdate = useCallback((id, x, y) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4 text-black text-center">
+      <h2 className="text-2xl font-bold mb-4 text-black text-center my-15">
         Tactical Pitch
       </h2>
+     <div className="flex flex-wrap justify-center gap-4 mb-6">
+      <button onClick={() => { setCreateFormationModal(true); setFormationId(null);}}
+        className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg">
+        + Add Formation
+      </button>
+      <button onClick={() => { setFormationModal(true); setFormationId(null)}}
+        className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg">
+        Change Formation
+      </button>
+      <button
+        onClick={() => { setEditFormationModal(true)}} className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg">
+        Edit Formation
+      </button>
+    </div>
       <div ref={containerRef} className="relative w-full max-w-[1000px] aspect-[4/3] mx-auto">
         <div id="pitch" className="absolute inset-0" />
         {players.map((p) => (
@@ -108,7 +124,7 @@ const handlePlayerUpdate = useCallback((id, x, y) => {
               width: 30,
               height: 30,
               borderRadius: "50%",
-              backgroundColor: "red",
+              backgroundColor: p.color ,
               color: "black",
               textAlign: "center",
               lineHeight: "30px",
@@ -139,6 +155,9 @@ const handlePlayerUpdate = useCallback((id, x, y) => {
               setSelectedPlayer(null)
             }}
           />
+        )}
+        {editFormationModal && (
+            <EditFormationModal setFormationId={setFormationId} setEditFormationModal={setEditFormationModal} formationId={formationId} setFormationModal={setFormationModal}/> 
         )}
     </div>
   )
