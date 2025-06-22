@@ -2,9 +2,9 @@ import Rabona from "rabonajs"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useImmer } from "use-immer"
 import { useEditPlayersInFormations, usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
-import {EditPlayerModal} from "./EditPlayerModal" 
+import {EditPlayerModal} from "./EditPlayerModal"
 
-export const PitchComponent = ({ formationId }) => {
+export const PitchComponent = ({ formationId, setFormationId, setFormationModal, setCreateFormationModal }) => {
   const [selectedPlayer, setSelectedPlayer] = useState(null)
   const [players, setPlayers] = useImmer([])
   const { data: Players } = usePlayersByFormationId(formationId)
@@ -84,9 +84,11 @@ const handlePlayerUpdate = useCallback((id, x, y) => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4 text-black text-center">
+      <h2 className="text-2xl font-bold mb-4 text-black text-center my-15">
         Tactical Pitch
       </h2>
+      <button onClick={() => {setCreateFormationModal(true), setFormationId(null)}}>Add Formation</button>
+      <button onClick={() =>{setFormationModal(true); setFormationId(null)}}>Change Formation</button>
       <div ref={containerRef} className="relative w-full max-w-[1000px] aspect-[4/3] mx-auto">
         <div id="pitch" className="absolute inset-0" />
         {players.map((p) => (
@@ -108,7 +110,7 @@ const handlePlayerUpdate = useCallback((id, x, y) => {
               width: 30,
               height: 30,
               borderRadius: "50%",
-              backgroundColor: "red",
+              backgroundColor: p.color ,
               color: "black",
               textAlign: "center",
               lineHeight: "30px",
