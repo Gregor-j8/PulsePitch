@@ -95,6 +95,7 @@ namespace PulsePitch.Repository
             }
 
             _context.Formations.Remove(formation);
+            await _context.SaveChangesAsync();
             return formation;
         }
     }

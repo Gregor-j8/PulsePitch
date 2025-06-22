@@ -32,13 +32,13 @@ public class FormationsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<IEnumerable<FormationsDTO>>> GetTeamsById(int id)
+    public async Task<ActionResult<FormationsDTO>> GetFormationById(int id)
     {
         var Formation = await _FormationRepo.GetFormationsById(id);
         if (Formation == null)
             return NotFound();
 
-        var FormationsDTO = _mapper.Map<List<FormationsDTO>>(Formation);
+        var FormationsDTO = _mapper.Map<FormationsDTO>(Formation);
 
         return Ok(FormationsDTO);
     }
