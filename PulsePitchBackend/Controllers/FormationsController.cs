@@ -51,8 +51,8 @@ public class FormationsController : ControllerBase
 
         Formations formation = _mapper.Map<Formations>(formationDTO);
 
-        await _FormationRepo.CreateFormation(formation);
-        return Ok();
+        Formations newformation = await _FormationRepo.CreateFormation(formation);
+        return Ok(newformation);
     }
     
     [HttpPatch("{id}")]
