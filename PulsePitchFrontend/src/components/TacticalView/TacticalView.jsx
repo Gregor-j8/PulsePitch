@@ -17,16 +17,13 @@ export const TacticalView = ({loggedInUser}) => {
             <div className="fixed inset-0 flex items-center justify-center z-50">
               <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
                 <h2 className="text-lg font-bold mb-4">Choose a Formation</h2>
-                <button onClick={() => { setFormationId(null); setCreateFormationModal(true); setFormationModal(false)}}>Add A Formation</button>
-                <select className="border rounded px-3 py-2 w-full" value={formationId}
-                  onChange={(e) => {
-                    setFormationModal(false)
-                    setFormationId(e.target.value)}}>
-                  <option value="">Choose a formation</option>
-                  {formations.map((formation) => (
-                    <option key={formation.id} value={formation.id}>
-                      {formation.description}
-                    </option>
+                <button onClick={() => { setFormationId(null); setCreateFormationModal(true); setFormationModal(false)}}
+                  className="bg-blue-500 w-full cursor-pointer text-white font-medium py-2 px-4 mb-2 rounded-lg">Add A Formation</button>
+                <select className="border rounded px-3 py-2 w-full" defaultValue={"default"}
+                  onChange={(e) => {setFormationModal(false); setFormationId(e.target.value)}}>
+                  <option value="default" disabled>Choose a formation</option>
+                  {formations.map(formation => (
+                    <option key={formation.id} value={formation.id}>{formation.description}</option>
                   ))}
                 </select>
                 <div className="flex justify-end mt-4">
@@ -39,13 +36,12 @@ export const TacticalView = ({loggedInUser}) => {
           )}
           <div className="mt-4">
             {formationId && (
-              <PitchComponent formationId={formationId} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal}
-              setFormationId={setFormationId} /> 
+              <PitchComponent formationId={formationId} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} /> 
             )}
             {createFormationModal && (
               <CreateFormationModal loggedInUser={loggedInUser} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId}/> 
             )}
           </div>
         </>
-      );
-};
+      )
+}

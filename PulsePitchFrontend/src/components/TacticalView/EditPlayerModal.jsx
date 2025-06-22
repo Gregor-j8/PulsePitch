@@ -10,7 +10,7 @@ export const EditPlayerModal = ({ player, onClose, onSave }) => {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md relative">
-        <button onClick={onClose}aria-label="Close"
+        <button onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
           <X size={20} />
         </button>
@@ -31,15 +31,15 @@ export const EditPlayerModal = ({ player, onClose, onSave }) => {
         </div>
 
         <div className="flex justify-end space-x-3 mt-6">
-          <button onClick={onClose} className="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-100 transition">
+          <button onClick={onClose} className="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-800 hover:bg-gray-100">
             Cancel
           </button>
           <button onClick={() => onSave({ ...player, name, role })}
-           className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+           className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
             Save
           </button>
           <button onClick={() => mutation.mutate(player.id)}
-           className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+           className="px-5 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
             Delete
           </button>
         </div>
