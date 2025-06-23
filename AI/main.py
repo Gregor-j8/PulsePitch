@@ -6,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 import io
 import av
 import numpy as np
-from starlette.websockets import WebSocket
 from team_assigner import TeamAssigner
 from trackers.tracker import TrackerRealtime
 
@@ -32,23 +31,6 @@ async def upload_file(file: UploadFile = File(...)):
     video_bytes_buffer = await file.read()
     return {"message": "Video uploaded successfully"}
 
-def process_video_frames(video_frames):
-    tracker = TrackerRealtime('models/best.pt')
-    tracks = [tracker.detect_and_track(frame) for frame in video_frames]
-    tracks["ball"] = TrackerRealtime.interpolate_ball_positions(tracks["ball"])
-
-    team_assigner = TeamAssigner()
-    team_assigner.assign_team_color(video_frames[0], tracks['players'][0])
-
-    for frame_num, player_track in enumerate(tracks['players']):
-        for player_id, track in player_track.items():
-            team = team_assigner.get_player_teams(video_frames[frame_num], track['bbox'], player_id)
-            track['team'] = team
-            track['team_color'] = team_assigner.team_colors[team]
-
-    output_frames = TrackerRealtime.draw_annotations(video_frames, tracks)
-    return output_frames
-
 @app.websocket("/ws/video")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
@@ -58,27 +40,36 @@ async def websocket_endpoint(websocket: WebSocket):
         await websocket.close()
         return
 
-    try:
-        container = av.open(io.BytesIO(video_bytes_buffer))
-        video_stream = container.streams.video[0]
-        video_stream.thread_type = "AUTO"
+    container = av.open(io.BytesIO(video_bytes_buffer))
+    video_stream = container.streams.video[0]
+    fps = float(video_stream.average_rate or 24)
 
-        fps = float(video_stream.average_rate) if video_stream.average_rate else 24.0
-        frame_id = 0
-        tracker = TrackerRealtime("models/best.pt")
-        for frame in container.decode(video=0):
-            if frame_id % 4 == 0:
-                img = frame.to_ndarray(format="bgr24")
-                tracks = tracker.detect_and_track(img)
-                annotated = tracker.annotate_frame(img, tracks)
-                encoded = await encode_frame(annotated)
-                await websocket.send_text(encoded)
-                await asyncio.sleep(1 / (fps / 3))
+    tracker = TrackerRealtime("models/best.pt")
+    team_assigner = TeamAssigner()
+    teams_assigned = False
+
+    frame_id = 0
+    for frame in container.decode(video=0):
+        if frame_id % 4 != 0:
             frame_id += 1
+            continue
 
-    except WebSocketDisconnect:
-        print("WebSocket disconnected")
-    except Exception as e:
-        print(f"Error during video stream: {e}")
-    finally:
-        await websocket.close()
+        img = frame.to_ndarray(format="bgr24")
+        tracks = tracker.detect_and_track(img)
+
+        if not teams_assigned and len(tracks["players"]) > 2:
+            team_assigner.assign_team_color(img, tracks["players"], frame_count=frame_id)
+            teams_assigned = True
+
+        if teams_assigned:
+            for player_id, player in tracks["players"].items():
+                team = team_assigner.get_player_teams(img, player["bbox"], player_id, frame_count=frame_id)
+                color = team_assigner.team_colors.get(team, (255, 255, 255))
+                tracks["players"][player_id]["team"] = team
+                tracks["players"][player_id]["team_color"] = tuple(int(c) for c in color)
+
+        annotated = tracker.annotate_frame(img, tracks)
+        encoded = await encode_frame(annotated)
+        await websocket.send_text(encoded)
+        await asyncio.sleep(1 / (fps / 4))
+        frame_id += 1
