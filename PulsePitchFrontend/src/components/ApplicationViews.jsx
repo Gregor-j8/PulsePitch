@@ -50,7 +50,9 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
       <Route
         path="pitch"
         element={
-              <TacticalView loggedInUser={loggedInUser} />
+          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
+            <TacticalView loggedInUser={loggedInUser} />
+          </AuthorizedRoute>
       }
       />
       <Route
@@ -68,6 +70,7 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
           <VideoUploader/>
         // </AuthorizedRoute>}
         }/>
+
 
       <Route path="*" element={<p>Whoops, nothing here...</p>} />
     </Routes>
