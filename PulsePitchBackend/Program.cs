@@ -71,6 +71,9 @@ builder.Services.AddScoped<IUserProfileRepository, UserProfileRepository>();
 builder.Services.AddScoped<ITeamGameRepository, TeamGameRepository>();
 builder.Services.AddScoped<IFormationRepository, FormationRepository>();
 builder.Services.AddScoped<IPlayersInFormationRepository, PlayersInFormationRepository>();
+builder.Services.AddScoped<IMessageRepository, MessagesRepository>();
+builder.Services.AddScoped<IMatchRequestRepository, MatchRequestRepository>();
+builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
 
 var app = builder.Build();
 

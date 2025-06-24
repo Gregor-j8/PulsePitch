@@ -19,6 +19,8 @@ namespace PulsePitch.Repository
             _context = context;
         }
 
+        
+
         public async Task<List<Formations>> GetAllFormations(List<int> id)
         {
             List<Formations> formations = await _context.Formations.Include(f => f.Players).Where(f => id.Any(id => f.TeamId == id)).ToListAsync();
@@ -47,22 +49,55 @@ namespace PulsePitch.Repository
             await _context.SaveChangesAsync();
 
              var positions = new List<PlayersInFormation>();
-
             for (int i = 1; i <= 22; i++)
             {
+                double x = 0.0, y = 0.0;
+                  if (i <= 11)
+                {
+                    switch (i)
+                    {
+                        case 1:  x = 1000; y = 416; break;
+                        case 2:  x = 800;  y = 122; break;
+                        case 3:  x = 800;  y = 200; break;
+                        case 4:  x = 800;  y = 433; break;
+                        case 5:  x = 800;  y = 511; break;
+                        case 6:  x = 400;  y = 316; break;
+                        case 7:  x = 600;  y = 161; break;
+                        case 8:  x = 600;  y = 472; break;
+                        case 9:  x = 400;  y = 83; break;
+                        case 10: x = 350;  y = 316; break;
+                        case 11: x = 400;  y = 550; break;
+                    }
+                }
+                else
+                {
+                    switch (i - 11)
+                    {
+                        case 1:  x = 0;    y = 316; break;
+                        case 2:  x = 200;  y = 511; break;
+                        case 3:  x = 200;  y = 433; break;
+                        case 4:  x = 200;  y = 300; break;
+                        case 5:  x = 200;  y = 122; break;
+                        case 6:  x = 300;  y = 316; break;
+                        case 7:  x = 400;  y = 472; break;
+                        case 8:  x = 400;  y = 161; break;
+                        case 9:  x = 600;  y = 550; break;
+                        case 10: x = 650;  y = 316; break;
+                        case 11: x = 600;  y = 83; break;
+                    }
+                }
                 positions.Add(new PlayersInFormation
                 {
                     FormationId = formation.Id,
                     PositionId = i,
-                    Name = (i > 11 ? i - 11 : i).ToString(),
+                    Name = i > 11 ? (i - 11).ToString() : i.ToString(),
                     Role = "TBD",
-                    Color = i > 11 ? "#FF0000" :"#0000FF", 
-                    X = 0.0,
-                    Y = 0.0,
+                    Color = i > 11 ? "#FF0000" : "#0000FF",
+                    X = x,
+                    Y = y,
                     Note = ""
                 });
             }
-
             _context.PlayersInFormation.AddRange(positions);
             await _context.SaveChangesAsync();
 

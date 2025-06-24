@@ -17,6 +17,9 @@ namespace PulsePitch.Data
         public DbSet<Formations> Formations { get; set; }
         public DbSet<PlayersInFormation> PlayersInFormation { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<ChatRoom> ChatRoom { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<MatchRequest> MatchRequest { get; set; }
 
         public PulsePitchDbContext(DbContextOptions<PulsePitchDbContext> options, IConfiguration configuration)
             : base(options)
@@ -53,6 +56,19 @@ namespace PulsePitch.Data
                     Name = "Coach",
                     NormalizedName = "COACH"
                 }
+            );
+
+            modelBuilder.Entity<ChatRoom>().HasData(
+                new ChatRoom { Id = 1, UserOneId = 1, UserTwoId = 2 },
+                new ChatRoom { Id = 2, UserOneId = 3, UserTwoId = 4 }
+            );
+            
+            modelBuilder.Entity<Message>().HasData(
+                new Message { Id = 1, ChatRoomId = 1, SenderId = 1, ReceiverId = 2, Content = "Hey there!", SentAt = DateTime.UtcNow,  },
+                new Message { Id = 2, ChatRoomId = 1, SenderId = 2, ReceiverId = 1, Content = "Hey! Ready for practice?", SentAt = DateTime.UtcNow.AddMinutes(1) },
+
+                new Message { Id = 3, ChatRoomId = 2, SenderId = 3, ReceiverId = 4, Content = "Coach, what time is the game?", SentAt = DateTime.UtcNow },
+                new Message { Id = 4, ChatRoomId = 2, SenderId = 4, ReceiverId = 3, Content = "6 PM sharp. Be there early.", SentAt = DateTime.UtcNow.AddMinutes(2) }
             );
 
             modelBuilder.Entity<Formations>().HasData(new Formations[]{
@@ -265,14 +281,14 @@ namespace PulsePitch.Data
                     Id = 5,
                     Name = "Titans",
                     JoinCode = "TTN321",
-                    CoachId = ""
+                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
                 },
                 new Team
                 {
                     Id = 6,
                     Name = "Panthers",
                     JoinCode = "PNR654",
-                    CoachId = ""
+                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
                 }
             );
 

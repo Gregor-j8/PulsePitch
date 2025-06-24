@@ -17,5 +17,8 @@ public class AutoMapperProfiles : Profile
         CreateMap<TeamGame, TeamGameDTO>().ReverseMap();
         CreateMap<Formations, FormationsDTO>().ReverseMap();
         CreateMap<PlayersInFormation, PlayersInFormationDTO>().ReverseMap();
+        CreateMap<Message, MessageDTO>().ReverseMap();
+        CreateMap<MatchRequest, MatchRequestDTO>().ReverseMap();
+        CreateMap<ChatRoom, ChatRoomDTO>().ReverseMap();
     }
 }
