@@ -16,7 +16,6 @@ export const CreateGameModal = ({ onClose, loggedInUser }) => {
       HomeTeamId: formData.homeTeamId,
       AwayTeamId: formData.awayTeamId,
     }
-
     createTeamEvent.mutate(data, {
       onSuccess: () => {
         onClose()

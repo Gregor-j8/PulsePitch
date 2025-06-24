@@ -9,6 +9,7 @@ import MyCalendar from "./Calendar/Calendar";
 import { TeamHome } from "./TeamHome/TeamHome";
 import { Profile } from "./Profile/Profile";
 import {TacticalView} from "./TacticalView/TacticalView";
+import { Inbox } from "./Inbox/Inbox";
 
 export default function ApplicationViews({loggedInUser, setLoggedInUser, refreshLoggedInUser}) {
   
@@ -70,8 +71,13 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
           <VideoUploader/>
         // </AuthorizedRoute>}
         }/>
-
-
+      <Route
+        path="inbox"
+        element={ 
+        <AuthorizedRoute loggedInUser={loggedInUser} >
+          <Inbox loggedInUser={loggedInUser}/>
+        </AuthorizedRoute>}
+        />
       <Route path="*" element={<p>Whoops, nothing here...</p>} />
     </Routes>
   );
