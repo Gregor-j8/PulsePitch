@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Messages } from './Messages'
+import { MatchRequest } from './MatchRequest'
 
 export const Inbox = ({ loggedInUser }) => {
   const [activeTab, setActiveTab] = useState('messages')
@@ -16,7 +17,7 @@ export const Inbox = ({ loggedInUser }) => {
             <button onClick={() => setActiveTab('notifications')}
               className={`flex-1 text-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
                 activeTab === 'notifications' ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-700 hover:bg-gray-200 border'}`}>
-              Notifications
+              Match Request
             </button>
           </div>
         </div>
@@ -25,8 +26,7 @@ export const Inbox = ({ loggedInUser }) => {
             <Messages loggedInUser={loggedInUser} />
           )}
           {activeTab === 'notifications' && (
-            <div className="text-gray-700 text-sm space-y-4">
-            </div>
+            <MatchRequest loggedInUser={loggedInUser}/>
           )}
         </div>
       </div>

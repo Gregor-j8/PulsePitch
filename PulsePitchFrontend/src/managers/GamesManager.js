@@ -1,7 +1,12 @@
 import axiosClient from './axiosClient';
+import qs from 'qs';
+
 
 export const fetchTeamGameByTeamId = async (home, teamIds) => {
-  const { data } = await axiosClient.get(`/teamgame/team`, {params: { home: home, id: teamIds}});
+  const { data } = await axiosClient.get('/teamgame/team', {
+    params: { home: home, id: teamIds },
+    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' }),
+  });
   return data;
 };
 

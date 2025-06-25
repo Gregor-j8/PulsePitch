@@ -14,7 +14,7 @@ import { GameEditModal } from "./GameEditModal"
 
 export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const { data: calendarEvents } = useTeamEvents(loggedInUser.id, {enabled: !!loggedInUser.id})
-  const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId).join(''))
+  const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId))
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
@@ -29,7 +29,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const [StarterFormData, SetStarterFormData] = useState({})
   const handleAddEvent = () => {
     const event = { title: createEvents.title, description: createEvents.description, 
-      start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: 1}
+      start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: calendarEvents.teamId}
     createEvent.mutate(event)
     setShowCreateModal(false)
     setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '' })
@@ -49,7 +49,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
     }
     refreshUser()
   },[])
-
+console.log(calenderGames)
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
       <div className="flex flex-wrap justify-between items-center mb-4 gap-2">

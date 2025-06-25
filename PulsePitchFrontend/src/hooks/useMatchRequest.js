@@ -2,10 +2,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchUserMatchRequest, fetchMatchRequestByRoomId, createMatchRequest, editMatchRequest, createMatchResponse, deleteMatchRequest} from '../managers/MatchRequestManager'
 
 export const useUserMatchRequests = (userId) => {
+  console.log(userId)
   return useQuery({
     queryKey: ['matchrequests', userId],
     queryFn: () => fetchUserMatchRequest(userId),
-    enabled: !!userId,
+    enabled: userId !== undefined && userId !== null,
   })
 }
 
@@ -14,6 +15,7 @@ export const useMatchRequestByRoom = (roomId) => {
     queryKey: ['matchrequests', roomId],
     queryFn: () => fetchMatchRequestByRoomId(roomId),
     enabled: !!roomId,
+    refetchInterval: 5000
   })
 }
 

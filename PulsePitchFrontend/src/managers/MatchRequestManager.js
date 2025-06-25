@@ -1,7 +1,7 @@
 import axiosClient from './axiosClient';
 
 export const fetchUserMatchRequest = async (userid) => {
-  const { data } = await axiosClient.get(`/matchrequest/${userid}`);
+  const { data } = await axiosClient.get(`/matchrequest/user/${userid}`);
   return data;
 };
 
@@ -21,7 +21,9 @@ export const editMatchRequest = async (id, messageData) => {
 };
 
 export const createMatchResponse = async (matchid, messageData) => {
-  const { data } = await axiosClient.put(`/matchrequest/${matchid}`, messageData);
+  console.log("matchid", matchid)
+  console.log("messageData", messageData)
+  const { data } = await axiosClient.put(`/matchrequest/match/${matchid}`, messageData);
   return data;
 };
 
