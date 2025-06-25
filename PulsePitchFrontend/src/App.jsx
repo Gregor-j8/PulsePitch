@@ -28,7 +28,7 @@ function App() {
         loggedInUser={loggedInUser}
         setLoggedInUser={setLoggedInUser}
         refreshLoggedInUser={refreshLoggedInUser}
-      />
+        />
     </>
   );
 }

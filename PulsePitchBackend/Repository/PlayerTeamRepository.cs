@@ -41,7 +41,7 @@ namespace PulsePitch.Repository
 
         public async Task<List<PlayerTeam>> GetAllPlayerTeams()
         {
-            return await _context.PlayerTeams.ToListAsync();
+            return await _context.PlayerTeams.Include(pt => pt.Player).Include(pt => pt.Team).ToListAsync();
         }
 
         public async Task<List<PlayerTeam?>> GetByIdPlayerTeams(int id)

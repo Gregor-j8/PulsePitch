@@ -30,7 +30,7 @@ namespace PulsePitch.Repository
                 List<TeamGame> filteredGames = teamGame.Where(tg => id.Contains(tg.AwayTeamId)).ToList();
                 return filteredGames;
             }
-            List<TeamGame> allGames = teamGame.Where(tg => id.Any(teamId => tg.HomeTeamId == teamId || tg.AwayTeamId == teamId)).ToList();
+            List<TeamGame> allGames = teamGame.Where(tg => id.Any(teamId => tg.HomeTeamId == teamId || tg.AwayTeamId == teamId) && tg.OnCalendar == true).ToList();
             return allGames;
         }
 

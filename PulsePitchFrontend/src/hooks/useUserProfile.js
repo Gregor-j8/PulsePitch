@@ -15,7 +15,6 @@ export const useEditUserProfile = () => {
   return useMutation({
     mutationFn: ({ id, data }) => editUserProfile(id, data),
     onSuccess: (_, variables) => {
-      console.log(variables)
       queryClient.invalidateQueries({ queryKey: ['userprofiles'] })
       queryClient.invalidateQueries({ queryKey: ['userprofile', variables.id] })
     },

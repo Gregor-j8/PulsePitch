@@ -7,7 +7,6 @@ export const fetchUserProfileById = async (id) => {
 
 export const editUserProfile = async (id, userprofileData) => {
   const { data } = await axiosClient.patch(`/userprofile/${id}`, userprofileData)
-  console.log()
   return data
 }
 
