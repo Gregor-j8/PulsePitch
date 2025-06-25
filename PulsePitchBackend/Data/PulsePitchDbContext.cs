@@ -429,7 +429,8 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 10, 19, 0, 0),
                     HomeTeamId = 1,
                     AwayTeamId = 4,
-                    Result = "TBD"
+                    Result = "TBD",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
@@ -438,7 +439,8 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 10, 19, 0, 0),
                     HomeTeamId = 1,
                     AwayTeamId = 2,
-                    Result = "2-1"
+                    Result = "2-1",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
@@ -447,7 +449,8 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 12, 18, 30, 0),
                     HomeTeamId = 3,
                     AwayTeamId = 4,
-                    Result = "0-0"
+                    Result = "0-0",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
@@ -456,7 +459,8 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 14, 21, 0, 0),
                     HomeTeamId = 5,
                     AwayTeamId = 6,
-                    Result = "1-3"
+                    Result = "1-3",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
@@ -465,7 +469,8 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 15, 20, 0, 0),
                     HomeTeamId = 2,
                     AwayTeamId = 4,
-                    Result = "4-2"
+                    Result = "4-2",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
@@ -474,7 +479,8 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 17, 17, 0, 0),
                     HomeTeamId = 6,
                     AwayTeamId = 1,
-                    Result = "1-1"
+                    Result = "1-1",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
@@ -483,43 +489,49 @@ namespace PulsePitch.Data
                     End = new DateTime(2025, 6, 18, 19, 0, 0),
                     HomeTeamId = 3,
                     AwayTeamId = 5,
-                    Result = "0-2"
+                    Result = "0-2",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
                     Id = 7,
-                    Start = new DateTime(2025, 6, 19, 18, 30, 0),
-                    End = new DateTime(2025, 6, 19, 19, 30, 0),
+                    Start = new DateTime(2025, 6, 22, 18, 30, 0),
+                    End = new DateTime(2025, 6, 22, 19, 30, 0),
                     HomeTeamId = 4,
                     AwayTeamId = 1,
-                    Result = "3-3"
+                    Result = "3-3",
+                    OnCalendar = true
                 },
                 new TeamGame
                 {
                     Id = 8,
-                    Start = new DateTime(2025, 6, 20, 17, 0, 0),
-                    End = new DateTime(2025, 6, 20, 18, 0, 0),
+                    Start = new DateTime(2025, 6, 29, 17, 0, 0),
+                    End = new DateTime(2025, 6, 29, 18, 0, 0),
                     HomeTeamId = 2,
                     AwayTeamId = 5,
-                    Result = "1-0"
+                    Result = "1-0",
+                     OnCalendar = true
                 },
                 new TeamGame
                 {
                     Id = 9,
-                    Start = new DateTime(2025, 6, 21, 20, 0, 0),
-                    End = new DateTime(2025, 6, 21, 21, 0, 0),
+                    Start = new DateTime(2025, 6, 28, 20, 0, 0),
+                    End = new DateTime(2025, 6, 28, 21, 0, 0),
                     HomeTeamId = 6,
                     AwayTeamId = 3,
-                    Result = "2-2"
+                    Result = "2-2",
+                    OnCalendar = true
+
                 },
                 new TeamGame
                 {
                     Id = 10,
-                    Start = new DateTime(2025, 6, 22, 19, 0, 0),
-                    End = new DateTime(2025, 6, 22, 20, 0, 0),
+                    Start = new DateTime(2025, 6, 25, 19, 0, 0),
+                    End = new DateTime(2025, 6, 25, 20, 0, 0),
                     HomeTeamId = 5,
                     AwayTeamId = 2,
-                    Result = "3-1"
+                    Result = "3-1",
+                    OnCalendar = true
                 }
             );
         }

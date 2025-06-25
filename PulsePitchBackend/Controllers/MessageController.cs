@@ -44,7 +44,7 @@ public class MessageController : ControllerBase
     public async Task<ActionResult<MessageDTO>> CreateMessage([FromBody] Message message)
     {
         var messages = await _MessageRepo.CreateMessage(message);
-        var messagesDtos = _mapper.Map<List<MessageDTO>>(messages);
+        var messagesDtos = _mapper.Map<MessageDTO>(messages);
         return Ok(messagesDtos);
     }
 
@@ -61,7 +61,7 @@ public class MessageController : ControllerBase
         await _MessageRepo.DeleteMessageById(id);
         return NoContent();
     }
-    [HttpDelete("{roomid}")]
+    [HttpDelete("room/{roomid}")]
     public async Task<ActionResult<MessageDTO>> DeleteMessageByRoomId(int roomid)
     {
         await _MessageRepo.DeleteMessageByRoomId(roomid);

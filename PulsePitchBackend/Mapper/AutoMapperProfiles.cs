@@ -19,6 +19,7 @@ public class AutoMapperProfiles : Profile
         CreateMap<PlayersInFormation, PlayersInFormationDTO>().ReverseMap();
         CreateMap<Message, MessageDTO>().ReverseMap();
         CreateMap<MatchRequest, MatchRequestDTO>().ReverseMap();
+        CreateMap<CreateMatchRequestDTO, MatchRequest>().ForMember(dest => dest.RecieverId, opt => opt.Ignore()); 
         CreateMap<ChatRoom, ChatRoomDTO>().ReverseMap();
     }
 }

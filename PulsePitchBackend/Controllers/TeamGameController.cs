@@ -28,8 +28,7 @@ public class TeamGameController : ControllerBase
     {
         var events = await _TeamGameRepo.GetTeamGameByTeamId(home, id);
         var teamGameDtos = _mapper.Map<List<TeamGame>>(events);
-
-
+        
         return Ok(teamGameDtos);
     }
 

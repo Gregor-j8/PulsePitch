@@ -6,6 +6,7 @@ public class TeamGame
 {
     [Required]
     public int Id { get; set; }
+    public bool OnCalendar { get; set; } = false;
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     [ForeignKey("AwayTeamId")]

@@ -3,6 +3,7 @@ namespace PulsePitch.DTO;
 public class TeamGameDTO
 {
     public int Id { get; set; }
+    public bool OnCalendar { get; set; }
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
     public int? AwayTeamId { get; set; }

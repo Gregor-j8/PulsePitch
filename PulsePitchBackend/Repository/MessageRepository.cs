@@ -23,7 +23,7 @@ namespace PulsePitch.Repository
         }
         public async Task<List<Message>> GetAllMessagesByRoomId(int id)
         {
-            return await _context.Messages.Include(m => m.Sender).Include(m => m.Receiver).Where(m => m.ChatRoomId == id).ToListAsync();
+            return await _context.Messages.OrderBy(m => m.SentAt).Include(m => m.Sender).Include(m => m.Receiver).Where(m => m.ChatRoomId == id).ToListAsync();
         }
         public async Task<Message> CreateMessage(Message message)
         {

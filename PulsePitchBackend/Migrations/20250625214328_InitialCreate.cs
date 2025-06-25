@@ -301,6 +301,7 @@ namespace PulsePitchBackend.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    OnCalendar = table.Column<bool>(type: "boolean", nullable: false),
                     Start = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     End = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     AwayTeamId = table.Column<int>(type: "integer", nullable: false),
@@ -345,35 +346,6 @@ namespace PulsePitchBackend.Migrations
                     table.ForeignKey(
                         name: "FK_ChatRoom_UserProfiles_UserTwoId",
                         column: x => x.UserTwoId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ChatRoomId = table.Column<int>(type: "integer", nullable: false),
-                    SenderId = table.Column<int>(type: "integer", nullable: false),
-                    ReceiverId = table.Column<int>(type: "integer", nullable: false),
-                    Content = table.Column<string>(type: "text", nullable: true),
-                    SentAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Messages_UserProfiles_ReceiverId",
-                        column: x => x.ReceiverId,
-                        principalTable: "UserProfiles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Messages_UserProfiles_SenderId",
-                        column: x => x.SenderId,
                         principalTable: "UserProfiles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -431,6 +403,41 @@ namespace PulsePitchBackend.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ChatRoomId = table.Column<int>(type: "integer", nullable: false),
+                    SenderId = table.Column<int>(type: "integer", nullable: false),
+                    ReceiverId = table.Column<int>(type: "integer", nullable: false),
+                    Content = table.Column<string>(type: "text", nullable: true),
+                    SentAt = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_ChatRoom_ChatRoomId",
+                        column: x => x.ChatRoomId,
+                        principalTable: "ChatRoom",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_UserProfiles_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Messages_UserProfiles_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "UserProfiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
@@ -445,12 +452,12 @@ namespace PulsePitchBackend.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "b2c61146-3f66-489c-b692-3a8b4a3ebce1", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEPUPlqHw/J0J94AAUgvaKAmE2fb0osf1Aqvq1k4t0OP2V1yHn3hX6lAOqIMS1URCZw==", null, false, "1be0a711-e8d3-43b2-9645-3834e02059fd", false, "BobWilliams" },
-                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "3c2aedd4-a6b4-45ef-bd3a-6f1c1cae8b7e", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEMF3gUQwXqWHs3Dt9bbcyx61lalvLNNOKbi//W4qwDQDmw/3Gt57UadRmN3Aa7giSA==", null, false, "498d4377-19ef-4d36-9e09-57df8b2d964e", false, "JaneSmith" },
-                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "f733a892-bf69-495c-8c30-92ad79674b0b", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAECDUBnYuyDZjUnyEHbqTu9HBoug36+VAxJC33cGNNUQNihQH3dWiEldhtqqs9RYIDA==", null, false, "649d13ef-353d-44fc-a362-a67e9052e887", false, "AliceJohnson" },
-                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "9d91915e-2062-4c95-a139-37406f93cbf3", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEI0m94KTJAhlsanx8C6brXHGAjoaAJh3mtgJrdzXbjiFFD0T4HTDjSK+KubevEZxEg==", null, false, "d96cefb2-7f7e-4374-9e01-24fd45976797", false, "EveDavis" },
-                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "e8ebc23b-a922-485c-b080-f6c5b43c7be2", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEC3d5PcHEuqKi4X6JwDAos/6IX/Mo6d4ULKk65xn57Ml7eBWI7EqHe4lH0cI6wtBkA==", null, false, "7c1a2a08-b74e-4001-81cc-9f0f4a317fe0", false, "JohnDoe" },
-                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "c9a9fc7f-8d1a-497f-b753-6e8ba108fce0", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEKROsZ/pY8gz1iaMLIHRXyzsD/oUwsawic2blIuKQA9598S817i6msd0fGTz3Dfp5Q==", null, false, "02b3f995-1238-4952-9b9f-8e84ed25db95", false, "Administrator" }
+                    { "9ce89d88-75da-4a80-9b0d-3fe58582b8e2", 0, "be546ed2-88d8-4450-bf5e-34dc14f551d9", "bob@williams.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEDs65UjnvQAntO3q9SMwrWlsrGo5BPt4iS6caQPDpGBFA8+dJu5OvHunY6kUZdds/A==", null, false, "64df0e37-aae6-4912-b3e9-4cc58a6bde90", false, "BobWilliams" },
+                    { "a7d21fac-3b21-454a-a747-075f072d0cf3", 0, "8aac446b-c0dd-4fe2-a530-651a837c705c", "jane@smith.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEIM/KfAv4qgksukcgwOtUCjX6/03Bgvznqy8M1uilBjaGiAaQl+kzlem7ZgYpiOTRw==", null, false, "0a25f0e6-97ed-452a-a5a1-0d921d6e41a2", false, "JaneSmith" },
+                    { "c806cfae-bda9-47c5-8473-dd52fd056a9b", 0, "aa711aee-5a92-42ce-b071-1cb5c98b67a6", "alice@johnson.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEMjErmj2royxyUy9wSaFWVbFkVZy/18yVtwyDQGULS7ODC7CFcrP3R5x9nMIS01p/g==", null, false, "6c57ec4c-5c34-493f-80ed-73f89410b4af", false, "AliceJohnson" },
+                    { "d224a03d-bf0c-4a05-b728-e3521e45d74d", 0, "d5b5fa69-e895-439f-8bcf-87b487be1987", "Eve@Davis.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEIOtROHn4HNDsQFEhSOkICLpV13zomvabIe9r/R9sFg9pTr7321/Df3qN3OmcV0g0g==", null, false, "e9ef1dbc-66d4-4895-a317-59d27c0a6d22", false, "EveDavis" },
+                    { "d8d76512-74f1-43bb-b1fd-87d3a8aa36df", 0, "56458fae-0fae-4935-b0f0-026b03440940", "john@doe.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEJv9pvf427JQUcO+XXeLGpg2e9ffTRKV89/f6pT53qVKzBnOk0pb14OWLVwcZhMCPw==", null, false, "618b84ee-ec92-4b5f-a6d0-f27835609380", false, "JohnDoe" },
+                    { "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f", 0, "e8ad8ea9-0e93-4c64-bce4-330dfc43ecd8", "admina@strator.comx", false, false, null, null, null, "AQAAAAIAAYagAAAAEAPAwcIOFcPDF/JjdITfw2sol7sYlCv1OgKmouZ89Py1RI3CVQhvVI1ZuEwA/Fg2Cg==", null, false, "e8379421-13fb-4bd3-82a2-1dd2595370e2", false, "Administrator" }
                 });
 
             migrationBuilder.InsertData(
@@ -511,20 +518,20 @@ namespace PulsePitchBackend.Migrations
 
             migrationBuilder.InsertData(
                 table: "TeamGames",
-                columns: new[] { "Id", "AwayTeamId", "End", "HomeTeamId", "Result", "Start" },
+                columns: new[] { "Id", "AwayTeamId", "End", "HomeTeamId", "OnCalendar", "Result", "Start" },
                 values: new object[,]
                 {
-                    { 1, 4, new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified), 1, "TBD", new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 2, 4, new DateTime(2025, 6, 12, 18, 30, 0, 0, DateTimeKind.Unspecified), 3, "0-0", new DateTime(2025, 6, 12, 17, 30, 0, 0, DateTimeKind.Unspecified) },
-                    { 3, 6, new DateTime(2025, 6, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 5, "1-3", new DateTime(2025, 6, 14, 20, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 4, 4, new DateTime(2025, 6, 15, 20, 0, 0, 0, DateTimeKind.Unspecified), 2, "4-2", new DateTime(2025, 6, 15, 19, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 5, 1, new DateTime(2025, 6, 17, 17, 0, 0, 0, DateTimeKind.Unspecified), 6, "1-1", new DateTime(2025, 6, 17, 16, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 6, 5, new DateTime(2025, 6, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), 3, "0-2", new DateTime(2025, 6, 18, 18, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 7, 1, new DateTime(2025, 6, 19, 19, 30, 0, 0, DateTimeKind.Unspecified), 4, "3-3", new DateTime(2025, 6, 19, 18, 30, 0, 0, DateTimeKind.Unspecified) },
-                    { 8, 5, new DateTime(2025, 6, 20, 18, 0, 0, 0, DateTimeKind.Unspecified), 2, "1-0", new DateTime(2025, 6, 20, 17, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 9, 3, new DateTime(2025, 6, 21, 21, 0, 0, 0, DateTimeKind.Unspecified), 6, "2-2", new DateTime(2025, 6, 21, 20, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 10, 2, new DateTime(2025, 6, 22, 20, 0, 0, 0, DateTimeKind.Unspecified), 5, "3-1", new DateTime(2025, 6, 22, 19, 0, 0, 0, DateTimeKind.Unspecified) },
-                    { 11, 2, new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified), 1, "2-1", new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified) }
+                    { 1, 4, new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified), 1, true, "TBD", new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 2, 4, new DateTime(2025, 6, 12, 18, 30, 0, 0, DateTimeKind.Unspecified), 3, true, "0-0", new DateTime(2025, 6, 12, 17, 30, 0, 0, DateTimeKind.Unspecified) },
+                    { 3, 6, new DateTime(2025, 6, 14, 21, 0, 0, 0, DateTimeKind.Unspecified), 5, true, "1-3", new DateTime(2025, 6, 14, 20, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 4, 4, new DateTime(2025, 6, 15, 20, 0, 0, 0, DateTimeKind.Unspecified), 2, true, "4-2", new DateTime(2025, 6, 15, 19, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 5, 1, new DateTime(2025, 6, 17, 17, 0, 0, 0, DateTimeKind.Unspecified), 6, true, "1-1", new DateTime(2025, 6, 17, 16, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 6, 5, new DateTime(2025, 6, 18, 19, 0, 0, 0, DateTimeKind.Unspecified), 3, true, "0-2", new DateTime(2025, 6, 18, 18, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 7, 1, new DateTime(2025, 6, 22, 19, 30, 0, 0, DateTimeKind.Unspecified), 4, true, "3-3", new DateTime(2025, 6, 22, 18, 30, 0, 0, DateTimeKind.Unspecified) },
+                    { 8, 5, new DateTime(2025, 6, 29, 18, 0, 0, 0, DateTimeKind.Unspecified), 2, true, "1-0", new DateTime(2025, 6, 29, 17, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 9, 3, new DateTime(2025, 6, 28, 21, 0, 0, 0, DateTimeKind.Unspecified), 6, true, "2-2", new DateTime(2025, 6, 28, 20, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 10, 2, new DateTime(2025, 6, 25, 20, 0, 0, 0, DateTimeKind.Unspecified), 5, true, "3-1", new DateTime(2025, 6, 25, 19, 0, 0, 0, DateTimeKind.Unspecified) },
+                    { 11, 2, new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified), 1, true, "2-1", new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified) }
                 });
 
             migrationBuilder.InsertData(
@@ -547,17 +554,6 @@ namespace PulsePitchBackend.Migrations
                 {
                     { 1, 1, 2 },
                     { 2, 3, 4 }
-                });
-
-            migrationBuilder.InsertData(
-                table: "Messages",
-                columns: new[] { "Id", "ChatRoomId", "Content", "ReceiverId", "SenderId", "SentAt" },
-                values: new object[,]
-                {
-                    { 1, 1, "Hey there!", 2, 1, new DateTime(2025, 6, 24, 13, 42, 28, 491, DateTimeKind.Utc).AddTicks(5709) },
-                    { 2, 1, "Hey! Ready for practice?", 1, 2, new DateTime(2025, 6, 24, 13, 43, 28, 491, DateTimeKind.Utc).AddTicks(5711) },
-                    { 3, 2, "Coach, what time is the game?", 4, 3, new DateTime(2025, 6, 24, 13, 42, 28, 491, DateTimeKind.Utc).AddTicks(5718) },
-                    { 4, 2, "6 PM sharp. Be there early.", 3, 4, new DateTime(2025, 6, 24, 13, 44, 28, 491, DateTimeKind.Utc).AddTicks(5719) }
                 });
 
             migrationBuilder.InsertData(
@@ -585,6 +581,17 @@ namespace PulsePitchBackend.Migrations
                     { 3, null, 1, null, "Right Winger", 3, null, 70.0, 40.0 },
                     { 4, null, 1, null, "Central Midfielder", 4, null, 45.0, 60.0 },
                     { 5, null, 1, null, "Defender", 5, null, 45.0, 20.0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Messages",
+                columns: new[] { "Id", "ChatRoomId", "Content", "ReceiverId", "SenderId", "SentAt" },
+                values: new object[,]
+                {
+                    { 1, 1, "Hey there!", 2, 1, new DateTime(2025, 6, 25, 21, 43, 27, 399, DateTimeKind.Utc).AddTicks(5912) },
+                    { 2, 1, "Hey! Ready for practice?", 1, 2, new DateTime(2025, 6, 25, 21, 44, 27, 399, DateTimeKind.Utc).AddTicks(5914) },
+                    { 3, 2, "Coach, what time is the game?", 4, 3, new DateTime(2025, 6, 25, 21, 43, 27, 399, DateTimeKind.Utc).AddTicks(5919) },
+                    { 4, 2, "6 PM sharp. Be there early.", 3, 4, new DateTime(2025, 6, 25, 21, 45, 27, 399, DateTimeKind.Utc).AddTicks(5920) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -648,6 +655,11 @@ namespace PulsePitchBackend.Migrations
                 name: "IX_MatchRequest_HomeTeamId",
                 table: "MatchRequest",
                 column: "HomeTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChatRoomId",
+                table: "Messages",
+                column: "ChatRoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Messages_ReceiverId",
@@ -719,9 +731,6 @@ namespace PulsePitchBackend.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ChatRoom");
-
-            migrationBuilder.DropTable(
                 name: "MatchRequest");
 
             migrationBuilder.DropTable(
@@ -743,7 +752,7 @@ namespace PulsePitchBackend.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "UserProfiles");
+                name: "ChatRoom");
 
             migrationBuilder.DropTable(
                 name: "Formations");
@@ -752,10 +761,13 @@ namespace PulsePitchBackend.Migrations
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "UserProfiles");
 
             migrationBuilder.DropTable(
                 name: "Teams");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
