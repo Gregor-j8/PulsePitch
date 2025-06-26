@@ -57,9 +57,16 @@ namespace PulsePitch.Repository
             {
                 return null;
             }
-            await _context.ChatRoom.AddAsync(chatRoom);
-            await _context.SaveChangesAsync();
-            return chatRoom;
+            var existingChatRoom = await _context.ChatRoom.FirstOrDefaultAsync(c =>
+                (c.UserOneId == chatRoom.UserOneId && c.UserTwoId == chatRoom.UserTwoId) ||
+                (c.UserOneId == chatRoom.UserTwoId && c.UserTwoId == chatRoom.UserOneId));
+            if (existingChatRoom == null)
+            {
+                await _context.ChatRoom.AddAsync(chatRoom);
+                await _context.SaveChangesAsync();
+                return chatRoom;
+            }
+            return existingChatRoom;
         }
         public async Task<ChatRoom> DeleteChatRoomById(int id)
         {

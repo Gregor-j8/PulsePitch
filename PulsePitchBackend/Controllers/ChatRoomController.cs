@@ -35,7 +35,7 @@ public class ChatRoomController : ControllerBase
     public async Task<ActionResult<ChatRoomDTO>> CreateChatRoom([FromBody] ChatRoom chatRoom)
     {
         var chatRooms = await _ChatRoomRepo.CreateChatRoom(chatRoom);
-        var chatRoomsDtos = _mapper.Map<List<ChatRoomDTO>>(chatRooms);
+        var chatRoomsDtos = _mapper.Map<ChatRoomDTO>(chatRooms);
         return Ok(chatRoomsDtos);
     }
 
