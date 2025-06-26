@@ -1,5 +1,9 @@
 import axiosClient from './axiosClient'
 
+export const fetchAllUserProfile = async () => {
+  const { data } = await axiosClient.get(`/userprofile`)
+  return data
+}
 export const fetchUserProfileById = async (id) => {
   const { data } = await axiosClient.get(`/userprofile/${id}`)
   return data
