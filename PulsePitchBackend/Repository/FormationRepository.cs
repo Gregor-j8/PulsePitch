@@ -56,7 +56,7 @@ namespace PulsePitch.Repository
                 {
                     switch (i)
                     {
-                        case 1:  x = 1000; y = 416; break;
+                        case 1:  x = 920; y = 344; break;
                         case 2:  x = 800;  y = 122; break;
                         case 3:  x = 800;  y = 200; break;
                         case 4:  x = 800;  y = 433; break;
@@ -66,14 +66,14 @@ namespace PulsePitch.Repository
                         case 8:  x = 600;  y = 472; break;
                         case 9:  x = 400;  y = 83; break;
                         case 10: x = 350;  y = 316; break;
-                        case 11: x = 400;  y = 550; break;
+                        case 11: x = 400;  y = 650; break;
                     }
                 }
                 else
                 {
                     switch (i - 11)
                     {
-                        case 1:  x = 0;    y = 316; break;
+                        case 1:  x = 65;   y = 350; break;
                         case 2:  x = 200;  y = 511; break;
                         case 3:  x = 200;  y = 433; break;
                         case 4:  x = 200;  y = 300; break;
@@ -83,7 +83,7 @@ namespace PulsePitch.Repository
                         case 8:  x = 400;  y = 161; break;
                         case 9:  x = 600;  y = 550; break;
                         case 10: x = 650;  y = 316; break;
-                        case 11: x = 600;  y = 83; break;
+                        case 11: x = 600;  y = 183; break;
                     }
                 }
                 positions.Add(new PlayersInFormation
