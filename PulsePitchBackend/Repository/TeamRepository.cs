@@ -22,6 +22,18 @@ namespace PulsePitch.Repository
         {
             await _context.Teams.AddAsync(teamModel);
             await _context.SaveChangesAsync();
+            UserProfile coachesProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.IdentityUserId == teamModel.CoachId);
+            if (coachesProfile != null)
+            {
+                PlayerTeam pt = new PlayerTeam
+                {
+                    PlayerId = coachesProfile.Id,
+                    TeamId = teamModel.Id
+                };
+                await _context.PlayerTeams.AddAsync(pt);
+
+            }
+            await _context.SaveChangesAsync();
             return teamModel;
         }
 

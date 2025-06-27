@@ -19,8 +19,6 @@ namespace PulsePitch.Repository
             _context = context;
         }
 
-        
-
         public async Task<List<Formations>> GetAllFormations(List<int> id)
         {
             List<Formations> formations = await _context.Formations.Include(f => f.Players).Where(f => id.Any(id => f.TeamId == id)).ToListAsync();
