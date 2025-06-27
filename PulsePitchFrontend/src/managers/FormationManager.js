@@ -1,8 +1,12 @@
 import axiosClient from './axiosClient';
+import qs from 'qs';
+
 
 export const fetchFormationsByTeamId = async (id) => {
   const { data } = await axiosClient.get(`/formations/team`, {
-    params: { id: id.join(',')}});
+    params: { id: id },
+    paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' }),
+  })
   return data
 };
 

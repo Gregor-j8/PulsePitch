@@ -10,9 +10,7 @@ export const ChooseNewMessage = ({setNewMessageModal, loggedInUser, }) => {
 
   if (isLoading) return <div className="text-center p-4">Loading...</div>
 
-  const filteredContacts = contacts.filter(contact =>
-    `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredContacts = contacts.filter(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()))
   const handleNewChat = (id) => {
     const form = {
         UserOneId: loggedInUser.id,
@@ -24,6 +22,7 @@ export const ChooseNewMessage = ({setNewMessageModal, loggedInUser, }) => {
         }
     })
   }
+
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-35">
       <div className="lg:w-3/5 md:w-full sm:w-full max-w-5xl bg-white overflow-hidden">

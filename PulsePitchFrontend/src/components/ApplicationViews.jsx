@@ -67,7 +67,7 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
       <Route
         path="video"
         element={ 
-        <AuthorizedRoute loggedInUser={loggedInUser} roles={"Coach"}>
+        <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
           <VideoUploader/>
          </AuthorizedRoute>}
         />

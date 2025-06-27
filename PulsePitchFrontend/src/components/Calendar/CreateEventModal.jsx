@@ -4,7 +4,6 @@ import { useTeams } from "../../hooks/useTeams"
 export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser }) {
       const { data: events, isLoading, isError } = useGetEventsForDropdown()
       const { data: team } = useTeams()
-      console.log(formData)
     if (isError || isLoading ){
         return null
     }

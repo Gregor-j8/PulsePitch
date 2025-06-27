@@ -22,7 +22,7 @@ export const Home = ({loggedInUser}) => {
             Join Team
           </button>
         </div>
-        {showCreateTeamModal && <CreateTeamModal onClose={() => setShowCreateTeamModal(false)} />}
+        {showCreateTeamModal && <CreateTeamModal loggedInUser={loggedInUser} onClose={() => setShowCreateTeamModal(false)} />}
         {showJoinTeamModal && <JoinTeamModal loggedInUser={loggedInUser} onClose={() => {setShowJoinTeamModal(false)}} />}
       </div>
     </div>
