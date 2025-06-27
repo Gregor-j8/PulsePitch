@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deleteUserProfile, editUserProfile, fetchUserProfileById } from "../managers/UserProfile"
+import { deleteUserProfile, editUserProfile, fetchUserProfileById, fetchAllUserProfile } from "../managers/UserProfile"
 
+export const useAllUserProile = () => {
+  return useQuery({
+    queryKey: ['userprofiles'],
+    queryFn: () => fetchAllUserProfile(),
+  })
+}
 export const useUserProile = (id) => {
   return useQuery({
     queryKey: ['userprofiles', id],

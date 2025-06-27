@@ -8,6 +8,7 @@ namespace PulsePitch.Interfaces
 {
     public interface IUserProfileRepository
     {
+        Task<List<UserProfile?>> GetUserProfile();
         Task<UserProfile?> GetByIdUserProfile(int id);
         Task<UserProfile?> UpdateUserProfile(int id, UserProfile UserProfile);
         Task<UserProfile?> DeleteUserProfile(int id);

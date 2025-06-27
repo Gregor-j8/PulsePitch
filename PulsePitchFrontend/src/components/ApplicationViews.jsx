@@ -51,7 +51,7 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
       <Route
         path="pitch"
         element={
-          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
+          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
             <TacticalView loggedInUser={loggedInUser} />
           </AuthorizedRoute>
       }
@@ -67,10 +67,10 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
       <Route
         path="video"
         element={ 
-        // <AuthorizedRoute loggedInUser={loggedInUser} roles={"Coach"}>
+        <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
           <VideoUploader/>
-        // </AuthorizedRoute>}
-        }/>
+         </AuthorizedRoute>}
+        />
       <Route
         path="inbox"
         element={ 

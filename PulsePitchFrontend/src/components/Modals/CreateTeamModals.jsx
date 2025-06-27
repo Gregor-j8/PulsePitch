@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useCreateTeam } from "../../hooks/useTeams"
 import { useNavigate } from "react-router-dom"
 
-export const CreateTeamModal = ({ onClose }) => {
+export const CreateTeamModal = ({ loggedInUser, onClose }) => {
     const Navigate = useNavigate()
     const [name, setName] = useState('')
     const [code, setCode] = useState('')
@@ -10,7 +10,7 @@ export const CreateTeamModal = ({ onClose }) => {
     
     const handleCreate = () => {
   createTeam.mutate(
-    { name, joincode: code },
+    { name, joincode: code, loggedInUserId: loggedInUser.id },
     {
       onSuccess: () => {
         Navigate("/")

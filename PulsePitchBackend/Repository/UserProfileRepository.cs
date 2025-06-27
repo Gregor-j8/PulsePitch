@@ -18,6 +18,10 @@ namespace PulsePitch.Repository
         }
 
 
+        public async Task<List<UserProfile>> GetUserProfile()
+        {
+            return await _context.UserProfiles.ToListAsync();
+        }
         public async Task<UserProfile> GetByIdUserProfile(int id)
         {
             return await _context.UserProfiles.FirstOrDefaultAsync(c => c.Id == id);

@@ -13,7 +13,7 @@ using PulsePitch.Data;
 namespace PulsePitchBackend.Migrations
 {
     [DbContext(typeof(PulsePitchDbContext))]
-    [Migration("20250625214328_InitialCreate")]
+    [Migration("20250626170202_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -159,13 +159,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e8ad8ea9-0e93-4c64-bce4-330dfc43ecd8",
+                            ConcurrencyStamp = "e11c8c07-ddcb-4438-a829-74f1c142652b",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEAPAwcIOFcPDF/JjdITfw2sol7sYlCv1OgKmouZ89Py1RI3CVQhvVI1ZuEwA/Fg2Cg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEL6yqHX+Qk2DRcWomyT21t9v9HhV/7kNZpT3D7q+TFQh0RmbNi3RO898eYIasxLXUQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e8379421-13fb-4bd3-82a2-1dd2595370e2",
+                            SecurityStamp = "98042dc5-2ebf-4ed6-85f7-6b7558c1f79d",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         },
@@ -173,13 +173,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "56458fae-0fae-4935-b0f0-026b03440940",
+                            ConcurrencyStamp = "24f387d9-3112-4d81-976d-1ddc3d1a7d91",
                             Email = "john@doe.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEJv9pvf427JQUcO+XXeLGpg2e9ffTRKV89/f6pT53qVKzBnOk0pb14OWLVwcZhMCPw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOvLIqc5Yqn2o4NEp3MjOAAIAlVoLhe53/l2TVLZ21E5WVB46O8O7EotivcIlGYUFw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "618b84ee-ec92-4b5f-a6d0-f27835609380",
+                            SecurityStamp = "a8f6d1fa-77af-4c2b-9af0-fef779934b92",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -187,13 +187,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8aac446b-c0dd-4fe2-a530-651a837c705c",
+                            ConcurrencyStamp = "6751ec2f-10ab-421b-a115-5ee29c838b0f",
                             Email = "jane@smith.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEIM/KfAv4qgksukcgwOtUCjX6/03Bgvznqy8M1uilBjaGiAaQl+kzlem7ZgYpiOTRw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBfqDLoqxPYvcdNKIABUWYIs6CvgKCJMdpCAKDJ49f46OwpV8sFyEafAX0WlnHlZ2A==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0a25f0e6-97ed-452a-a5a1-0d921d6e41a2",
+                            SecurityStamp = "a3bda271-6856-4d8a-99bb-9dd2f76315fe",
                             TwoFactorEnabled = false,
                             UserName = "JaneSmith"
                         },
@@ -201,13 +201,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aa711aee-5a92-42ce-b071-1cb5c98b67a6",
+                            ConcurrencyStamp = "6ed7c422-72d9-48d1-8854-c1594a0d40e9",
                             Email = "alice@johnson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEMjErmj2royxyUy9wSaFWVbFkVZy/18yVtwyDQGULS7ODC7CFcrP3R5x9nMIS01p/g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDRQ/eGSYvHJztb6eMVogTvWORevocHhFjIRK9jXqBKTfaN+OIl2Wv1mI/vTmxxcOQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "6c57ec4c-5c34-493f-80ed-73f89410b4af",
+                            SecurityStamp = "47f7fe99-52c2-4122-8d6e-c8d222457bcc",
                             TwoFactorEnabled = false,
                             UserName = "AliceJohnson"
                         },
@@ -215,13 +215,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "be546ed2-88d8-4450-bf5e-34dc14f551d9",
+                            ConcurrencyStamp = "c8b11e1e-d4b0-4bbd-9f02-bf6b4e9ecb46",
                             Email = "bob@williams.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEDs65UjnvQAntO3q9SMwrWlsrGo5BPt4iS6caQPDpGBFA8+dJu5OvHunY6kUZdds/A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECUKA8I6gURLnCyYWaxzJZ22V63u93k5cARgl7dhPidyYXMwmexF1Qj6wi7ZBrDroA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "64df0e37-aae6-4912-b3e9-4cc58a6bde90",
+                            SecurityStamp = "e1742dfd-1622-440c-bd63-7dcd1fbc2dc5",
                             TwoFactorEnabled = false,
                             UserName = "BobWilliams"
                         },
@@ -229,15 +229,99 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d5b5fa69-e895-439f-8bcf-87b487be1987",
+                            ConcurrencyStamp = "8b714d5f-70c6-46c8-9ee0-48906806bc11",
                             Email = "Eve@Davis.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEIOtROHn4HNDsQFEhSOkICLpV13zomvabIe9r/R9sFg9pTr7321/Df3qN3OmcV0g0g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGLVxQMkrx87IyjdJnsxJZCHLiztvv9qhuvaM53J+jaq5nVi0A5Qt52tY4lOZDtc2g==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e9ef1dbc-66d4-4895-a317-59d27c0a6d22",
+                            SecurityStamp = "638d4cdc-2c76-4315-905f-2785168766d5",
                             TwoFactorEnabled = false,
                             UserName = "EveDavis"
+                        },
+                        new
+                        {
+                            Id = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "1b5631a4-2933-486e-98ab-77e6721f85d0",
+                            Email = "david@brown.comx",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEEJBNMUARgaXc4SNmOFiJRbGX1cXCxPISfx5KjC8lJNwozTvRmxHIF58vpo9uhd7hA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "c37e80eb-aea3-4ce3-9149-225439091b23",
+                            TwoFactorEnabled = false,
+                            UserName = "DavidBrown"
+                        },
+                        new
+                        {
+                            Id = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "3f4c6dc2-272e-4409-a10d-6d04e6062c3b",
+                            Email = "olivia@taylor.comx",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEPfTygfYjlG818vLnm9BgEp0/MYny8IdBqRV7P52QuPc9p/m85CmN8Xnon0wf2dgOA==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "f9263624-d831-4fd7-ba74-abf2e59beeed",
+                            TwoFactorEnabled = false,
+                            UserName = "OliviaTaylor"
+                        },
+                        new
+                        {
+                            Id = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "fcc79ea9-f07e-4f42-ab32-984ebf06a407",
+                            Email = "james@wilson.comx",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAELPQGsP1ANf1UmJkFOoE2RvYItyqslHE0wutus5JpmMa+i4+rEqaIvtTti40tTsXLg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "d06c4721-47bd-42e0-9181-80a03ffad7bd",
+                            TwoFactorEnabled = false,
+                            UserName = "JamesWilson"
+                        },
+                        new
+                        {
+                            Id = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bee9a196-420f-4878-8ebe-e55aeaf2adb2",
+                            Email = "sophia@moore.comx",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEMiJ4+k0iAv+h2Mqz6HzaP/Xs7vQLQjvcyIaw8ZP/JchQIE9IX9wGSm9qbwvCPCT5Q==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "96ec924e-14d9-42b4-bca3-60a2e8595d86",
+                            TwoFactorEnabled = false,
+                            UserName = "SophiaMoore"
+                        },
+                        new
+                        {
+                            Id = "i9g14e5g-9f17-4e1c-b216-be8d5a3c2b0b",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "ceb0aac6-4d7d-437f-a486-2ccb26854f4a",
+                            Email = "william@anderson.comx",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAEKRBj8BV9in2Xe37WN5qunsbCRaRS64T8LsBBW/ietf1RDtjzL138+B+FDHBjS2W4w==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "b2412cf8-40d8-4bb8-9d7b-1882a72c39bc",
+                            TwoFactorEnabled = false,
+                            UserName = "WilliamAnderson"
+                        },
+                        new
+                        {
+                            Id = "j0h23f6h-0a28-4f2d-b327-cf9e4b2d1c0c",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "e345dcc4-6f04-4c52-b60e-a680cfa002c2",
+                            Email = "mia@thomas.comx",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAIAAYagAAAAELlF5KA0lzNgUr2wNPGmNd5LuWQmM1HT16aVABlE7CtbtyVYbZqdCIVZqLGwOJdLUw==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "9c80a07d-39c8-4fd4-b009-ebd043465eb3",
+                            TwoFactorEnabled = false,
+                            UserName = "MiaThomas"
                         });
                 });
 
@@ -317,6 +401,51 @@ namespace PulsePitchBackend.Migrations
                         {
                             UserId = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "i9g14e5g-9f17-4e1c-b216-be8d5a3c2b0b",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "j0h23f6h-0a28-4f2d-b327-cf9e4b2d1c0c",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
+                        },
+                        new
+                        {
+                            UserId = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
+                            RoleId = "cb1c88d2-f3be-4c6b-b31f-a5f3e39e274f"
                         });
                 });
 
@@ -373,6 +502,12 @@ namespace PulsePitchBackend.Migrations
                             Id = 2,
                             UserOneId = 3,
                             UserTwoId = 4
+                        },
+                        new
+                        {
+                            Id = 3,
+                            UserOneId = 5,
+                            UserTwoId = 6
                         });
                 });
 
@@ -522,7 +657,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "Hey there!",
                             ReceiverId = 2,
                             SenderId = 1,
-                            SentAt = new DateTime(2025, 6, 25, 21, 43, 27, 399, DateTimeKind.Utc).AddTicks(5912)
+                            SentAt = new DateTime(2025, 6, 26, 17, 2, 1, 679, DateTimeKind.Utc).AddTicks(7231)
                         },
                         new
                         {
@@ -531,7 +666,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "Hey! Ready for practice?",
                             ReceiverId = 1,
                             SenderId = 2,
-                            SentAt = new DateTime(2025, 6, 25, 21, 44, 27, 399, DateTimeKind.Utc).AddTicks(5914)
+                            SentAt = new DateTime(2025, 6, 26, 17, 3, 1, 679, DateTimeKind.Utc).AddTicks(7232)
                         },
                         new
                         {
@@ -540,7 +675,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "Coach, what time is the game?",
                             ReceiverId = 4,
                             SenderId = 3,
-                            SentAt = new DateTime(2025, 6, 25, 21, 43, 27, 399, DateTimeKind.Utc).AddTicks(5919)
+                            SentAt = new DateTime(2025, 6, 26, 17, 2, 1, 679, DateTimeKind.Utc).AddTicks(7239)
                         },
                         new
                         {
@@ -549,7 +684,16 @@ namespace PulsePitchBackend.Migrations
                             Content = "6 PM sharp. Be there early.",
                             ReceiverId = 3,
                             SenderId = 4,
-                            SentAt = new DateTime(2025, 6, 25, 21, 45, 27, 399, DateTimeKind.Utc).AddTicks(5920)
+                            SentAt = new DateTime(2025, 6, 26, 17, 4, 1, 679, DateTimeKind.Utc).AddTicks(7240)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ChatRoomId = 3,
+                            Content = "New message!",
+                            ReceiverId = 6,
+                            SenderId = 5,
+                            SentAt = new DateTime(2025, 6, 26, 17, 2, 1, 679, DateTimeKind.Utc).AddTicks(7241)
                         });
                 });
 
@@ -590,12 +734,6 @@ namespace PulsePitchBackend.Migrations
                         },
                         new
                         {
-                            Id = 3,
-                            PlayerId = 2,
-                            TeamId = 2
-                        },
-                        new
-                        {
                             Id = 4,
                             PlayerId = 3,
                             TeamId = 4
@@ -623,6 +761,48 @@ namespace PulsePitchBackend.Migrations
                             Id = 8,
                             PlayerId = 6,
                             TeamId = 5
+                        },
+                        new
+                        {
+                            Id = 9,
+                            PlayerId = 7,
+                            TeamId = 7
+                        },
+                        new
+                        {
+                            Id = 10,
+                            PlayerId = 8,
+                            TeamId = 8
+                        },
+                        new
+                        {
+                            Id = 11,
+                            PlayerId = 9,
+                            TeamId = 9
+                        },
+                        new
+                        {
+                            Id = 12,
+                            PlayerId = 10,
+                            TeamId = 10
+                        },
+                        new
+                        {
+                            Id = 14,
+                            PlayerId = 2,
+                            TeamId = 2
+                        },
+                        new
+                        {
+                            Id = 16,
+                            PlayerId = 3,
+                            TeamId = 5
+                        },
+                        new
+                        {
+                            Id = 17,
+                            PlayerId = 3,
+                            TeamId = 6
                         });
                 });
 
@@ -669,46 +849,199 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = 1,
                             FormationId = 1,
-                            Note = "Left Winger",
+                            Note = "Player 1",
                             PositionId = 1,
-                            X = 30.0,
-                            Y = 40.0
+                            X = 920.0,
+                            Y = 344.0
                         },
                         new
                         {
                             Id = 2,
                             FormationId = 1,
-                            Note = "Striker",
+                            Note = "Player 2",
                             PositionId = 2,
-                            X = 50.0,
-                            Y = 40.0
+                            X = 800.0,
+                            Y = 122.0
                         },
                         new
                         {
                             Id = 3,
                             FormationId = 1,
-                            Note = "Right Winger",
+                            Note = "Player 3",
                             PositionId = 3,
-                            X = 70.0,
-                            Y = 40.0
+                            X = 800.0,
+                            Y = 200.0
                         },
                         new
                         {
                             Id = 4,
                             FormationId = 1,
-                            Note = "Central Midfielder",
+                            Note = "Player 4",
                             PositionId = 4,
-                            X = 45.0,
-                            Y = 60.0
+                            X = 800.0,
+                            Y = 433.0
                         },
                         new
                         {
                             Id = 5,
                             FormationId = 1,
-                            Note = "Defender",
+                            Note = "Player 5",
                             PositionId = 5,
-                            X = 45.0,
-                            Y = 20.0
+                            X = 800.0,
+                            Y = 511.0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            FormationId = 1,
+                            Note = "Player 6",
+                            PositionId = 6,
+                            X = 400.0,
+                            Y = 316.0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            FormationId = 1,
+                            Note = "Player 7",
+                            PositionId = 7,
+                            X = 600.0,
+                            Y = 161.0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            FormationId = 1,
+                            Note = "Player 8",
+                            PositionId = 8,
+                            X = 600.0,
+                            Y = 472.0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            FormationId = 1,
+                            Note = "Player 9",
+                            PositionId = 9,
+                            X = 400.0,
+                            Y = 83.0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            FormationId = 1,
+                            Note = "Player 10",
+                            PositionId = 10,
+                            X = 350.0,
+                            Y = 316.0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            FormationId = 1,
+                            Note = "Player 11",
+                            PositionId = 11,
+                            X = 400.0,
+                            Y = 650.0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            FormationId = 1,
+                            Note = "Player 1",
+                            PositionId = 12,
+                            X = 65.0,
+                            Y = 350.0
+                        },
+                        new
+                        {
+                            Id = 13,
+                            FormationId = 1,
+                            Note = "Player 2",
+                            PositionId = 13,
+                            X = 200.0,
+                            Y = 511.0
+                        },
+                        new
+                        {
+                            Id = 14,
+                            FormationId = 1,
+                            Note = "Player 3",
+                            PositionId = 14,
+                            X = 200.0,
+                            Y = 433.0
+                        },
+                        new
+                        {
+                            Id = 15,
+                            FormationId = 1,
+                            Note = "Player 4",
+                            PositionId = 15,
+                            X = 200.0,
+                            Y = 300.0
+                        },
+                        new
+                        {
+                            Id = 16,
+                            FormationId = 1,
+                            Note = "Player 5",
+                            PositionId = 16,
+                            X = 200.0,
+                            Y = 122.0
+                        },
+                        new
+                        {
+                            Id = 17,
+                            FormationId = 1,
+                            Note = "Player 6",
+                            PositionId = 17,
+                            X = 300.0,
+                            Y = 316.0
+                        },
+                        new
+                        {
+                            Id = 18,
+                            FormationId = 1,
+                            Note = "Player 7",
+                            PositionId = 18,
+                            X = 400.0,
+                            Y = 472.0
+                        },
+                        new
+                        {
+                            Id = 19,
+                            FormationId = 1,
+                            Note = "Player 8",
+                            PositionId = 19,
+                            X = 400.0,
+                            Y = 161.0
+                        },
+                        new
+                        {
+                            Id = 20,
+                            FormationId = 1,
+                            Note = "Player 9",
+                            PositionId = 20,
+                            X = 600.0,
+                            Y = 550.0
+                        },
+                        new
+                        {
+                            Id = 21,
+                            FormationId = 1,
+                            Note = "Player 10",
+                            PositionId = 21,
+                            X = 650.0,
+                            Y = 316.0
+                        },
+                        new
+                        {
+                            Id = 22,
+                            FormationId = 1,
+                            Note = "Player 11",
+                            PositionId = 22,
+                            X = 600.0,
+                            Y = 183.0
                         });
                 });
 
@@ -778,6 +1111,34 @@ namespace PulsePitchBackend.Migrations
                             CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             JoinCode = "PNR654",
                             Name = "Panthers"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CoachId = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b",
+                            JoinCode = "WAR789",
+                            Name = "Warriors"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CoachId = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d",
+                            JoinCode = "ROY321",
+                            Name = "Royals"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CoachId = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f",
+                            JoinCode = "STR654",
+                            Name = "Stars"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CoachId = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a",
+                            JoinCode = "RNG987",
+                            Name = "Rangers"
                         });
                 });
 
@@ -925,6 +1286,76 @@ namespace PulsePitchBackend.Migrations
                             Start = new DateTime(2025, 6, 12, 18, 0, 0, 0, DateTimeKind.Unspecified),
                             TeamId = 5,
                             Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Description = "practice Championship Game",
+                            End = new DateTime(2025, 6, 13, 22, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 6, 13, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 6,
+                            Title = "practice"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Description = "State Tournament prep",
+                            End = new DateTime(2025, 6, 15, 22, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 2,
+                            Start = new DateTime(2025, 6, 14, 8, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 7,
+                            Title = "Tournament"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Description = "Morning practice session",
+                            End = new DateTime(2025, 7, 1, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 7, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 8,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Description = "Morning practice session",
+                            End = new DateTime(2025, 7, 3, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 7, 3, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 1,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Description = "Afternoon film",
+                            End = new DateTime(2025, 7, 4, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 2,
+                            Start = new DateTime(2025, 7, 4, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 2,
+                            Title = "film"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Description = "Early morning drills",
+                            End = new DateTime(2025, 7, 6, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 1,
+                            Start = new DateTime(2025, 7, 6, 7, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 3,
+                            Title = "Practice"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Description = "team meeting",
+                            End = new DateTime(2025, 7, 7, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            EventId = 3,
+                            Start = new DateTime(2025, 7, 7, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            TeamId = 4,
+                            Title = "meeting"
                         });
                 });
 
@@ -965,7 +1396,7 @@ namespace PulsePitchBackend.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = 19,
                             AwayTeamId = 4,
                             End = new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             HomeTeamId = 1,
@@ -975,13 +1406,43 @@ namespace PulsePitchBackend.Migrations
                         },
                         new
                         {
-                            Id = 11,
+                            Id = 18,
                             AwayTeamId = 2,
                             End = new DateTime(2025, 6, 10, 19, 0, 0, 0, DateTimeKind.Unspecified),
                             HomeTeamId = 1,
                             OnCalendar = true,
                             Result = "2-1",
                             Start = new DateTime(2025, 6, 10, 18, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AwayTeamId = 5,
+                            End = new DateTime(2025, 6, 23, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 2,
+                            OnCalendar = true,
+                            Result = "3-2",
+                            Start = new DateTime(2025, 6, 23, 19, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AwayTeamId = 3,
+                            End = new DateTime(2025, 6, 24, 21, 30, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 6,
+                            OnCalendar = true,
+                            Result = "1-0",
+                            Start = new DateTime(2025, 6, 24, 20, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 1,
+                            AwayTeamId = 1,
+                            End = new DateTime(2025, 6, 25, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 4,
+                            OnCalendar = true,
+                            Result = "2-2",
+                            Start = new DateTime(2025, 6, 25, 17, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -1006,7 +1467,7 @@ namespace PulsePitchBackend.Migrations
                         new
                         {
                             Id = 4,
-                            AwayTeamId = 4,
+                            AwayTeamId = 8,
                             End = new DateTime(2025, 6, 15, 20, 0, 0, 0, DateTimeKind.Unspecified),
                             HomeTeamId = 2,
                             OnCalendar = true,
@@ -1038,7 +1499,7 @@ namespace PulsePitchBackend.Migrations
                             Id = 7,
                             AwayTeamId = 1,
                             End = new DateTime(2025, 6, 22, 19, 30, 0, 0, DateTimeKind.Unspecified),
-                            HomeTeamId = 4,
+                            HomeTeamId = 7,
                             OnCalendar = true,
                             Result = "3-3",
                             Start = new DateTime(2025, 6, 22, 18, 30, 0, 0, DateTimeKind.Unspecified)
@@ -1072,6 +1533,46 @@ namespace PulsePitchBackend.Migrations
                             OnCalendar = true,
                             Result = "3-1",
                             Start = new DateTime(2025, 6, 25, 19, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AwayTeamId = 7,
+                            End = new DateTime(2025, 7, 2, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 1,
+                            OnCalendar = true,
+                            Result = "TBD",
+                            Start = new DateTime(2025, 7, 2, 19, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AwayTeamId = 3,
+                            End = new DateTime(2025, 7, 5, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 6,
+                            OnCalendar = true,
+                            Result = "TBD",
+                            Start = new DateTime(2025, 7, 5, 18, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AwayTeamId = 4,
+                            End = new DateTime(2025, 7, 8, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 2,
+                            OnCalendar = true,
+                            Result = "TBD",
+                            Start = new DateTime(2025, 7, 8, 18, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AwayTeamId = 9,
+                            End = new DateTime(2025, 7, 9, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            HomeTeamId = 5,
+                            OnCalendar = true,
+                            Result = "TBD",
+                            Start = new DateTime(2025, 7, 9, 18, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -1172,6 +1673,60 @@ namespace PulsePitchBackend.Migrations
                             IdentityUserId = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                             ImageLocation = "https://robohash.org/hicnihilipsa.png?size=150x150&set=set1",
                             LastName = "Davis"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreateDateTime = new DateTime(2024, 7, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "David",
+                            IdentityUserId = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b",
+                            ImageLocation = "https://robohash.org/etvoluptatemquas.png?size=150x150&set=set1",
+                            LastName = "Brown"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreateDateTime = new DateTime(2023, 8, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Olivia",
+                            IdentityUserId = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d",
+                            ImageLocation = "https://robohash.org/eiusdoloreea.png?size=150x150&set=set1",
+                            LastName = "Taylor"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreateDateTime = new DateTime(2022, 9, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "James",
+                            IdentityUserId = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f",
+                            ImageLocation = "https://robohash.org/voluptatemautemdolor.png?size=150x150&set=set1",
+                            LastName = "Wilson"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreateDateTime = new DateTime(2024, 10, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Sophia",
+                            IdentityUserId = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a",
+                            ImageLocation = "https://robohash.org/quoslaboriosamodio.png?size=150x150&set=set1",
+                            LastName = "Moore"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreateDateTime = new DateTime(2023, 11, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "William",
+                            IdentityUserId = "i9g14e5g-9f17-4e1c-b216-be8d5a3c2b0b",
+                            ImageLocation = "https://robohash.org/temporibusdoloreea.png?size=150x150&set=set1",
+                            LastName = "Anderson"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreateDateTime = new DateTime(2022, 12, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Mia",
+                            IdentityUserId = "j0h23f6h-0a28-4f2d-b327-cf9e4b2d1c0c",
+                            ImageLocation = "https://robohash.org/rerumveritatisunde.png?size=150x150&set=set1",
+                            LastName = "Thomas"
                         });
                 });
 

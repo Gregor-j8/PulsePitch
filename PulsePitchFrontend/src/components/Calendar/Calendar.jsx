@@ -17,7 +17,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId))
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
-  const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '' })
+  const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showCreateGameModal, setshowCreateGameModal] = useState(false)
   const [DetailsModal, setDetailsModal] = useState(false)
@@ -29,10 +29,10 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const [StarterFormData, SetStarterFormData] = useState({})
   const handleAddEvent = () => {
     const event = { title: createEvents.title, description: createEvents.description, 
-      start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: calendarEvents.teamId}
+      start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: createEvents.teamId}
     createEvent.mutate(event)
     setShowCreateModal(false)
-    setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '' })
+    setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
   }
   const handleEventClick = (info) => {
       setDetailsModal(true)
@@ -49,7 +49,6 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
     }
     refreshUser()
   },[])
-console.log(calenderGames)
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
       <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
@@ -114,6 +113,7 @@ console.log(calenderGames)
           setFormData={setCreateEvents}
           onClose={() => setShowCreateModal(false)}
           onSubmit={handleAddEvent}
+          loggedInUser={loggedInUser}
         />
       )}
       {DetailsModal && (

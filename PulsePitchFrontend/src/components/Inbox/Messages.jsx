@@ -3,11 +3,13 @@ import { useChatRooms } from "../../hooks/useChatRoom"
 import { useCreateMessage, useDeleteMessageById, useRoomMessages } from "../../hooks/useMessages"
 import { LoadingSpinner } from "../Loading/LoadingPage"
 import { toast } from "react-toastify"
-import { Trash } from "lucide-react"
+import { Plus, Trash } from "lucide-react"
+import { ChooseNewMessage } from "./ChooseNewMessage"
 
 export const Messages = ({ loggedInUser }) => {
   const [selectedChat, setSelectedChat] = useState(null)
   const [newMessage, setNewMessage] = useState(null)
+  const [newMessageModal, setNewMessageModal] = useState(null)
   const [hoveredId, setHoveredId] = useState(null)
   const { data: useChatRoom, isLoading } = useChatRooms(loggedInUser.id)
   const { data: messages } = useRoomMessages(selectedChat?.id)
@@ -32,7 +34,10 @@ export const Messages = ({ loggedInUser }) => {
   return (
     <div className="flex bg-white rounded-lg shadow-md overflow-hidden h-[500px]">
       <div className="w-1/3 border-r p-4 overflow-y-auto">
+      <div className="flex justify-between align-middle">
         <h2 className="text-lg font-semibold mb-4 text-gray-700">Chats</h2>
+        <Plus className="mb-4" onClick={() => setNewMessageModal(true)}/>
+      </div>
         {useChatRoom.map(chat => {
           return (
             <button key={chat.id} onClick={() => setSelectedChat(chat)} className="block w-full text-left px-3 py-2 rounded-md mb-2 hover:bg-gray-100 text-gray-700">
@@ -94,6 +99,9 @@ export const Messages = ({ loggedInUser }) => {
           </div>
         )}
       </div>
+      {newMessageModal && (
+        <ChooseNewMessage loggedInUser={loggedInUser} setNewMessageModal={setNewMessageModal}/>
+      )}
     </div>
   )
 }

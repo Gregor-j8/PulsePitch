@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { fetchTeams, fetchTeamById, createTeam, editTeam, deleteTeam, JoinTeam } from '../managers/TeamManagers'
-import { Suspense } from 'react'
 
 export const useTeams = () => {
   return useQuery({

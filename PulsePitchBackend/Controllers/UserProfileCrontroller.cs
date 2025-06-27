@@ -23,6 +23,14 @@ public class UserProfileController : ControllerBase
         _mapper = mapper;
     }
 
+    [HttpGet]
+    public async Task<ActionResult<UserProfileDTO>> GetUserProfiles()
+    {
+        var userProfile = await _UserProfileRepo.GetUserProfile();
+        var userProfileDTO = _mapper.Map<List<UserProfileDTO>>(userProfile);
+
+        return Ok(userProfileDTO);
+    }
     [HttpGet("{id}")]
     public async Task<ActionResult<UserProfileDTO>> GetByIdUserProfile(int id)
     {

@@ -13,7 +13,7 @@ export const GameEditModal = ({ choosenGameId, setChosenGameId, onClose, Starter
     const payload = { start: formData.start, end: formData.end, homeTeamId: formData.homeTeamId, 
         awayTeamId: formData.awayTeamId, result: formData.result,}
         updateTeamGame({ id: choosenGameId, data: payload }, 
-        { onSuccess: () => { setChosenGameId(null); onClose()}})}
+        { onSuccess: () => {onClose(); setChosenGameId(null)}})}
 
   return (
     <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
