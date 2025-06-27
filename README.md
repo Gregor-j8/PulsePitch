@@ -7,8 +7,6 @@ UI & Styling: Tailwind CSS, Flatpickr, Lucide React
 
 State/Data: React Query, Immer, use-immer, Lodash
 
-Charts & Visualization: D3, D3-Soccer
-
 Calendar & Scheduling: FullCalendar (DayGrid, TimeGrid, Interaction)
 
 Other: Axios, React Toastify, Rabonajs, Date-fns
@@ -36,6 +34,6 @@ Utilities: Pydantic, Uvicorn
 
 📅 Calendar: Schedule matches, training sessions, and track team availability.
 
-📹 Video Analysis (AI): Upload match videos for automatic player detection, tracking, and performance analysis.
+📹 Video Analysis (AI): Upload match videos for automatic player detection and tracking
 
 🔐 User Authentication: Secure user sign-up and login system.
