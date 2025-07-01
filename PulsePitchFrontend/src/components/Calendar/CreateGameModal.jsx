@@ -69,7 +69,7 @@ export const CreateGameModal = ({ onClose, loggedInUser }) => {
           </button>
           <button type="button" onClick={handleSubmit} 
             className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-            Add Event
+            Add Game
           </button>
         </div>
       </div>
