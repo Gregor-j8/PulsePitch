@@ -13,7 +13,7 @@ using PulsePitch.Data;
 namespace PulsePitchBackend.Migrations
 {
     [DbContext(typeof(PulsePitchDbContext))]
-    [Migration("20250626170202_InitialCreate")]
+    [Migration("20251118041551_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace PulsePitchBackend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -159,13 +159,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e11c8c07-ddcb-4438-a829-74f1c142652b",
+                            ConcurrencyStamp = "9bc64793-0279-45ed-b029-16683809972c",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEL6yqHX+Qk2DRcWomyT21t9v9HhV/7kNZpT3D7q+TFQh0RmbNi3RO898eYIasxLXUQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEObraD+tHu7GKiJ4b6f32SbARkmCdF1GiS0SdmYVh72n+3YdVtxFjNh6EkExz7ZojA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "98042dc5-2ebf-4ed6-85f7-6b7558c1f79d",
+                            SecurityStamp = "83c84709-5690-4e37-96c0-93c65438c08c",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         },
@@ -173,13 +173,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "24f387d9-3112-4d81-976d-1ddc3d1a7d91",
+                            ConcurrencyStamp = "1d7ef48f-5871-4294-9611-b2d8b888539e",
                             Email = "john@doe.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEOvLIqc5Yqn2o4NEp3MjOAAIAlVoLhe53/l2TVLZ21E5WVB46O8O7EotivcIlGYUFw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH44t1LnPfv3Pbf7a4Wv7o7nNrsEAeF4we2c7f52p+R40juINkzuNOG7McDKZcMrBg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a8f6d1fa-77af-4c2b-9af0-fef779934b92",
+                            SecurityStamp = "8848d01c-630e-44f8-b38f-b6a741d582f1",
                             TwoFactorEnabled = false,
                             UserName = "JohnDoe"
                         },
@@ -187,13 +187,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6751ec2f-10ab-421b-a115-5ee29c838b0f",
+                            ConcurrencyStamp = "ae1a6312-9a9e-4bd1-9c53-11c9943281e6",
                             Email = "jane@smith.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEBfqDLoqxPYvcdNKIABUWYIs6CvgKCJMdpCAKDJ49f46OwpV8sFyEafAX0WlnHlZ2A==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKY7qiS45HvHirJonRdPSIkenhN3NqhxBnyx5Ayxco+g2jHoOfc1MDhw84i1i6oPAg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a3bda271-6856-4d8a-99bb-9dd2f76315fe",
+                            SecurityStamp = "1ca2fa93-c4fc-47b2-a812-670d914722e1",
                             TwoFactorEnabled = false,
                             UserName = "JaneSmith"
                         },
@@ -201,13 +201,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6ed7c422-72d9-48d1-8854-c1594a0d40e9",
+                            ConcurrencyStamp = "94a29486-fba6-4fe7-b5bc-4b49c8976152",
                             Email = "alice@johnson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEDRQ/eGSYvHJztb6eMVogTvWORevocHhFjIRK9jXqBKTfaN+OIl2Wv1mI/vTmxxcOQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJqX+colBbeUDbHsX6CP1V09vB3u+Jnb1tuo+Q5e+hplfs9NBf4ms4ARMocRzvxLmQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "47f7fe99-52c2-4122-8d6e-c8d222457bcc",
+                            SecurityStamp = "3dbe54d3-d995-4c10-a00e-e6e7dc43aadf",
                             TwoFactorEnabled = false,
                             UserName = "AliceJohnson"
                         },
@@ -215,13 +215,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c8b11e1e-d4b0-4bbd-9f02-bf6b4e9ecb46",
+                            ConcurrencyStamp = "cceab545-a4f7-4f31-8b78-c6ea2fa072e6",
                             Email = "bob@williams.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAECUKA8I6gURLnCyYWaxzJZ22V63u93k5cARgl7dhPidyYXMwmexF1Qj6wi7ZBrDroA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMx8kI4erY8kODbI7lCmKZmHdZR6aYaEM8fzFbR9uNgqUvop+7lKSSpPKh6NhUuSPA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e1742dfd-1622-440c-bd63-7dcd1fbc2dc5",
+                            SecurityStamp = "ee2425d4-f548-484f-a700-b8d0481a42ad",
                             TwoFactorEnabled = false,
                             UserName = "BobWilliams"
                         },
@@ -229,13 +229,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8b714d5f-70c6-46c8-9ee0-48906806bc11",
+                            ConcurrencyStamp = "aad06858-404a-4549-a66c-70fb7424ad3f",
                             Email = "Eve@Davis.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEGLVxQMkrx87IyjdJnsxJZCHLiztvv9qhuvaM53J+jaq5nVi0A5Qt52tY4lOZDtc2g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGuu5KTkef6IMNolsREoBF5XNdAJ1esJ3LzZRi0ogjrmk3c6MEZaZ8sElgV2DfmK+w==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "638d4cdc-2c76-4315-905f-2785168766d5",
+                            SecurityStamp = "5cbde0ec-8ef4-4161-8c6b-840851568704",
                             TwoFactorEnabled = false,
                             UserName = "EveDavis"
                         },
@@ -243,13 +243,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1b5631a4-2933-486e-98ab-77e6721f85d0",
+                            ConcurrencyStamp = "05269dc4-ed5a-4f1d-8102-d80b5567a633",
                             Email = "david@brown.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEEJBNMUARgaXc4SNmOFiJRbGX1cXCxPISfx5KjC8lJNwozTvRmxHIF58vpo9uhd7hA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDhzlXWvRW93q+X74qQNfkG3r+ZHIfaBLYepsMqnU82axGb58WDZkH3Mk+6HnzCfbQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "c37e80eb-aea3-4ce3-9149-225439091b23",
+                            SecurityStamp = "2e98093a-2e1b-4227-9ba5-e1845e9a8b42",
                             TwoFactorEnabled = false,
                             UserName = "DavidBrown"
                         },
@@ -257,13 +257,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3f4c6dc2-272e-4409-a10d-6d04e6062c3b",
+                            ConcurrencyStamp = "c6a9f715-7582-4c56-a171-57e588d7674c",
                             Email = "olivia@taylor.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEPfTygfYjlG818vLnm9BgEp0/MYny8IdBqRV7P52QuPc9p/m85CmN8Xnon0wf2dgOA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKT1SfsqM8csjfm7uGlQCBrdtKXr6H6hQzJJPzLOrS30uTZx/Tzu4p81E7ttbGCnKg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f9263624-d831-4fd7-ba74-abf2e59beeed",
+                            SecurityStamp = "7bd642fc-cafd-4b02-a90e-9523185bcf5e",
                             TwoFactorEnabled = false,
                             UserName = "OliviaTaylor"
                         },
@@ -271,13 +271,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fcc79ea9-f07e-4f42-ab32-984ebf06a407",
+                            ConcurrencyStamp = "dcea1a82-562c-49d8-8cee-897d6c4f2664",
                             Email = "james@wilson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAELPQGsP1ANf1UmJkFOoE2RvYItyqslHE0wutus5JpmMa+i4+rEqaIvtTti40tTsXLg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEF8tzSAKAYbAK0WdvBAK7OBTbGHBIUI5Hu3ajSeWEM8sRkSrDsTWC3kspvBd2/3qLg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d06c4721-47bd-42e0-9181-80a03ffad7bd",
+                            SecurityStamp = "7151ccb0-b94b-420d-a4ee-fadc90944745",
                             TwoFactorEnabled = false,
                             UserName = "JamesWilson"
                         },
@@ -285,13 +285,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bee9a196-420f-4878-8ebe-e55aeaf2adb2",
+                            ConcurrencyStamp = "bde41eed-dfb6-4911-8487-580e34c8481a",
                             Email = "sophia@moore.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEMiJ4+k0iAv+h2Mqz6HzaP/Xs7vQLQjvcyIaw8ZP/JchQIE9IX9wGSm9qbwvCPCT5Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBClTyRS53ywVLJTIQ4X7iMOvEk3FyRnDVDUIJLi4+ijfImpAGtgwDf8ptvNHIxjqQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "96ec924e-14d9-42b4-bca3-60a2e8595d86",
+                            SecurityStamp = "f6e1484b-b978-42af-ada0-0c33e1ab5144",
                             TwoFactorEnabled = false,
                             UserName = "SophiaMoore"
                         },
@@ -299,13 +299,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "i9g14e5g-9f17-4e1c-b216-be8d5a3c2b0b",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "ceb0aac6-4d7d-437f-a486-2ccb26854f4a",
+                            ConcurrencyStamp = "d77c1918-8e6b-4dae-b9ed-a510241ee9b1",
                             Email = "william@anderson.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAEKRBj8BV9in2Xe37WN5qunsbCRaRS64T8LsBBW/ietf1RDtjzL138+B+FDHBjS2W4w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHQGQ/gnAP8eF3hmzYODk4WF6bI14oYXx/q1FQKX1zzbb+dj2GWMP3BmY+1VV9M4ew==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b2412cf8-40d8-4bb8-9d7b-1882a72c39bc",
+                            SecurityStamp = "04a9ac98-d22a-42f6-bb12-90d93be974b7",
                             TwoFactorEnabled = false,
                             UserName = "WilliamAnderson"
                         },
@@ -313,13 +313,13 @@ namespace PulsePitchBackend.Migrations
                         {
                             Id = "j0h23f6h-0a28-4f2d-b327-cf9e4b2d1c0c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "e345dcc4-6f04-4c52-b60e-a680cfa002c2",
+                            ConcurrencyStamp = "3d0bda85-a1af-4f4d-9f4a-63b15961b523",
                             Email = "mia@thomas.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAELlF5KA0lzNgUr2wNPGmNd5LuWQmM1HT16aVABlE7CtbtyVYbZqdCIVZqLGwOJdLUw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPsjIANe+tyy816Q8K+YqUA0zINOigztfWNiYWECDFchPLL7Ih49ikcZVTz+s3heIQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9c80a07d-39c8-4fd4-b009-ebd043465eb3",
+                            SecurityStamp = "fc25ee1e-94d6-4a4a-ba99-3419c13e77d1",
                             TwoFactorEnabled = false,
                             UserName = "MiaThomas"
                         });
@@ -657,7 +657,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "Hey there!",
                             ReceiverId = 2,
                             SenderId = 1,
-                            SentAt = new DateTime(2025, 6, 26, 17, 2, 1, 679, DateTimeKind.Utc).AddTicks(7231)
+                            SentAt = new DateTime(2025, 11, 18, 4, 15, 50, 645, DateTimeKind.Utc).AddTicks(4413)
                         },
                         new
                         {
@@ -666,7 +666,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "Hey! Ready for practice?",
                             ReceiverId = 1,
                             SenderId = 2,
-                            SentAt = new DateTime(2025, 6, 26, 17, 3, 1, 679, DateTimeKind.Utc).AddTicks(7232)
+                            SentAt = new DateTime(2025, 11, 18, 4, 16, 50, 645, DateTimeKind.Utc).AddTicks(4503)
                         },
                         new
                         {
@@ -675,7 +675,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "Coach, what time is the game?",
                             ReceiverId = 4,
                             SenderId = 3,
-                            SentAt = new DateTime(2025, 6, 26, 17, 2, 1, 679, DateTimeKind.Utc).AddTicks(7239)
+                            SentAt = new DateTime(2025, 11, 18, 4, 15, 50, 645, DateTimeKind.Utc).AddTicks(4545)
                         },
                         new
                         {
@@ -684,7 +684,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "6 PM sharp. Be there early.",
                             ReceiverId = 3,
                             SenderId = 4,
-                            SentAt = new DateTime(2025, 6, 26, 17, 4, 1, 679, DateTimeKind.Utc).AddTicks(7240)
+                            SentAt = new DateTime(2025, 11, 18, 4, 17, 50, 645, DateTimeKind.Utc).AddTicks(4546)
                         },
                         new
                         {
@@ -693,7 +693,7 @@ namespace PulsePitchBackend.Migrations
                             Content = "New message!",
                             ReceiverId = 6,
                             SenderId = 5,
-                            SentAt = new DateTime(2025, 6, 26, 17, 2, 1, 679, DateTimeKind.Utc).AddTicks(7241)
+                            SentAt = new DateTime(2025, 11, 18, 4, 15, 50, 645, DateTimeKind.Utc).AddTicks(4547)
                         });
                 });
 
@@ -1607,7 +1607,7 @@ namespace PulsePitchBackend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<List<string>>("Roles")
+                    b.PrimitiveCollection<List<string>>("Roles")
                         .HasColumnType("text[]");
 
                     b.Property<string>("UserName")
