@@ -1,4 +1,7 @@
-export const Layout = ({
+import React from 'react';
+import { LayoutProps } from '../../types';
+
+export const Layout: React.FC<LayoutProps> = ({
   children,
   variant = 'default',
   className = ''

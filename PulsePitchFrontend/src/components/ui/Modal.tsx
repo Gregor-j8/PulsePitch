@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { ModalProps, ModalSubComponentProps } from '../../types';
 
-export const Modal = ({
+export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   title,
@@ -8,7 +9,7 @@ export const Modal = ({
   children
 }) => {
   useEffect(() => {
-    const handleEscape = (event) => {
+    const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape' && isOpen) {
         onClose();
       }
@@ -42,13 +43,16 @@ export const Modal = ({
     <div className="fixed inset-0 z-[1040] flex items-center justify-center" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      <div className={`relative bg-white rounded-xl shadow-2xl w-full ${sizeStyles[size]} mx-4 max-h-[90vh] overflow-y-auto`} onClick={(e) => e.stopPropagation()}>
+      <div className={`relative bg-white rounded-xl shadow-2xl w-full ${sizeStyles[size]} mx-4 max-h-[90vh] overflow-y-auto`}
+        onClick={(e) => e.stopPropagation()}
+      >
         {title && (
           <div className="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
             <h2 className="text-2xl font-bold text-neutral-800">
               {title}
             </h2>
-            <button onClick={onClose} className="text-neutral-400 hover:text-neutral-600 transition-colors" aria-label="Close modal">
+            <button onClick={onClose} className="text-neutral-400 hover:text-neutral-600 transition-colors" aria-label="Close modal"
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
@@ -69,7 +73,7 @@ export const Modal = ({
   );
 };
 
-export const ModalBody = ({ children, className = '' }) => {
+export const ModalBody: React.FC<ModalSubComponentProps> = ({ children, className = '' }) => {
   return (
     <div className={`px-6 py-4 ${className}`}>
       {children}
@@ -77,7 +81,7 @@ export const ModalBody = ({ children, className = '' }) => {
   );
 };
 
-export const ModalFooter = ({ children, className = '' }) => {
+export const ModalFooter: React.FC<ModalSubComponentProps> = ({ children, className = '' }) => {
   return (
     <div className={`px-6 py-4 border-t border-neutral-200 flex gap-3 justify-end ${className}`}>
       {children}
@@ -85,7 +89,7 @@ export const ModalFooter = ({ children, className = '' }) => {
   );
 };
 
-export const ModalHeader = ({ children, className = '' }) => {
+export const ModalHeader: React.FC<ModalSubComponentProps> = ({ children, className = '' }) => {
   return (
     <div className={`px-6 py-4 border-b border-neutral-200 ${className}`}>
       {children}

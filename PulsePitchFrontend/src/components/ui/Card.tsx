@@ -1,4 +1,7 @@
-export const Card = ({
+import React from 'react';
+import { CardProps } from '../../types';
+
+export const Card: React.FC<CardProps> = ({
   children,
   variant = 'default',
   className = '',

@@ -1,4 +1,7 @@
-export const Input = ({
+import React from 'react';
+import { InputProps, SelectProps, TextareaProps } from '../../types';
+
+export const Input: React.FC<InputProps> = ({
   label,
   error,
   helperText,
@@ -42,7 +45,7 @@ export const Input = ({
   );
 };
 
-export const Select = ({
+export const Select: React.FC<SelectProps> = ({
   label,
   error,
   helperText,
@@ -93,7 +96,7 @@ export const Select = ({
   );
 };
 
-export const Textarea = ({
+export const Textarea: React.FC<TextareaProps> = ({
   label,
   error,
   helperText,
