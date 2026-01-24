@@ -48,7 +48,7 @@ export const useDeleteFormations = () => {
   return useMutation({
     mutationFn: deleteFormations,
     onSuccess: () => {
-      queryClient.invalidateQueries(['formations']);
+      queryClient.invalidateQueries({ queryKey: ['formations'] });
     }
   })
 }

@@ -48,7 +48,7 @@ export const useDeletePlayersInFormations = () => {
   return useMutation({
     mutationFn: deletePlayersinformation,
    onSuccess: () => {
-  queryClient.invalidateQueries(['PlayersInFormations']);
+  queryClient.invalidateQueries({ queryKey: ['PlayersInFormations'] });
     }
   })
 }

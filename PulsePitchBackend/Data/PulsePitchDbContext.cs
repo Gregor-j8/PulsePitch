@@ -119,84 +119,84 @@ namespace PulsePitch.Data
             {
                 Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                 UserName = "Administrator",
-                Email = "admina@strator.comx",
+                Email = "admin@strator.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df",
                 UserName = "JohnDoe",
-                Email = "john@doe.comx",
+                Email = "john@doe.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "a7d21fac-3b21-454a-a747-075f072d0cf3",
                 UserName = "JaneSmith",
-                Email = "jane@smith.comx",
+                Email = "jane@smith.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "c806cfae-bda9-47c5-8473-dd52fd056a9b",
                 UserName = "AliceJohnson",
-                Email = "alice@johnson.comx",
+                Email = "alice@johnson.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "9ce89d88-75da-4a80-9b0d-3fe58582b8e2",
                 UserName = "BobWilliams",
-                Email = "bob@williams.comx",
+                Email = "bob@williams.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "d224a03d-bf0c-4a05-b728-e3521e45d74d",
                 UserName = "EveDavis",
-                Email = "Eve@Davis.comx",
+                Email = "Eve@Davis.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b",
                 UserName = "DavidBrown",
-                Email = "david@brown.comx",
+                Email = "david@brown.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d",
                 UserName = "OliviaTaylor",
-                Email = "olivia@taylor.comx",
+                Email = "olivia@taylor.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f",
                 UserName = "JamesWilson",
-                Email = "james@wilson.comx",
+                Email = "james@wilson.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a",
                 UserName = "SophiaMoore",
-                Email = "sophia@moore.comx",
+                Email = "sophia@moore.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "i9g14e5g-9f17-4e1c-b216-be8d5a3c2b0b",
                 UserName = "WilliamAnderson",
-                Email = "william@anderson.comx",
+                Email = "william@anderson.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             new IdentityUser
             {
                 Id = "j0h23f6h-0a28-4f2d-b327-cf9e4b2d1c0c",
                 UserName = "MiaThomas",
-                Email = "mia@thomas.comx",
+                Email = "mia@thomas.com",
                 PasswordHash = new PasswordHasher<IdentityUser>().HashPassword(null, _configuration["AdminPassword"])
             },
             });

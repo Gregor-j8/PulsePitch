@@ -14,7 +14,7 @@ export const useCreateChatRoom = () => {
   return useMutation({
     mutationFn: createChatRoom,
     onSuccess: () => {
-      queryClient.invalidateQueries(['chatRooms'])
+      queryClient.invalidateQueries({ queryKey: ['chatRooms'] })
     },
   })
 }
@@ -24,7 +24,7 @@ export const useDeleteChatRoom = () => {
   return useMutation({
     mutationFn: deleteChatRoom,
     onSuccess: () => {
-      queryClient.invalidateQueries(['chatRooms'])
+      queryClient.invalidateQueries({ queryKey: ['chatRooms'] })
     },
   })
 }

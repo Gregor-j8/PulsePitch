@@ -47,7 +47,7 @@ export const useDeleteTeamGame = () => {
   return useMutation({
     mutationFn: deleteTeamGame,
    onSuccess: () => {
-  queryClient.invalidateQueries(['teamgame']);
+  queryClient.invalidateQueries({ queryKey: ['teamgame'] });
     }
   })
 }

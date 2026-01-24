@@ -46,7 +46,7 @@ export const useDeleteTeamEvent = () => {
   return useMutation({
     mutationFn: deleteTeamEvent,
    onSuccess: () => {
-  queryClient.invalidateQueries(['event']);
+  queryClient.invalidateQueries({ queryKey: ['event'] });
     }
   })
 }

@@ -23,6 +23,32 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
+// Logging configuration
+builder.Services.AddLogging(config =>
+{
+    config.AddConsole();
+    config.AddDebug();
+});
+
+// Response caching and memory cache
+builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
+
+// CORS Configuration
+var allowedOrigins = builder.Configuration["ALLOWED_ORIGINS"]?.Split(",")
+    ?? new[] { "http://localhost:5173" };
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
     {
@@ -46,12 +72,13 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 
 builder.Services.AddIdentityCore<IdentityUser>(config =>
             {
-                //for demonstration only - change these for other projects
-                config.Password.RequireDigit = false;
+                // Production-ready password requirements
+                config.Password.RequireDigit = true;
                 config.Password.RequiredLength = 8;
-                config.Password.RequireLowercase = false;
-                config.Password.RequireNonAlphanumeric = false;
-                config.Password.RequireUppercase = false;
+                config.Password.RequireLowercase = true;
+                config.Password.RequireNonAlphanumeric = true;
+                config.Password.RequireUppercase = true;
+                config.Password.RequiredUniqueChars = 3;
                 config.User.RequireUniqueEmail = true;
             })
     .AddRoles<IdentityRole>()  //add the role service.  
@@ -84,6 +111,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("AllowFrontend");
+app.UseResponseCaching();
 app.UseAuthentication();
 app.UseAuthorization();
 
