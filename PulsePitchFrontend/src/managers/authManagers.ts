@@ -1,6 +1,8 @@
+import { UserProfileDTO, RegisterCredentials } from '../types';
+
 const _apiUrl = "/api/auth";
 
-export const login = (email, password) => {
+export const login = (email: string, password: string): Promise<UserProfileDTO | null> => {
   return fetch(_apiUrl + "/login", {
     method: "POST",
     credentials: "same-origin",
@@ -16,25 +18,33 @@ export const login = (email, password) => {
   });
 };
 
-export const logout = () => {
+export const logout = (): Promise<Response> => {
   return fetch(_apiUrl + "/logout");
 };
 
-export const tryGetLoggedInUser = () => {
+export const tryGetLoggedInUser = (): Promise<UserProfileDTO | null> => {
   return fetch(_apiUrl + "/me").then((res) => {
     return res.status === 401 ? Promise.resolve(null) : res.json();
   });
 };
 
-export const register = (userProfile) => {
-  userProfile.password = btoa(userProfile.password);
+interface RegisterResponse {
+  errors?: string[];
+}
+
+export const register = (userProfile: RegisterCredentials): Promise<UserProfileDTO | RegisterResponse> => {
+  const encodedProfile = {
+    ...userProfile,
+    password: btoa(userProfile.password)
+  };
+
   return fetch(_apiUrl + "/register", {
     credentials: "same-origin",
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(userProfile),
+    body: JSON.stringify(encodedProfile),
   }).then((res) => {
     if (res.ok) {
       return fetch(_apiUrl + "/me").then((res) => res.json());
