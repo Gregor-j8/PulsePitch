@@ -5,11 +5,13 @@ using PulsePitch.Models;
 using PulsePitch.DTO;
 using PulsePitch.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PulsePitch.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TeamGameController : ControllerBase
 {
     private readonly PulsePitchDbContext _context;

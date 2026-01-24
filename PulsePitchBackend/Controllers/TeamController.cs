@@ -13,6 +13,7 @@ namespace PulsePitch.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TeamController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;

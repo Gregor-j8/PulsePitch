@@ -7,7 +7,7 @@ import {CreateFormationModal} from "./CreateFormationModal"
 export const TacticalView = ({loggedInUser}) => {
     const navigate = useNavigate()
     const [formationId, setFormationId] = useState(0)
-    const  [formationModal, setFormationModal] = useState(true)
+    const  [formationModal, setFormationModal] = useState(false)
     const  [createFormationModal, setCreateFormationModal] = useState(false)
     const {data: formations } = useGetFormationsByTeamId(loggedInUser.teams.map(team => team.teamId))
 
