@@ -1,10 +1,10 @@
 import { useState } from "react"
-import { useAllUserProile } from "../../hooks/useUserProfile"
+import { useAllUserProfile } from "../../hooks/useUserProfile"
 import { X } from "lucide-react"
 import { useCreateChatRoom } from "../../hooks/useChatRoom";
 
 export const ChooseNewMessage = ({setNewMessageModal, loggedInUser, }) => {
-  const { data: contacts, isLoading } = useAllUserProile()
+  const { data: contacts, isLoading } = useAllUserProfile()
   const createNewChatRoom = useCreateChatRoom()
   const [searchTerm, setSearchTerm] = useState("")
 

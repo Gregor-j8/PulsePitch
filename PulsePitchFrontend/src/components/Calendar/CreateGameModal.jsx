@@ -4,6 +4,10 @@ import { useState } from "react"
 import {LoadingSpinner} from "../Loading/LoadingPage"
 import { useCreateMatchRequest } from "../../hooks/useMatchRequest"
 import { toast } from "react-toastify"
+import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
+import { Button } from "../ui/Button"
+import { Input } from "../ui/Input"
+import { Textarea, Select } from "../ui/Input"
 
 export const CreateGameModal = ({ onClose, loggedInUser }) => {
   const { data: teams, isLoading, isError } = useTeams()
@@ -38,41 +42,58 @@ export const CreateGameModal = ({ onClose, loggedInUser }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/30 backdrop-blur-sm flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md shadow-lg">
-        <h2 className="text-xl font-semibold mb-4">Create Game</h2>
-        <input type="datetime-local" value={formData.start} className="w-full border px-3 py-2 rounded"
-          onChange={(e) => setFormData({ ...formData, start: e.target.value })}/>
-        <input type="datetime-local" value={formData.end} className="w-full border px-3 py-2 rounded mt-2"
-         onChange={(e) => setFormData({ ...formData, end: e.target.value })}/>
-        <select value={formData.homeTeamId} className="w-full border px-3 py-2 rounded mt-2"
-        onChange={(e) => setFormData({ ...formData, homeTeamId: e.target.value })}>
-          <option value="" disabled>
-            Select Home Team
-          </option>
-            {loggedInUser.teams.map(team => (
-                <option key={team.id} value={team.teamId} className="text-black">{teams.find(m => m.id === team.teamId)?.name}</option>
-            ))}
-        </select>
-        <select value={formData.awayTeamId} className="w-full border px-3 py-2 rounded mt-2"
-          onChange={(e) => setFormData({ ...formData, awayTeamId: e.target.value })}>
-          <option value="">Select Opponent</option>
-          {teams.map(team =>
-            team.id == formData.homeTeamId ? null : (
-              <option key={team.id} value={team.id} className="text-black">{team.name}</option>
-            ))}
-        </select>
-        <textarea  onChange={(e) => {setFormData({ ...formData, message: e.target.value })}} className="w-full px-4 py-2 border border-gray-300 rounded-2xl shadow-sm"/>
-        <div className="flex justify-end gap-2 mt-4">
-          <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">
-            Cancel
-          </button>
-          <button type="button" onClick={handleSubmit} 
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-            Add Game
-          </button>
-        </div>
-      </div>
-    </div>
+    <Modal isOpen={true} onClose={onClose} title="Create Game" size="md">
+      <ModalBody>
+        <Input
+          label="Start Time"
+          type="datetime-local"
+          value={formData.start}
+          onChange={(e) => setFormData({ ...formData, start: e.target.value })}
+          className="mb-2"
+        />
+        <Input
+          label="End Time"
+          type="datetime-local"
+          value={formData.end}
+          onChange={(e) => setFormData({ ...formData, end: e.target.value })}
+          className="mb-2"
+        />
+        <Select
+          value={formData.homeTeamId}
+          onChange={(e) => setFormData({ ...formData, homeTeamId: e.target.value })}
+          options={[
+            { value: "", label: "Select Home Team" },
+            ...loggedInUser.teams.map(team => ({
+              value: team.teamId,
+              label: teams.find(m => m.id === team.teamId)?.name
+            }))
+          ]}
+          className="mb-2"
+        />
+        <Select
+          value={formData.awayTeamId}
+          onChange={(e) => setFormData({ ...formData, awayTeamId: e.target.value })}
+          options={[
+            { value: "", label: "Select Opponent" },
+            ...teams
+              .filter(team => team.id != formData.homeTeamId)
+              .map(team => ({ value: team.id, label: team.name }))
+          ]}
+          className="mb-2"
+        />
+        <Textarea
+          placeholder="Message to opponent"
+          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+        />
+      </ModalBody>
+      <ModalFooter>
+        <Button variant="ghost" onClick={onClose}>
+          Cancel
+        </Button>
+        <Button variant="success" onClick={handleSubmit}>
+          Add Game
+        </Button>
+      </ModalFooter>
+    </Modal>
   );
 }

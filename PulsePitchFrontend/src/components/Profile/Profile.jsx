@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { useParams } from "react-router-dom"
-import { useUserProile } from "../../hooks/UseUserProfile"
-import { useEditUserProfile } from "../../hooks/UseUserProfile"
+import { useUserProfile } from "../../hooks/useUserProfile"
+import { useEditUserProfile } from "../../hooks/useUserProfile"
 
 export const Profile = ({ loggedInUser }) => {
   const { id } = useParams()
-  const { data: userProfile } = useUserProile(id)
+  const { data: userProfile } = useUserProfile(id)
   const { mutate: updateUserProfile } = useEditUserProfile()
   const [showModal, setShowModal] = useState(false)
   const [formData, setFormData] = useState({ firstName: userProfile?.firstName, lastName: userProfile?.lastName, email: userProfile?.email})

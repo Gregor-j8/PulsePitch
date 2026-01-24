@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useCreateFormations } from "../../hooks/UseFormation"
 import { useTeams } from "../../hooks/useTeams";
 import { toast } from "react-toastify";
+import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
+import { Button } from "../ui/Button"
+import { Input, Select } from "../ui/Input"
 
 export const CreateFormationModal = ({ loggedInUser, setCreateFormationModal, setFormationModal, setFormationId}) => {
   const {mutate} = useCreateFormations()
@@ -19,35 +22,40 @@ export const CreateFormationModal = ({ loggedInUser, setCreateFormationModal, se
     }})
   }
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-xl font-bold mb-4">Create New Formation</h2>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-            <input value={formation.description} className="w-full border px-3 py-2 rounded"
-              onChange={(e) => setFormation({ ...formation, description: e.target.value })}/>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Formation Name</label>
-            <input value={formation.name} className="w-full border px-3 py-2 rounded"
-              onChange={(e) => setFormation({ ...formation, name: e.target.value })}/>
-          </div>
-           <select value={formation.teamId} onChange={(e) => setFormation({ ...formation, teamId: e.target.value })}
-            className="w-full max-w-md border px-3 py-2 rounded">
-        <option value="" disabled>Choose a team</option>
-        {loggedInUser.teams.map(team => (
-          <option key={team.id} value={team.teamId}>
-            {teamNames?.find(t => t.id === team.teamId)?.name}
-          </option>
-        ))}
-      </select>
-            <button onClick={() => {setCreateFormationModal(false); setFormationModal(true)}} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400"> 
-                Cancel
-            </button>
-            <button className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" onClick={handleSubmit}>
-              Create
-            </button>
-          </div>
-      </div>
+    <Modal isOpen={true} onClose={() => {setCreateFormationModal(false); setFormationModal(true)}} title="Create New Formation" size="md">
+      <ModalBody>
+        <Input
+          label="Description"
+          value={formation.description}
+          onChange={(e) => setFormation({ ...formation, description: e.target.value })}
+          className="mb-2"
+        />
+        <Input
+          label="Formation Name"
+          value={formation.name}
+          onChange={(e) => setFormation({ ...formation, name: e.target.value })}
+          className="mb-2"
+        />
+        <Select
+          value={formation.teamId}
+          onChange={(e) => setFormation({ ...formation, teamId: e.target.value })}
+          options={[
+            { value: "", label: "Choose a team" },
+            ...loggedInUser.teams.map(team => ({
+              value: team.teamId,
+              label: teamNames?.find(t => t.id === team.teamId)?.name
+            }))
+          ]}
+        />
+      </ModalBody>
+      <ModalFooter>
+        <Button variant="ghost" onClick={() => {setCreateFormationModal(false); setFormationModal(true)}}>
+          Cancel
+        </Button>
+        <Button variant="primary" onClick={handleSubmit}>
+          Create
+        </Button>
+      </ModalFooter>
+    </Modal>
   )
 }
