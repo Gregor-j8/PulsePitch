@@ -11,6 +11,7 @@ import { CreateGameModal } from "./CreateGameModal"
 import { GameDetailsModals } from "./GameDetailsModal"
 import { useTeamGames } from "../../hooks/UseGames"
 import { GameEditModal } from "./GameEditModal"
+import { Button } from "../ui/Button"
 
 export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const { data: calendarEvents } = useTeamEvents(loggedInUser.id, {enabled: !!loggedInUser.id})
@@ -48,13 +49,13 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
     await refreshLoggedInUser();
     }
     refreshUser()
-  },[])
+  },[refreshLoggedInUser])
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
       <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
-        <button onClick={() => setShowCreateModal(true)} className="bg-green-500 text-white px-4 py-1.5 rounded hover:bg-green-600">
+        <Button variant="success" size="sm" onClick={() => setShowCreateModal(true)}>
           Create Event
-        </button>
+        </Button>
       </div>
       <FullCalendar
         ref={calendarRef}

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { register } from "../../managers/authManagers";
 import { Link, useNavigate } from "react-router-dom";
+import { Card } from "../ui/Card";
+import { Input } from "../ui/Input";
+import { Button } from "../ui/Button";
 
 export default function Register({ setLoggedInUser }) {
   const [firstName, setFirstName] = useState("");
@@ -43,100 +46,79 @@ export default function Register({ setLoggedInUser }) {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+    <Card className="max-w-md mx-auto mt-10 p-6">
       <h3 className="text-2xl font-semibold mb-6 text-center">Sign Up</h3>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block font-medium mb-1">First Name</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Last Name</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Email</label>
-          <input
-            type="email"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">User Name</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={userName}
-            onChange={(e) => setUserName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Image URL</label>
-          <input
-            type="text"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            value={imageLocation}
-            onChange={(e) => setImageLocation(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Password</label>
-          <input
-            type="password"
-            className={`w-full border rounded px-3 py-2 ${passwordMismatch ? "border-red-500" : "border-gray-300"}`}
-            value={password}
-            onChange={(e) => {
-              setPasswordMismatch(false);
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Confirm Password</label>
-          <input
-            type="password"
-            className={`w-full border rounded px-3 py-2 ${passwordMismatch ? "border-red-500" : "border-gray-300"}`}
-            value={confirmPassword}
-            onChange={(e) => {
-              setPasswordMismatch(false);
-              setConfirmPassword(e.target.value);
-            }}
-          />
-          {passwordMismatch && (
-            <p className="text-red-600 text-sm mt-1">Passwords do not match!</p>
-          )}
-        </div>
+        <Input
+          label="First Name"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <Input
+          label="Last Name"
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <Input
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <Input
+          label="User Name"
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+        />
+        <Input
+          label="Image URL"
+          type="text"
+          value={imageLocation}
+          onChange={(e) => setImageLocation(e.target.value)}
+        />
+        <Input
+          label="Password"
+          type="password"
+          value={password}
+          onChange={(e) => {
+            setPasswordMismatch(false);
+            setPassword(e.target.value);
+          }}
+          error={passwordMismatch ? "Passwords do not match!" : ""}
+        />
+        <Input
+          label="Confirm Password"
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => {
+            setPasswordMismatch(false);
+            setConfirmPassword(e.target.value);
+          }}
+          error={passwordMismatch ? "Passwords do not match!" : ""}
+        />
         {errors.map((e, i) => (
-          <p key={i} className="text-red-600 text-sm">
+          <p key={i} className="text-danger-600 text-sm">
             {e}
           </p>
         ))}
-        <button
+        <Button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded transition"
+          variant="primary"
+          fullWidth
           disabled={passwordMismatch}
         >
           Register
-        </button>
+        </Button>
       </form>
       <p className="text-center mt-4 text-sm">
         Already signed up?{" "}
-        <Link to="/login" className="text-blue-600 hover:underline">
+        <Link to="/login" className="text-primary-600 hover:underline">
           Log in here
         </Link>
       </p>
-    </div>
+    </Card>
   );
 }

@@ -3,6 +3,9 @@ import { useGetFormationsByTeamId } from "../../hooks/UseFormation"
 import { PitchComponent } from "./PitchComponent"
 import { useNavigate } from "react-router-dom"
 import {CreateFormationModal} from "./CreateFormationModal"
+import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
+import { Button } from "../ui/Button"
+import { Select } from "../ui/Input"
 
 export const TacticalView = ({loggedInUser}) => {
     const navigate = useNavigate()
@@ -14,32 +17,40 @@ export const TacticalView = ({loggedInUser}) => {
       return (
         <>
           {formationModal && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-                <h2 className="text-lg font-bold mb-4">Choose a Formation</h2>
-                <button onClick={() => { setFormationId(null); setCreateFormationModal(true); setFormationModal(false)}}
-                  className="bg-blue-500 w-full cursor-pointer text-white font-medium py-2 px-4 mb-2 rounded-lg">Add A Formation</button>
-                <select className="border rounded px-3 py-2 w-full" defaultValue={"default"}
-                  onChange={(e) => {setFormationModal(false); setFormationId(e.target.value)}}>
-                  <option value="default" disabled>Choose a formation</option>
-                  {formations.map(formation => (
-                    <option key={formation.id} value={formation.id}>{formation.description}</option>
-                  ))}
-                </select>
-                <div className="flex justify-end mt-4">
-                  <button onClick={() => navigate("/")} className="bg-blue-500 text-white px-4 py-2 rounded">
-                    Close
-                  </button>
-                </div>
-              </div>
-            </div>
+            <Modal isOpen={true} onClose={() => navigate("/")} title="Choose a Formation" size="md">
+              <ModalBody>
+                <Button
+                  variant="primary"
+                  onClick={() => { setFormationId(null); setCreateFormationModal(true); setFormationModal(false)}}
+                  className="w-full mb-4"
+                >
+                  Add A Formation
+                </Button>
+                <Select
+                  value="default"
+                  onChange={(e) => {setFormationModal(false); setFormationId(e.target.value)}}
+                  options={[
+                    { value: 'default', label: 'Choose a formation', disabled: true },
+                    ...formations.map(formation => ({
+                      value: formation.id,
+                      label: formation.description
+                    }))
+                  ]}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button variant="primary" onClick={() => navigate("/")}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </Modal>
           )}
           <div className="mt-4">
             {formationId && (
-              <PitchComponent formationId={formationId} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} /> 
+              <PitchComponent formationId={formationId} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} />
             )}
             {createFormationModal && (
-              <CreateFormationModal loggedInUser={loggedInUser} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId}/> 
+              <CreateFormationModal loggedInUser={loggedInUser} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId}/>
             )}
           </div>
         </>

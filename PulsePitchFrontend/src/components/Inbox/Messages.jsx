@@ -5,6 +5,8 @@ import { LoadingSpinner } from "../Loading/LoadingPage"
 import { toast } from "react-toastify"
 import { Plus, Trash } from "lucide-react"
 import { ChooseNewMessage } from "./ChooseNewMessage"
+import { Button } from "../ui/Button"
+import { Input } from "../ui/Input"
 
 export const Messages = ({ loggedInUser }) => {
   const [selectedChat, setSelectedChat] = useState(null)
@@ -29,7 +31,11 @@ export const Messages = ({ loggedInUser }) => {
         content: newMessage,
         SentAt: new Date().toISOString()
     }
-    mutate.mutate(form)
+    mutate.mutate(form, {
+      onSuccess: () => {
+        setNewMessage('')
+      }
+    })
   }
   return (
     <div className="flex bg-white rounded-lg shadow-md overflow-hidden h-[500px]">
@@ -66,7 +72,7 @@ export const Messages = ({ loggedInUser }) => {
               {messages && messages.length > 0 ? (
                 messages.map(message => (
                   <div key={message.id} className="flex flex-col items-start relative mt-1"
-                    onMouseEnter={() => {hoveredId !== message.id && setHoveredId(message.id)}} onMouseLeave={() => setHoveredId !== null && setHoveredId(null)}>
+                    onMouseEnter={() => { if (hoveredId !== message.id) setHoveredId(message.id); }} onMouseLeave={() => { if (hoveredId !== null) setHoveredId(null); }}>
                     <p className="text-xs text-gray-500 mb-1">
                       {message.sender.firstName} {message.sender.lastName}
                     </p>
@@ -87,10 +93,15 @@ export const Messages = ({ loggedInUser }) => {
                 )}
             </div>
             <div className="pt-4 border-t flex items-center gap-2">
-              <input onChange={(e) => {setNewMessage(e.target.value)}} placeholder="Type your message..." className="flex-1 px-4 py-2 border rounded-md text-sm"/>
-              <button onClick={() => {handleNewMessage(selectedChat)}} className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700">
+              <Input
+                value={newMessage || ''}
+                onChange={(e) => {setNewMessage(e.target.value)}}
+                placeholder="Type your message..."
+                className="flex-1"
+              />
+              <Button variant="primary" size="sm" onClick={() => {handleNewMessage(selectedChat)}}>
                 Send
-              </button>
+              </Button>
             </div>
           </>
         ) : (

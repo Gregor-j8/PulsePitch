@@ -4,6 +4,7 @@ import { useImmer } from "use-immer"
 import { useEditPlayersInFormations, usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
 import {EditPlayerModal} from "./EditPlayerModal"
 import { EditFormationModal } from "./EditFormationModal"
+import { Button } from "../ui/Button"
 import * as d3 from "d3"
 
 
@@ -146,18 +147,24 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
         Tactical Pitch
       </h2>
      <div className="flex flex-wrap justify-center gap-4 mb-6">
-      <button onClick={() => { setCreateFormationModal(true); setFormationId(null);}}
-        className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg">
+      <Button
+        variant="primary"
+        onClick={() => { setCreateFormationModal(true); setFormationId(null);}}
+      >
         + Add Formation
-      </button>
-      <button onClick={() => { setFormationModal(true); setFormationId(null)}}
-        className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg">
+      </Button>
+      <Button
+        variant="primary"
+        onClick={() => { setFormationModal(true); setFormationId(null)}}
+      >
         Change Formation
-      </button>
-      <button
-        onClick={() => { setEditFormationModal(true)}} className="bg-gray-600 hover:bg-gray-700 text-white font-semibold px-4 py-2 rounded-lg">
+      </Button>
+      <Button
+        variant="primary"
+        onClick={() => { setEditFormationModal(true)}}
+      >
         Edit Formation
-      </button>
+      </Button>
     </div>
       <div ref={containerRef} className="relative w-full max-w-[1000px] aspect-[4/3] mx-auto">
         <div id="pitch" className="absolute inset-0 bg-green-600" />

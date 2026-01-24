@@ -2,6 +2,9 @@ import { useState } from "react"
 import { useAllUserProfile } from "../../hooks/useUserProfile"
 import { X } from "lucide-react"
 import { useCreateChatRoom } from "../../hooks/useChatRoom";
+import { Modal, ModalBody } from "../ui/Modal"
+import { Input } from "../ui/Input"
+import { Card } from "../ui/Card"
 
 export const ChooseNewMessage = ({setNewMessageModal, loggedInUser, }) => {
   const { data: contacts, isLoading } = useAllUserProfile()
@@ -24,26 +27,32 @@ export const ChooseNewMessage = ({setNewMessageModal, loggedInUser, }) => {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-35">
-      <div className="lg:w-3/5 md:w-full sm:w-full max-w-5xl bg-white overflow-hidden">
-        <div className="sticky top-0 bg-white z-10 p-4 border-b flex justify-between">
-          <input placeholder="Search contacts..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-19/20 flex px-4 py-2 border rounded-md focus:outline-none "/>
-            <X onClick={() => setNewMessageModal(false)} className="flex mt-3"/>
-        </div>
-        <div className="max-h-[70vh] overflow-y-auto p-6 space-y-4">
+    <Modal isOpen={true} onClose={() => setNewMessageModal(false)} title="New Message" size="lg">
+      <ModalBody>
+        <Input
+          placeholder="Search contacts..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="mb-4"
+        />
+        <div className="max-h-[50vh] overflow-y-auto space-y-4">
           {filteredContacts.map(contact => (
-            <div key={contact.id}className="p-4 bg-gray-100 rounded-lg shadow-sm hover:bg-gray-200 cursor-pointer">
-              <button value={contact.id} className="text-gray-800 font-semibold" onClick={(e) => {handleNewChat(e.target.value)}}>
+            <Card
+              key={contact.id}
+              variant="interactive"
+              className="p-4 cursor-pointer"
+              onClick={() => handleNewChat(contact.id)}
+            >
+              <p className="text-neutral-800 font-semibold">
                 {contact.firstName} {contact.lastName}
-              </button>
-            </div>
+              </p>
+            </Card>
           ))}
           {filteredContacts.length === 0 && (
-            <div className="text-center text-gray-500 mt-4">No contacts found.</div>
+            <div className="text-center text-neutral-500 mt-4">No contacts found.</div>
           )}
         </div>
-      </div>
-    </div>
+      </ModalBody>
+    </Modal>
   );
 };

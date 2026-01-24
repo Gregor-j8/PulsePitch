@@ -1,24 +1,30 @@
 import { useState } from 'react'
 import { Messages } from './Messages'
 import { MatchRequest } from './MatchRequest'
+import { Card } from '../ui/Card'
+import { Button } from '../ui/Button'
 
 export const Inbox = ({ loggedInUser }) => {
   const [activeTab, setActiveTab] = useState('messages')
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4 py-8">
-      <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl overflow-hidden">
-        <div className="border-b px-6 py-4 bg-gradient-to-r from-blue-50 to-blue-100">
+    <div className="min-h-screen bg-neutral-100 flex items-center justify-center px-4 py-8">
+      <Card className="w-full max-w-4xl overflow-hidden">
+        <div className="border-b px-6 py-4 bg-gradient-to-r from-primary-50 to-primary-100">
           <div className="flex space-x-4">
-            <button onClick={() => setActiveTab('messages')}
-              className={`flex-1 text-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
-                activeTab === 'messages' ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-700 hover:bg-gray-200 border'}`}>
+            <Button
+              onClick={() => setActiveTab('messages')}
+              variant={activeTab === 'messages' ? 'primary' : 'ghost'}
+              className="flex-1"
+            >
               Messages
-            </button>
-            <button onClick={() => setActiveTab('notifications')}
-              className={`flex-1 text-center px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
-                activeTab === 'notifications' ? 'bg-blue-600 text-white shadow' : 'bg-white text-gray-700 hover:bg-gray-200 border'}`}>
+            </Button>
+            <Button
+              onClick={() => setActiveTab('notifications')}
+              variant={activeTab === 'notifications' ? 'primary' : 'ghost'}
+              className="flex-1"
+            >
               Match Request
-            </button>
+            </Button>
           </div>
         </div>
         <div className="h-[500px] overflow-y-auto">
@@ -29,7 +35,7 @@ export const Inbox = ({ loggedInUser }) => {
             <MatchRequest loggedInUser={loggedInUser}/>
           )}
         </div>
-      </div>
+      </Card>
     </div>
   )
 }
