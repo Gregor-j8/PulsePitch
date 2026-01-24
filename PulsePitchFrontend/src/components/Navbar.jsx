@@ -12,8 +12,8 @@ export default function NavBar({ loggedInUser, setLoggedInUser }) {
   };
 
   return (
-    <nav className="bg-white border-b shadow fixed w-full z-50">
-      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <nav className="bg-white border-b shadow fixed w-full z-50 h-16">
+      <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         <div className="flex items-center">
           <RRNavLink to="/" className="text-xl font-bold text-gray-800">
             PulsePitch

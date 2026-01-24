@@ -10,6 +10,7 @@ import { TeamHome } from "./TeamHome/TeamHome";
 import { Profile } from "./Profile/Profile";
 import {TacticalView} from "./TacticalView/TacticalView";
 import { Inbox } from "./Inbox/Inbox";
+import Layout from "./Layout/Layout";
 
 export default function ApplicationViews({loggedInUser, setLoggedInUser, refreshLoggedInUser}) {
   
@@ -19,24 +20,36 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
         index
         element={
           <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
-            <MyCalendar loggedInUser={loggedInUser} refreshLoggedInUser={refreshLoggedInUser}/>
+            <Layout variant="default">
+              <MyCalendar loggedInUser={loggedInUser} refreshLoggedInUser={refreshLoggedInUser}/>
+            </Layout>
           </AuthorizedRoute>
         }
       />
       <Route
         path="login"
-        element={<Login setLoggedInUser={setLoggedInUser} />}
+        element={
+          <Layout variant="centered">
+            <Login setLoggedInUser={setLoggedInUser} />
+          </Layout>
+        }
       />
 
       <Route
         path="register"
-        element={<Register setLoggedInUser={setLoggedInUser} />}
+        element={
+          <Layout variant="centered">
+            <Register setLoggedInUser={setLoggedInUser} />
+          </Layout>
+        }
       />
       <Route
         path="home"
         element={
            <AuthorizedRoute loggedInUser={loggedInUser}>
+             <Layout variant="centered">
                <Home loggedInUser={loggedInUser}/>
+             </Layout>
            </AuthorizedRoute>
       }
       />
@@ -44,7 +57,9 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
         path="team"
         element={
           <AuthorizedRoute loggedInUser={loggedInUser}>
+            <Layout variant="default">
               <TeamHome loggedInUser={loggedInUser} />
+            </Layout>
            </AuthorizedRoute>
       }
       />
@@ -52,7 +67,9 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
         path="pitch"
         element={
           <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
-            <TacticalView loggedInUser={loggedInUser} />
+            <Layout variant="full-width">
+              <TacticalView loggedInUser={loggedInUser} />
+            </Layout>
           </AuthorizedRoute>
       }
       />
@@ -60,22 +77,28 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
         path={`profile/:id`}
         element={
           <AuthorizedRoute loggedInUser={loggedInUser}>
+            <Layout variant="centered">
               <Profile loggedInUser={loggedInUser} />
+            </Layout>
            </AuthorizedRoute>
       }
       />
       <Route
         path="video"
-        element={ 
+        element={
         <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
-          <VideoUploader/>
+          <Layout variant="default">
+            <VideoUploader/>
+          </Layout>
          </AuthorizedRoute>}
         />
       <Route
         path="inbox"
-        element={ 
+        element={
         <AuthorizedRoute loggedInUser={loggedInUser} >
-          <Inbox loggedInUser={loggedInUser}/>
+          <Layout variant="default">
+            <Inbox loggedInUser={loggedInUser}/>
+          </Layout>
         </AuthorizedRoute>}
         />
       <Route path="*" element={<p>Whoops, nothing here...</p>} />
