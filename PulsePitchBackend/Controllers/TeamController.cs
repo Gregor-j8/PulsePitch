@@ -21,84 +21,126 @@ public class TeamController : ControllerBase
     private readonly PulsePitchDbContext _context;
     private readonly ITeamRepository _teamRepo;
     private readonly IMapper _mapper;
+    private readonly ILogger<TeamController> _logger;
 
     public TeamController(PulsePitchDbContext context, ITeamRepository teamRepo, IMapper mapper, UserManager<IdentityUser> userManager,
-     RoleManager<IdentityRole> roleManager)
+     RoleManager<IdentityRole> roleManager, ILogger<TeamController> logger)
     {
         _context = context;
         _teamRepo = teamRepo;
         _mapper = mapper;
         _userManager = userManager;
         _roleManager = roleManager;
+        _logger = logger;
     }
 
     [HttpGet]
+    [ResponseCache(Duration = 300)]
     public async Task<ActionResult<IEnumerable<TeamDTO>>> GetAllTeams()
     {
-        var teams = await _teamRepo.GetAllTeams();
-        var teamDtos = _mapper.Map<List<TeamDTO>>(teams);
-
-        return Ok(teamDtos);
+        try
+        {
+            var teams = await _teamRepo.GetAllTeams();
+            var teamDtos = _mapper.Map<List<TeamDTO>>(teams);
+            return Ok(teamDtos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving all teams");
+            return StatusCode(500, new { message = "An error occurred while retrieving teams" });
+        }
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<TeamDTO>> GetTeamsById(int id)
     {
-        var team = await _teamRepo.GetByIdTeams(id);
-        if (team == null)
-            return NotFound();
+        try
+        {
+            var team = await _teamRepo.GetByIdTeams(id);
+            if (team == null)
+                return NotFound($"Team {id} not found");
 
-        var teamDto = _mapper.Map<TeamDTO>(team);
-
-        return Ok(teamDto);
+            var teamDto = _mapper.Map<TeamDTO>(team);
+            return Ok(teamDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving team {Id}", id);
+            return StatusCode(500, new { message = "An error occurred while retrieving team" });
+        }
     }
 
     [HttpPost]
     public async Task<ActionResult> CreateTeams([FromBody] TeamDTO teamDTO)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (coachId == null)
+        try
         {
-            return Unauthorized();
-        }
-        teamDTO.CoachId = coachId;
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        var user = await _userManager.FindByIdAsync(coachId);
-        if (user == null)
-            return Unauthorized();
-        if (!await _roleManager.RoleExistsAsync("Coach"))
+            var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (coachId == null)
+            {
+                return Unauthorized("Coach ID not found");
+            }
+            teamDTO.CoachId = coachId;
+
+            var user = await _userManager.FindByIdAsync(coachId);
+            if (user == null)
+                return Unauthorized("User not found");
+
+            if (!await _roleManager.RoleExistsAsync("Coach"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Coach"));
+            }
+            if (!await _userManager.IsInRoleAsync(user, "Coach"))
+            {
+                await _userManager.AddToRoleAsync(user, "Coach");
+            }
+
+            Team team = _mapper.Map<Team>(teamDTO);
+            await _teamRepo.CreateTeams(team);
+            return Ok();
+        }
+        catch (Exception ex)
         {
-            await _roleManager.CreateAsync(new IdentityRole("Coach"));
+            _logger.LogError(ex, "Error creating team");
+            return StatusCode(500, new { message = "An error occurred while creating team" });
         }
-        if (!await _userManager.IsInRoleAsync(user, "Coach"))
-        {
-            await _userManager.AddToRoleAsync(user, "Coach");
-        }
-
-        Team team = _mapper.Map<Team>(teamDTO);
-
-        await _teamRepo.CreateTeams(team);
-        return Ok();
     }
+
     [HttpPatch("{id}")]
     public async Task<ActionResult> EditTeams([FromBody] EditTeamDTO teamDTO, int id)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
+        try
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        Team team = _mapper.Map<Team>(teamDTO);
-
-        await _teamRepo.UpdateTeams(id, team);
-        return Ok();
+            Team team = _mapper.Map<Team>(teamDTO);
+            await _teamRepo.UpdateTeams(id, team);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error editing team {Id}", id);
+            return StatusCode(500, new { message = "An error occurred while editing team" });
+        }
     }
+
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteTeams(int id)
     {
-        await _teamRepo.DeleteTeams(id);
-        return NoContent();
+        try
+        {
+            await _teamRepo.DeleteTeams(id);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting team {Id}", id);
+            return StatusCode(500, new { message = "An error occurred while deleting team" });
+        }
     }
 
     [HttpPost("joinTeam")]
@@ -108,28 +150,32 @@ public class TeamController : ControllerBase
         {
             if (joinTeam.PlayerId == 0 || joinTeam.TeamName == null || joinTeam.JoinCode == null)
             {
-                return StatusCode(500);
+                return BadRequest("PlayerId, TeamName, and JoinCode are required");
             }
+
             var result = await _teamRepo.JoinTeams(joinTeam);
             if (result == null)
             {
-                return BadRequest(new { message = "Invalid team name or join code, or player already joined." });
+                return BadRequest(new { message = "Invalid team name or join code, or player already joined" });
             }
+
             var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.Id == joinTeam.PlayerId);
             if (userProfile == null)
             {
-                return NotFound();
+                return NotFound("User profile not found");
             }
+
             var user = await _userManager.FindByIdAsync(userProfile.IdentityUserId);
             if (user == null)
             {
-                return NotFound("user not found");
+                return NotFound("User not found");
             }
 
-                if (!await _roleManager.RoleExistsAsync("Player"))
-                {
-                    await _roleManager.CreateAsync(new IdentityRole("Player"));
-                }
+            if (!await _roleManager.RoleExistsAsync("Player"))
+            {
+                await _roleManager.CreateAsync(new IdentityRole("Player"));
+            }
+
             if (!await _userManager.IsInRoleAsync(user, "Player"))
             {
                 var addRoleResult = await _userManager.AddToRoleAsync(user, "Player");
@@ -143,7 +189,13 @@ public class TeamController : ControllerBase
         }
         catch (InvalidOperationException ex)
         {
+            _logger.LogError(ex, "Invalid operation while joining team for player {PlayerId}", joinTeam.PlayerId);
             return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error joining team for player {PlayerId}", joinTeam.PlayerId);
+            return StatusCode(500, new { message = "An error occurred while joining team" });
         }
     }
 }
