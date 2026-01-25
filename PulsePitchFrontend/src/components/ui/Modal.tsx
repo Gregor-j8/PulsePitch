@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { ModalProps, ModalSubComponentProps } from '../../types';
 
 export const Modal: React.FC<ModalProps> = ({
@@ -33,17 +34,17 @@ export const Modal: React.FC<ModalProps> = ({
   if (!isOpen) return null;
 
   const sizeStyles = {
-    sm: 'max-w-md',
-    md: 'max-w-lg',
-    lg: 'max-w-2xl',
-    xl: 'max-w-4xl'
+    sm: 'w-[500px]',
+    md: 'w-[700px]',
+    lg: 'w-[900px]',
+    xl: 'w-[1100px]'
   };
 
-  return (
-    <div className="fixed inset-0 z-[1040] flex items-center justify-center" onClick={onClose}>
+  const modalContent = (
+    <div className="fixed inset-0 z-[1040] flex items-center justify-center p-4" onClick={onClose}>
       <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
 
-      <div className={`relative bg-white rounded-xl shadow-2xl w-full ${sizeStyles[size]} mx-4 max-h-[90vh] overflow-y-auto`}
+      <div className={`relative bg-white rounded-xl shadow-2xl ${sizeStyles[size]} max-h-[90vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
@@ -71,6 +72,7 @@ export const Modal: React.FC<ModalProps> = ({
       </div>
     </div>
   );
+  return createPortal(modalContent, document.body);
 };
 
 export const ModalBody: React.FC<ModalSubComponentProps> = ({ children, className = '' }) => {

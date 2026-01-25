@@ -25,7 +25,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const [GameDetailsModal, setGameDetailsModal] = useState(false)
   const [EditModel, setEditModel] = useState(false)
   const [EditGameModel, setEditGameModel] = useState(false)
-  const [choosenEventId, setchoosenEventId] = useState(null)
+  const [chosenEventId, setChosenEventId] = useState(null)
   const [choosenGameId, setchoosenGameId] = useState(null)
   const [StarterFormData, SetStarterFormData] = useState({})
   const handleAddEvent = () => {
@@ -37,7 +37,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   }
   const handleEventClick = (info) => {
       setDetailsModal(true)
-      setchoosenEventId(info)
+      setChosenEventId(info)
   }
   const handleGameClick = (info) => {
       setGameDetailsModal(true)
@@ -118,10 +118,10 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
         />
       )}
       {DetailsModal && (
-        <EventDetailsModal 
+        <EventDetailsModal
           loggedInUser={loggedInUser}
-          choosenEventId={choosenEventId}
-          setchoosenEventId={setchoosenEventId}
+          chosenEventId={chosenEventId}
+          setChosenEventId={setChosenEventId}
           onClose={() => setDetailsModal(false)}
           setEditModel={setEditModel}
           SetStarterFormData={SetStarterFormData}
@@ -140,8 +140,8 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
       {EditModel && (
         <EditEventModal
           StarterFormData={StarterFormData}
-          choosenEventId={choosenEventId}
-          setchoosenEventId={setchoosenEventId}
+          chosenEventId={chosenEventId}
+          setChosenEventId={setChosenEventId}
           onClose={() => setEditModel(false)}
         />
       )}

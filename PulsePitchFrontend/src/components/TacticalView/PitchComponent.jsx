@@ -57,7 +57,6 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
         circleRef.current
           .attr("cx", ball.x)
           .attr("cy", ball.y)
-        console.log("Drawing D3 circle at", ball.x, ball.y)
       }
     }, [ball])
 

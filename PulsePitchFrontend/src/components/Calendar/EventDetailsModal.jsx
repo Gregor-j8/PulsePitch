@@ -3,8 +3,8 @@ import { CalendarDays } from 'lucide-react'
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 
-export const EventDetailsModal = ({ loggedInUser, choosenEventId, setchoosenEventId, onClose, setEditModel, SetStarterFormData }) => {
-    const {data: eventData } = useTeamEvent(choosenEventId, {enabled: !!choosenEventId})
+export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventId, onClose, setEditModel, SetStarterFormData }) => {
+    const {data: eventData } = useTeamEvent(chosenEventId, {enabled: !!chosenEventId})
     const {mutate: deleteTeamEvent} = useDeleteTeamEvent()
   return (
     <Modal isOpen={true} onClose={onClose} title={<div className="flex items-center gap-2"><CalendarDays/>Event Details</div>} size="md">
@@ -31,7 +31,7 @@ export const EventDetailsModal = ({ loggedInUser, choosenEventId, setchoosenEven
               </Button>
               <Button variant="danger" onClick={() => {
                 deleteTeamEvent(eventData.id)
-                setchoosenEventId(null)
+                setChosenEventId(null)
                 onClose()
               }}>
                 Delete

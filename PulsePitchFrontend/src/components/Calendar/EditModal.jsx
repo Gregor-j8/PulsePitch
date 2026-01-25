@@ -5,9 +5,9 @@ import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
 import { Textarea, Select } from "../ui/Input"
 
-export default function EditEventModal({ choosenEventId, setchoosenEventId, onClose, StarterFormData }) {
+export default function EditEventModal({ chosenEventId, setChosenEventId, onClose, StarterFormData }) {
   const [formData, setFormData] = useState(StarterFormData)
-  const { data: eventData } = useTeamEvent(choosenEventId, { enabled: !!choosenEventId });
+  const { data: eventData } = useTeamEvent(chosenEventId, { enabled: !!chosenEventId });
   const { mutate: updateTeamEvent } = useEditTeamEvent();
   const { data: events, isLoading, isError } = useGetEventsForDropdown();
 
@@ -22,14 +22,14 @@ export default function EditEventModal({ choosenEventId, setchoosenEventId, onCl
         eventId: formData.eventId,
         teamId: formData.teamId,
     }
-    updateTeamEvent({ id: choosenEventId, data: form },
+    updateTeamEvent({ id: chosenEventId, data: form },
         {onSuccess: () => {
-          setchoosenEventId(null)}}
+          setChosenEventId(null)}}
     )
   }
 
   return (
-    <Modal isOpen={true} onClose={() => {setchoosenEventId(null); onClose()}} title="Edit Event" size="md">
+    <Modal isOpen={true} onClose={() => {setChosenEventId(null); onClose()}} title="Edit Event" size="md">
       <ModalBody>
         <Input
           placeholder="Title"
@@ -67,7 +67,7 @@ export default function EditEventModal({ choosenEventId, setchoosenEventId, onCl
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="ghost" onClick={() => {setchoosenEventId(null); onClose()}}>
+        <Button variant="ghost" onClick={() => {setChosenEventId(null); onClose()}}>
           Cancel
         </Button>
         <Button variant="primary" onClick={() => {handleUpdate(); onClose()}}>

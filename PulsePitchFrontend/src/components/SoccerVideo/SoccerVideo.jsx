@@ -5,7 +5,6 @@ import { useVideo } from "../../hooks/useVideo"
 export default function VideoUploader() {
   const [file, setFile] = useState(null)
   const [playing, setPlaying] = useState(true)
-  const [videoUploaded, setVideoUploaded] = useState(false)
   const [streamFrame, setStreamFrame] = useState(null)
   const [uploading, setUploading] = useState(false)
   const [showModal, setShowModal] = useState(false)
@@ -21,13 +20,9 @@ export default function VideoUploader() {
     setUploading(true)
     const formData = new FormData()
     formData.append("file", file)
-    if (!formData) {
-      console.log("no file added")
-    } 
     mutate.mutate(formData, {
       onSuccess: (result) => {
         if (result.data.message === "Video uploaded successfully") {
-          setVideoUploaded(true)
           setShowModal(true)
           startWebSocket()
         }
@@ -57,7 +52,7 @@ export default function VideoUploader() {
 
   return (
   <div className="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-6 text-gray-900">
-      <h2 className="text-2xl font-semibold text-center">Video anlysis</h2>
+      <h2 className="text-2xl font-semibold text-center">Video Analysis</h2>
       <input type="file" accept="video/*"
         className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 
         file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
