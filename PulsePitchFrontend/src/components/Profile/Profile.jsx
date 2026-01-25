@@ -14,6 +14,7 @@ export const Profile = ({ loggedInUser }) => {
   const { mutate: updateUserProfile } = updateUserProfileMutation
   const [showModal, setShowModal] = useState(false)
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: ''})
+  const [errors, setErrors] = useState({})
 
   useEffect(() => {
     if (userProfile) {
@@ -27,7 +28,29 @@ export const Profile = ({ loggedInUser }) => {
 
   if (!userProfile) return null
 
+  const validateProfile = () => {
+    const newErrors = {}
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required'
+    }
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required'
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address'
+    }
+    return newErrors
+  }
+
   const handleSave = () => {
+    const validationErrors = validateProfile()
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      return
+    }
+    setErrors({})
     updateUserProfile( { id: userProfile.id, data: formData },
       { onSuccess: () => { setShowModal(false)}})}
 
@@ -53,6 +76,7 @@ export const Profile = ({ loggedInUser }) => {
               value={formData.firstName}
               placeholder="First Name"
               onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              error={errors.firstName}
               className="mb-4"
             />
             <Input
@@ -60,6 +84,7 @@ export const Profile = ({ loggedInUser }) => {
               value={formData.lastName}
               placeholder="Last Name"
               onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+              error={errors.lastName}
               className="mb-4"
             />
             <Input
@@ -68,6 +93,7 @@ export const Profile = ({ loggedInUser }) => {
               value={formData.email}
               placeholder="Email"
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              error={errors.email}
             />
           </ModalBody>
           <ModalFooter>

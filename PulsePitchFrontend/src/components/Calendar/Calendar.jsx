@@ -19,6 +19,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef(null)
   const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
+  const [eventErrors, setEventErrors] = useState({})
   const [showCreateModal, setShowCreateModal] = useState(false)
   const [showCreateGameModal, setshowCreateGameModal] = useState(false)
   const [DetailsModal, setDetailsModal] = useState(false)
@@ -28,8 +29,37 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
   const [chosenEventId, setChosenEventId] = useState(null)
   const [choosenGameId, setchoosenGameId] = useState(null)
   const [StarterFormData, SetStarterFormData] = useState({})
+
+  const validateEvent = () => {
+    const errors = {}
+    if (!createEvents.title.trim()) {
+      errors.title = 'Title is required'
+    }
+    if (!createEvents.start) {
+      errors.start = 'Start time is required'
+    }
+    if (!createEvents.end) {
+      errors.end = 'End time is required'
+    } else if (createEvents.start && new Date(createEvents.end) <= new Date(createEvents.start)) {
+      errors.end = 'End time must be after start time'
+    }
+    if (!createEvents.eventId) {
+      errors.eventId = 'Event type is required'
+    }
+    if (!createEvents.teamId) {
+      errors.teamId = 'Team is required'
+    }
+    return errors
+  }
+
   const handleAddEvent = () => {
-    const event = { title: createEvents.title, description: createEvents.description, 
+    const errors = validateEvent()
+    if (Object.keys(errors).length > 0) {
+      setEventErrors(errors)
+      return
+    }
+    setEventErrors({})
+    const event = { title: createEvents.title, description: createEvents.description,
       start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: createEvents.teamId}
     createEvent.mutate(event)
     setShowCreateModal(false)
@@ -116,6 +146,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
           onSubmit={handleAddEvent}
           loggedInUser={loggedInUser}
           isLoading={createEvent.isPending}
+          errors={eventErrors}
         />
       )}
       {DetailsModal && (

@@ -5,7 +5,7 @@ import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
 import { Textarea, Select } from "../ui/Input"
 
-export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser, isLoading: isSubmitting = false }) {
+export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser, isLoading: isSubmitting = false, errors = {} }) {
       const { data: events, isLoading, isError } = useGetEventsForDropdown()
       const { data: team } = useTeams()
     if (isError || isLoading ){
@@ -15,12 +15,15 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
     <Modal isOpen={true} onClose={onClose} title="Create Event" size="md">
       <ModalBody>
         <Input
+          label="Title"
           placeholder="Title"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+          error={errors.title}
           className="mb-2"
         />
         <Textarea
+          label="Description"
           placeholder="Description"
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
@@ -31,6 +34,7 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
           type="datetime-local"
           value={formData.start}
           onChange={(e) => setFormData({ ...formData, start: e.target.value })}
+          error={errors.start}
           className="mb-2"
         />
         <Input
@@ -38,18 +42,22 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
           type="datetime-local"
           value={formData.end}
           onChange={(e) => setFormData({ ...formData, end: e.target.value })}
+          error={errors.end}
           className="mb-2"
         />
         <Select
+          label="Event Type"
           value={formData.eventId}
           onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
           options={[
             { value: "", label: "Select event" },
             ...events.map(e => ({ value: e.id, label: e.name }))
           ]}
+          error={errors.eventId}
           className="mb-2"
         />
         <Select
+          label="Team"
           value={formData.teamId}
           onChange={(e) => setFormData({ ...formData, teamId: e.target.value })}
           options={[
@@ -59,6 +67,7 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
               label: team?.find(t => t.id == e.id)?.name
             }))
           ]}
+          error={errors.teamId}
         />
       </ModalBody>
       <ModalFooter>
