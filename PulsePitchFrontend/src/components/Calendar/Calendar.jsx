@@ -115,6 +115,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
           onClose={() => setShowCreateModal(false)}
           onSubmit={handleAddEvent}
           loggedInUser={loggedInUser}
+          isLoading={createEvent.isPending}
         />
       )}
       {DetailsModal && (

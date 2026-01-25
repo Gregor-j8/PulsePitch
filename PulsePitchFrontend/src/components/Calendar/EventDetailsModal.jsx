@@ -5,7 +5,8 @@ import { Button } from "../ui/Button"
 
 export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventId, onClose, setEditModel, SetStarterFormData }) => {
     const {data: eventData } = useTeamEvent(chosenEventId, {enabled: !!chosenEventId})
-    const {mutate: deleteTeamEvent} = useDeleteTeamEvent()
+    const deleteTeamEventMutation = useDeleteTeamEvent()
+    const {mutate: deleteTeamEvent} = deleteTeamEventMutation
   return (
     <Modal isOpen={true} onClose={onClose} title={<div className="flex items-center gap-2"><CalendarDays/>Event Details</div>} size="md">
       <ModalBody>
@@ -33,7 +34,7 @@ export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventI
                 deleteTeamEvent(eventData.id)
                 setChosenEventId(null)
                 onClose()
-              }}>
+              }} loading={deleteTeamEventMutation.isPending}>
                 Delete
               </Button>
             </div>

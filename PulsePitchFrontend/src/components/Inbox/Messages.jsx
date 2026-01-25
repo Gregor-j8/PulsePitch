@@ -99,7 +99,7 @@ export const Messages = ({ loggedInUser }) => {
                 placeholder="Type your message..."
                 className="flex-1"
               />
-              <Button variant="primary" size="sm" onClick={() => {handleNewMessage(selectedChat)}}>
+              <Button variant="primary" size="sm" onClick={() => {handleNewMessage(selectedChat)}} loading={mutate.isPending}>
                 Send
               </Button>
             </div>

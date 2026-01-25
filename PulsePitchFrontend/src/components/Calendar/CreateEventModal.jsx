@@ -5,7 +5,7 @@ import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
 import { Textarea, Select } from "../ui/Input"
 
-export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser }) {
+export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser, isLoading: isSubmitting = false }) {
       const { data: events, isLoading, isError } = useGetEventsForDropdown()
       const { data: team } = useTeams()
     if (isError || isLoading ){
@@ -62,10 +62,10 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="ghost" onClick={onClose}>
+        <Button variant="ghost" onClick={onClose} disabled={isSubmitting}>
           Cancel
         </Button>
-        <Button variant="success" onClick={onSubmit}>
+        <Button variant="success" onClick={onSubmit} loading={isSubmitting}>
           Add Event
         </Button>
       </ModalFooter>

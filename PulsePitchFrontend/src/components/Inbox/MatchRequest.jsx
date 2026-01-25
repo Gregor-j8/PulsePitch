@@ -47,6 +47,7 @@ export const MatchRequest = ({ loggedInUser }) => {
                     size="sm"
                     onClick={() => handleAccept(match.id)}
                     className="rounded-full"
+                    loading={responseToMatchRequest.isPending}
                   >
                     <Check className="w-5 h-5" />
                   </Button>
@@ -55,6 +56,7 @@ export const MatchRequest = ({ loggedInUser }) => {
                     size="sm"
                     onClick={() => handleReject(match.id)}
                     className="rounded-full"
+                    loading={responseToMatchRequest.isPending}
                   >
                     <X className="w-5 h-5" />
                   </Button>

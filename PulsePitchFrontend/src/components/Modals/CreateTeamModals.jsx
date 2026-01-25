@@ -40,10 +40,10 @@ export const CreateTeamModal = ({ loggedInUser, onClose }) => {
                 />
             </ModalBody>
             <ModalFooter>
-                <Button variant="ghost" onClick={onClose}>
+                <Button variant="ghost" onClick={onClose} disabled={createTeam.isPending}>
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={handleCreate}>
+                <Button variant="primary" onClick={handleCreate} loading={createTeam.isPending}>
                     Create
                 </Button>
             </ModalFooter>

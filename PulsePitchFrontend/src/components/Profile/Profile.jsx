@@ -10,7 +10,8 @@ import { Input } from "../ui/Input"
 export const Profile = ({ loggedInUser }) => {
   const { id } = useParams()
   const { data: userProfile } = useUserProfile(id)
-  const { mutate: updateUserProfile } = useEditUserProfile()
+  const updateUserProfileMutation = useEditUserProfile()
+  const { mutate: updateUserProfile } = updateUserProfileMutation
   const [showModal, setShowModal] = useState(false)
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: ''})
 
@@ -70,10 +71,10 @@ export const Profile = ({ loggedInUser }) => {
             />
           </ModalBody>
           <ModalFooter>
-            <Button variant="ghost" onClick={() => setShowModal(false)}>
+            <Button variant="ghost" onClick={() => setShowModal(false)} disabled={updateUserProfileMutation.isPending}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={handleSave}>
+            <Button variant="primary" onClick={handleSave} loading={updateUserProfileMutation.isPending}>
               Save
             </Button>
           </ModalFooter>

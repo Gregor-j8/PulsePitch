@@ -8,7 +8,8 @@ import { Textarea, Select } from "../ui/Input"
 export default function EditEventModal({ chosenEventId, setChosenEventId, onClose, StarterFormData }) {
   const [formData, setFormData] = useState(StarterFormData)
   const { data: eventData } = useTeamEvent(chosenEventId, { enabled: !!chosenEventId });
-  const { mutate: updateTeamEvent } = useEditTeamEvent();
+  const updateTeamEventMutation = useEditTeamEvent();
+  const { mutate: updateTeamEvent } = updateTeamEventMutation;
   const { data: events, isLoading, isError } = useGetEventsForDropdown();
 
   if (!eventData || isLoading || isError) return null
@@ -67,10 +68,10 @@ export default function EditEventModal({ chosenEventId, setChosenEventId, onClos
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="ghost" onClick={() => {setChosenEventId(null); onClose()}}>
+        <Button variant="ghost" onClick={() => {setChosenEventId(null); onClose()}} disabled={updateTeamEventMutation.isPending}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={() => {handleUpdate(); onClose()}}>
+        <Button variant="primary" onClick={() => {handleUpdate(); onClose()}} loading={updateTeamEventMutation.isPending}>
           Save Changes
         </Button>
       </ModalFooter>

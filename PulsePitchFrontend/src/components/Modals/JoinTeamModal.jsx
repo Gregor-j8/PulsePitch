@@ -45,10 +45,10 @@ export const JoinTeamModal = ({ onClose, loggedInUser }) => {
         />
       </ModalBody>
       <ModalFooter>
-        <Button variant="ghost" onClick={onClose}>
+        <Button variant="ghost" onClick={onClose} disabled={JoinTeam.isPending}>
           Cancel
         </Button>
-        <Button variant="success" onClick={handleCreate}>
+        <Button variant="success" onClick={handleCreate} loading={JoinTeam.isPending}>
           Join
         </Button>
       </ModalFooter>
