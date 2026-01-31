@@ -1,19 +1,23 @@
-// @ts-nocheck
 import { useState } from "react"
-import { useGetFormationsByTeamId } from "../../hooks/UseFormation"
+import { useGetFormationsByTeamId } from "../../hooks/useFormation"
 import { PitchComponent } from "./PitchComponent"
 import { useNavigate } from "react-router-dom"
 import {CreateFormationModal} from "./CreateFormationModal"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Select } from "../ui/Input"
+import { UserProfileDTO } from "../../types"
 
-export const TacticalView = ({loggedInUser}) => {
+interface TacticalViewProps {
+  loggedInUser: UserProfileDTO;
+}
+
+export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
     const navigate = useNavigate()
-    const [formationId, setFormationId] = useState(0)
-    const  [formationModal, setFormationModal] = useState(false)
-    const  [createFormationModal, setCreateFormationModal] = useState(false)
-    const {data: formations } = useGetFormationsByTeamId(loggedInUser.teams.map(team => team.teamId))
+    const [formationId, setFormationId] = useState<number | null>(0)
+    const  [formationModal, setFormationModal] = useState<boolean>(false)
+    const  [createFormationModal, setCreateFormationModal] = useState<boolean>(false)
+    const {data: formations } = useGetFormationsByTeamId((loggedInUser as any).teams?.map((team: any) => team.teamId) ?? [])
 
       return (
         <>
@@ -29,10 +33,10 @@ export const TacticalView = ({loggedInUser}) => {
                 </Button>
                 <Select
                   value="default"
-                  onChange={(e) => {setFormationModal(false); setFormationId(e.target.value)}}
+                  onChange={(e) => {setFormationModal(false); setFormationId(parseInt(e.target.value))}}
                   options={[
-                    { value: 'default', label: 'Choose a formation', disabled: true },
-                    ...formations.map(formation => ({
+                    { value: 'default', label: 'Choose a formation' },
+                    ...(formations ?? []).map(formation => ({
                       value: formation.id,
                       label: formation.description
                     }))

@@ -1,10 +1,15 @@
-// @ts-nocheck
 import { useState } from "react";
 import { NavLink as RRNavLink } from "react-router-dom";
 import { logout } from "../managers/authManagers";
+import { UserProfileDTO } from "../types";
 
-export default function NavBar({ loggedInUser, setLoggedInUser }) {
-  const [open, setOpen] = useState(false);
+interface NavBarProps {
+  loggedInUser: UserProfileDTO | null;
+  setLoggedInUser: (user: UserProfileDTO | null) => void;
+}
+
+export default function NavBar({ loggedInUser, setLoggedInUser }: NavBarProps) {
+  const [open, setOpen] = useState<boolean>(false);
   const toggleNavbar = () => setOpen(!open);
 
   const handleLogout = () => {

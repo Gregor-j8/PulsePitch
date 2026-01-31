@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useJoinTeam } from "../../hooks/useTeams"
 import { useNavigate } from "react-router-dom"
@@ -6,16 +5,27 @@ import { toast } from "react-toastify"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
+import { UserProfileDTO } from "../../types"
 
-export const JoinTeamModal = ({ onClose, loggedInUser }) => {
+interface JoinTeamModalProps {
+  onClose: () => void;
+  loggedInUser: UserProfileDTO;
+}
+
+interface JoinTeamErrors {
+  name?: string;
+  code?: string;
+}
+
+export const JoinTeamModal = ({ onClose, loggedInUser }: JoinTeamModalProps) => {
   const Navigate = useNavigate()
-  const [name, setName] = useState('')
-  const [code, setCode] = useState('')
-  const [errors, setErrors] = useState({})
+  const [name, setName] = useState<string>('')
+  const [code, setCode] = useState<string>('')
+  const [errors, setErrors] = useState<JoinTeamErrors>({})
   const JoinTeam = useJoinTeam()
 
-  const validate = () => {
-    const newErrors = {}
+  const validate = (): JoinTeamErrors => {
+    const newErrors: JoinTeamErrors = {}
     if (!name.trim()) {
       newErrors.name = 'Team name is required'
     }
@@ -33,7 +43,7 @@ export const JoinTeamModal = ({ onClose, loggedInUser }) => {
     }
     setErrors({})
     JoinTeam.mutate(
-      { TeamName: name, JoinCode: code, PlayerId: loggedInUser?.id },
+      { teamName: name, joinCode: code, playerId: loggedInUser?.id },
       {
         onSuccess: () => {
           Navigate("/")

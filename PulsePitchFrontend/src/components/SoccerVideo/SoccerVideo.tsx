@@ -1,16 +1,15 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from "react"
 import {X} from "lucide-react"
 import { useVideo } from "../../hooks/useVideo"
 
 export default function VideoUploader() {
-  const [file, setFile] = useState(null)
-  const [playing, setPlaying] = useState(true)
-  const [streamFrame, setStreamFrame] = useState(null)
-  const [uploading, setUploading] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const playingRef = useRef(playing)
-  const ws = useRef(null)
+  const [file, setFile] = useState<File | null>(null)
+  const [playing, setPlaying] = useState<boolean>(true)
+  const [streamFrame, setStreamFrame] = useState<string | null>(null)
+  const [uploading, setUploading] = useState<boolean>(false)
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const playingRef = useRef<boolean>(playing)
+  const ws = useRef<WebSocket | null>(null)
   const mutate = useVideo()
 
   useEffect(() => {
@@ -18,12 +17,13 @@ export default function VideoUploader() {
 }, [playing])
 
   const handleUpload = async () => {
+    if (!file) return
     setUploading(true)
     const formData = new FormData()
     formData.append("file", file)
     mutate.mutate(formData, {
       onSuccess: (result) => {
-        if (result.data.message === "Video uploaded successfully") {
+        if (result?.data.message === "Video uploaded successfully") {
           setShowModal(true)
           startWebSocket()
         }
@@ -57,7 +57,7 @@ export default function VideoUploader() {
       <input type="file" accept="video/*"
         className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 
         file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-        onChange={(e) => {setFile(e.target.files[0]); setStreamFrame(null)}}/>
+        onChange={(e) => {setFile(e.target.files?.[0] ?? null); setStreamFrame(null)}}/>
       {file && <p className="text-sm text-gray-600">Selected: {file.name}</p>}
       <button onClick={handleUpload} disabled={uploading || !file} className={`w-full py-2 px-4 rounded-lg font-medium text-white 
         ${uploading || !file ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>

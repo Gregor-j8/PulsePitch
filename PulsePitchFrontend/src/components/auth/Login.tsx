@@ -1,18 +1,22 @@
-// @ts-nocheck
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../managers/authManagers";
 import { Card } from "../ui/Card";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
+import { UserProfileDTO } from "../../types";
 
-export default function Login({ setLoggedInUser }) {
+interface LoginProps {
+  setLoggedInUser: (user: UserProfileDTO | null) => void;
+}
+
+export default function Login({ setLoggedInUser }: LoginProps) {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [failedLogin, setFailedLogin] = useState(false);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [failedLogin, setFailedLogin] = useState<boolean>(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     login(email, password).then((user) => {
       if (!user) {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Rabona from "rabonajs"
 import { useCallback, useEffect, useRef, useState } from "react"
 import { useImmer } from "use-immer"
@@ -7,21 +6,28 @@ import {EditPlayerModal} from "./EditPlayerModal"
 import { EditFormationModal } from "./EditFormationModal"
 import { Button } from "../ui/Button"
 import * as d3 from "d3"
+import { PlayersInFormationDTO } from "../../types/dtos"
 
+interface PitchComponentProps {
+  formationId: number | null;
+  setFormationId: (value: number | null) => void;
+  setFormationModal: (value: boolean) => void;
+  setCreateFormationModal: (value: boolean) => void;
+}
 
-export const PitchComponent = ({ formationId, setFormationId, setFormationModal, setCreateFormationModal }) => {
-  const [selectedPlayer, setSelectedPlayer] = useState(null)
-  const [editFormationModal, setEditFormationModal] = useState(false)
-  const [ball, setBall] = useState({ x: 500, y: 350 })
-  const [players, setPlayers] = useImmer([])
-  const { data: Players } = usePlayersByFormationId(formationId)
+export const PitchComponent = ({ formationId, setFormationId, setFormationModal, setCreateFormationModal }: PitchComponentProps) => {
+  const [selectedPlayer, setSelectedPlayer] = useState<PlayersInFormationDTO | null>(null)
+  const [editFormationModal, setEditFormationModal] = useState<boolean>(false)
+  const [ball, setBall] = useState<{ x: number; y: number }>({ x: 500, y: 350 })
+  const [players, setPlayers] = useImmer<PlayersInFormationDTO[]>([])
+  const { data: Players } = usePlayersByFormationId(formationId ?? 0)
   const mutation = useEditPlayersInFormations()
-  const ballRef = useRef(null)
-  const draggedBallRef = useRef(null)
-  const containerRef = useRef(null)
-  const playerRefs = useRef({})
-  const draggedPlayerRef = useRef(null)
-  const circleRef = useRef(null)
+  const ballRef = useRef<HTMLDivElement | null>(null)
+  const draggedBallRef = useRef<boolean | null>(null)
+  const containerRef = useRef<HTMLDivElement | null>(null)
+  const playerRefs = useRef<{ [key: number]: HTMLDivElement }>({})
+  const draggedPlayerRef = useRef<{ id: number; x?: number; y?: number } | null>(null)
+  const circleRef = useRef<d3.Selection<SVGCircleElement, unknown, HTMLElement, any> | null>(null)
 
   useEffect(() => {
     if (Players) {
@@ -36,8 +42,9 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
         width: 120,
         padding: 100,
         linecolour: "#ffffff",
-        fillcolour: "#7ec850"
-      })
+        fillcolour: "#7ec850",
+        scaler: 5
+      } as any)
       const svg = d3.select("#d3-overlay")
         .append("svg")
         .attr("width", "100%")
@@ -63,20 +70,21 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
 
 
 
-  const handlePlayerUpdate = useCallback((id, x, y) => {
+  const handlePlayerUpdate = useCallback((id: number, x: number, y: number) => {
     const player = players.find((p) => p.id === id)
     if (!player) return
     if (player.x === x && player.y === y) return
     const updatedPlayer = { ...player, x, y }
-    mutation.mutate(updatedPlayer)
+    mutation.mutate(updatedPlayer as any)
   }, [players, mutation])
 
-    const startDragBall = useCallback((e) => {
+    const startDragBall = useCallback((e: React.MouseEvent) => {
     e.preventDefault()
-    const rect = containerRef.current.getBoundingClientRect()
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return
     draggedBallRef.current = true
 
-    const move = (ev) => {
+    const move = (ev: MouseEvent) => {
       const newX = ev.clientX - rect.left
       const newY = ev.clientY - rect.top
       if (newX < 0 || newX > rect.width || newY < 0 || newY > rect.height) return
@@ -97,32 +105,35 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
   }, [])
 
 
-  const startDrag = useCallback((e, id) => {
+  const startDrag = useCallback((e: React.MouseEvent, id: number) => {
     if (selectedPlayer) return
     e.preventDefault()
-    const rect = containerRef.current.getBoundingClientRect()
+    const rect = containerRef.current?.getBoundingClientRect()
+    if (!rect) return
     draggedPlayerRef.current = { id }
     let hasMoved = false
 
-  const move = (ev) => {
+  const move = (ev: MouseEvent) => {
     const newX = ev.clientX - rect.left
     const newY = ev.clientY - rect.top
     const distance = Math.sqrt(newX * newX + newY * newY)
-    if (distance < 3) return 
+    if (distance < 3) return
     hasMoved = true
     const playerId = playerRefs.current[id]
     if (playerId) {
       playerId.style.left = `${newX}px`
       playerId.style.top = `${newY}px`
-      draggedPlayerRef.current.x = newX
-      draggedPlayerRef.current.y = newY
+      if (draggedPlayerRef.current) {
+        draggedPlayerRef.current.x = newX
+        draggedPlayerRef.current.y = newY
+      }
     }
   }
 
     const up = () => {
       if (hasMoved && draggedPlayerRef.current?.x != null && draggedPlayerRef.current?.y != null) {
       const { id, x, y } = draggedPlayerRef.current
-      if (id !== null && x !== null && y !== null) {
+      if (x !== undefined && y !== undefined) {
         setPlayers((draft) => {
           const player = draft.find((p) => p.id === id)
           if (player) {
@@ -130,8 +141,8 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
             player.y = y
           }
         })
+        handlePlayerUpdate(id, x, y)
       }
-      handlePlayerUpdate(id, x, y)
     }
       window.removeEventListener("mousemove", move)
       window.removeEventListener("mouseup", up)
@@ -233,13 +244,13 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
                   draft[index] = updatedPlayer
                 }
               })
-              mutation.mutate(updatedPlayer)
+              mutation.mutate(updatedPlayer as any)
               setSelectedPlayer(null)
             }}
           />
         )}
-        {editFormationModal && (
-            <EditFormationModal setFormationId={setFormationId} setEditFormationModal={setEditFormationModal} formationId={formationId} setFormationModal={setFormationModal}/> 
+        {editFormationModal && formationId !== null && (
+            <EditFormationModal setFormationId={setFormationId} setEditFormationModal={setEditFormationModal} formationId={formationId} setFormationModal={setFormationModal}/>
         )}
     </div>
   )

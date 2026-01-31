@@ -1,14 +1,26 @@
-// @ts-nocheck
 import { X } from "lucide-react";
-import { useGetFormationsById, useDeleteFormations, useEditFormations } from "../../hooks/UseFormation";
-import { useState } from "react";
+import { useGetFormationsById, useDeleteFormations, useEditFormations } from "../../hooks/useFormation";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 
-export const EditFormationModal = ({ formationId, setEditFormationModal, setFormationModal, setFormationId }) => {
+interface EditFormationModalProps {
+  formationId: number;
+  setEditFormationModal: (value: boolean) => void;
+  setFormationModal: (value: boolean) => void;
+  setFormationId: (value: number | null) => void;
+}
+
+export const EditFormationModal = ({ formationId, setEditFormationModal, setFormationModal, setFormationId }: EditFormationModalProps) => {
     const { data: Players } = useGetFormationsById(formationId)
-    const [formData, setFormData] = useState(Players)
+    const [formData, setFormData] = useState<{ name: string; description: string }>({ name: "", description: "" })
     const deleteMutation = useDeleteFormations()
     const editMutation = useEditFormations()
+
+    useEffect(() => {
+        if (Players) {
+            setFormData({ name: Players.name ?? "", description: Players.description ?? "" })
+        }
+    }, [Players])
 
     const handleEditFormation = () => {
         if (!formData.name || !formData.description) return toast.error("Please fill in all fields")
@@ -17,7 +29,7 @@ export const EditFormationModal = ({ formationId, setEditFormationModal, setForm
                 name: formData.name,
                 description: formData.description,
             }
-        editMutation.mutate({ id: formationId, data: sendFormData } , {
+        editMutation.mutate({ id: formationId, data: sendFormData } as any, {
             onSuccess: () => {
                 setEditFormationModal(false)
                 toast.success("Formation updated successfully")

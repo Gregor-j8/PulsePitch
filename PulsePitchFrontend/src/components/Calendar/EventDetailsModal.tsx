@@ -1,16 +1,28 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useDeleteTeamEvent, useTeamEvent } from "../../hooks/useEvents"
 import { CalendarDays } from 'lucide-react'
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { ConfirmDialog } from "../ui"
+import { UserProfileDTO } from "../../types"
 
-export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventId, onClose, setEditModel, SetStarterFormData }) => {
-    const {data: eventData } = useTeamEvent(chosenEventId, {enabled: !!chosenEventId})
+interface EventDetailsModalProps {
+  loggedInUser: UserProfileDTO;
+  chosenEventId: number | null;
+  setChosenEventId: (id: number | null) => void;
+  onClose: () => void;
+  setEditModel: (value: boolean) => void;
+  SetStarterFormData: (data: any) => void;
+}
+
+export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventId, onClose, setEditModel, SetStarterFormData }: EventDetailsModalProps) => {
+    const {data: eventData } = useTeamEvent(chosenEventId ?? undefined)
     const deleteTeamEventMutation = useDeleteTeamEvent()
     const {mutate: deleteTeamEvent} = deleteTeamEventMutation
-    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
+
+    if (!eventData) return null
+
   return (
     <Modal isOpen={true} onClose={onClose} title={<div className="flex items-center gap-2"><CalendarDays/>Event Details</div>} size="md">
       <ModalBody>
@@ -19,8 +31,8 @@ export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventI
           <div className="block text-sm font-semibold text-neutral-500">Description<p>{eventData.description}</p></div>
           <div className="block text-sm font-semibold text-neutral-500">Start<p>{eventData.start}</p></div>
           <div className="block text-sm font-semibold text-neutral-500">End<p>{eventData.end}</p></div>
-          <div className="block text-sm font-semibold text-neutral-500">Event<p>{eventData?.event.name}</p></div>
-          <div className="block text-sm font-semibold text-neutral-500">Team<p>{eventData?.team.name}</p></div>
+          <div className="block text-sm font-semibold text-neutral-500">Event<p>{eventData?.event?.name}</p></div>
+          <div className="block text-sm font-semibold text-neutral-500">Team<p>{eventData?.team?.name}</p></div>
         </div>
       </ModalBody>
       <ModalFooter className="justify-between">

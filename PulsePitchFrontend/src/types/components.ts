@@ -10,7 +10,7 @@ export interface LoggedInUserProps {
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  title?: string;
+  title?: ReactNode;
   size?: 'sm' | 'md' | 'lg' | 'xl';
   children: ReactNode;
 }

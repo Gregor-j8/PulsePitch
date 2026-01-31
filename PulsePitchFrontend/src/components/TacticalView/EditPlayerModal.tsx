@@ -1,14 +1,20 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useDeletePlayersInFormations } from "../../hooks/usePlayersInFormation"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
+import { PlayersInFormationDTO } from "../../types/dtos"
 
-export const EditPlayerModal = ({ player, onClose, onSave }) => {
+interface EditPlayerModalProps {
+  player: PlayersInFormationDTO;
+  onClose: () => void;
+  onSave: (player: PlayersInFormationDTO) => void;
+}
+
+export const EditPlayerModal = ({ player, onClose, onSave }: EditPlayerModalProps) => {
     const mutation = useDeletePlayersInFormations()
-    const [name, setName] = useState(player.name)
-    const [role, setRole] = useState(player.role)
+    const [name, setName] = useState<string>(player.name)
+    const [role, setRole] = useState<string>(player.role ?? "")
 
   return (
     <Modal isOpen={true} onClose={onClose} title="Edit Player" size="md">

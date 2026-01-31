@@ -1,20 +1,30 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useCreateTeam } from "../../hooks/useTeams"
 import { useNavigate } from "react-router-dom"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
+import { UserProfileDTO } from "../../types"
 
-export const CreateTeamModal = ({ loggedInUser, onClose }) => {
+interface CreateTeamModalProps {
+    loggedInUser: UserProfileDTO;
+    onClose: () => void;
+}
+
+interface TeamErrors {
+    name?: string;
+    code?: string;
+}
+
+export const CreateTeamModal = ({ loggedInUser, onClose }: CreateTeamModalProps) => {
     const Navigate = useNavigate()
-    const [name, setName] = useState('')
-    const [code, setCode] = useState('')
-    const [errors, setErrors] = useState({})
+    const [name, setName] = useState<string>('')
+    const [code, setCode] = useState<string>('')
+    const [errors, setErrors] = useState<TeamErrors>({})
     const createTeam = useCreateTeam()
 
-    const validate = () => {
-        const newErrors = {}
+    const validate = (): TeamErrors => {
+        const newErrors: TeamErrors = {}
         if (!name.trim()) {
             newErrors.name = 'Team name is required'
         } else if (name.trim().length < 3) {
@@ -36,7 +46,7 @@ export const CreateTeamModal = ({ loggedInUser, onClose }) => {
         }
         setErrors({})
         createTeam.mutate(
-            { name, joincode: code, loggedInUserId: loggedInUser.id },
+            { name, joinCode: code, loggedInUserId: loggedInUser.id } as any,
             {
                 onSuccess: () => {
                     Navigate("/")

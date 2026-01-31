@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { useUserProfile } from "../../hooks/useUserProfile"
@@ -8,16 +7,27 @@ import { Button } from "../ui/Button"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Input } from "../ui/Input"
 import { ConfirmDialog } from "../ui"
+import { UserProfileDTO } from "../../types"
 
-export const Profile = ({ loggedInUser }) => {
-  const { id } = useParams()
-  const { data: userProfile } = useUserProfile(id)
+interface ProfileProps {
+  loggedInUser: UserProfileDTO | null;
+}
+
+interface ProfileFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
+export const Profile = ({ loggedInUser }: ProfileProps) => {
+  const { id } = useParams<{ id: string }>()
+  const { data: userProfile } = useUserProfile(id ? parseInt(id) : undefined)
   const updateUserProfileMutation = useEditUserProfile()
   const { mutate: updateUserProfile } = updateUserProfileMutation
-  const [showModal, setShowModal] = useState(false)
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: ''})
-  const [errors, setErrors] = useState({})
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
+  const [formData, setFormData] = useState<ProfileFormData>({ firstName: '', lastName: '', email: ''})
+  const [errors, setErrors] = useState<Partial<ProfileFormData>>({})
 
   useEffect(() => {
     if (userProfile) {
@@ -31,8 +41,8 @@ export const Profile = ({ loggedInUser }) => {
 
   if (!userProfile) return null
 
-  const validateProfile = () => {
-    const newErrors = {}
+  const validateProfile = (): Partial<ProfileFormData> => {
+    const newErrors: Partial<ProfileFormData> = {}
     if (!formData.firstName.trim()) {
       newErrors.firstName = 'First name is required'
     }
@@ -62,7 +72,7 @@ export const Profile = ({ loggedInUser }) => {
       <Card className="p-6 mb-4 w-full max-w-md">
         <h2 className="text-xl font-bold mb-2 text-neutral-800">{userProfile.firstName} {userProfile.lastName}</h2>
         <h2 className="text-xl font-bold mb-2 text-neutral-600">{userProfile.email}</h2>
-        {loggedInUser.id === userProfile.id && (
+        {loggedInUser?.id === userProfile.id && (
           <div className="flex flex-col gap-2 mt-4">
             <Button variant="primary" onClick={() => {setShowModal(true)}}>
               Edit Profile

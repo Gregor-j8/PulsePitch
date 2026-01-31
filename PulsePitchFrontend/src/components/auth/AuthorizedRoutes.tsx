@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Navigate } from "react-router-dom";
 import { AuthorizedRouteProps } from "../../types";
 
@@ -8,7 +7,7 @@ export const AuthorizedRoute = ({ children, loggedInUser, roles }: AuthorizedRou
   }
 
   const roleCheck = roles?.length
-    ? roles.some((r) => loggedInUser.roles.includes(r)) : true
+    ? roles.some((r: string) => loggedInUser.roles.includes(r)) : true
 
   if (roleCheck) {
     return children

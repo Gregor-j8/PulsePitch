@@ -1,23 +1,27 @@
-// @ts-nocheck
 import { useRespondToMatchRequest, useUserMatchRequests } from "../../hooks/useMatchRequest"
 import { LoadingSpinner } from "../Loading/LoadingPage"
 import { Check, X } from "lucide-react"
 import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
+import { UserProfileDTO } from "../../types"
 
-export const MatchRequest = ({ loggedInUser }) => {
+interface MatchRequestProps {
+  loggedInUser: UserProfileDTO;
+}
+
+export const MatchRequest = ({ loggedInUser }: MatchRequestProps) => {
   const { data: MatchRequests } = useUserMatchRequests(loggedInUser.id)
   const responseToMatchRequest = useRespondToMatchRequest()
   if (!MatchRequests) return <LoadingSpinner />
 
-    const handleAccept = (matchId) => {
+    const handleAccept = (matchId: number) => {
         const form = {
             status: 'accepted'
         }
         responseToMatchRequest.mutate({matchId, messageData: form})
     }
 
-  const handleReject = (matchId) => {
+  const handleReject = (matchId: number) => {
         const form = {
             status: 'rejected'
         }
@@ -35,13 +39,13 @@ export const MatchRequest = ({ loggedInUser }) => {
             <Card key={match.id} className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
               <div>
                 <p className="text-lg font-medium text-neutral-800">
-                  {match.homeTeam.name} <span className="text-neutral-400">vs</span> {match.awayTeam.name}
+                  {match.homeTeam?.name} <span className="text-neutral-400">vs</span> {match.awayTeam?.name}
                 </p>
                 <p className="text-sm text-neutral-500">
                   Scheduled for: {new Date(match.proposedDate).toLocaleString()}
                 </p>
               </div>
-              {match.status === null && loggedInUser.identityUserId === match.awayTeam.coachId && (
+              {match.status === null && loggedInUser.identityUserId === match.awayTeam?.coachId && (
                 <div className="flex space-x-2 mt-2 sm:mt-0">
                   <Button
                     variant="success"

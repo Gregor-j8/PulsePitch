@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef, useEffect } from "react"
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
@@ -13,26 +12,50 @@ import { GameDetailsModals } from "./GameDetailsModal"
 import { useTeamGames } from "../../hooks/UseGames"
 import { GameEditModal } from "./GameEditModal"
 import { Button } from "../ui/Button"
+import { UserProfileDTO } from "../../types"
 
-export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
-  const { data: calendarEvents } = useTeamEvents(loggedInUser.id, {enabled: !!loggedInUser.id})
-  const { data: calenderGames } = useTeamGames('', loggedInUser.teams.map(team => team.teamId))
+interface MyCalendarProps {
+  loggedInUser: UserProfileDTO;
+  refreshLoggedInUser: () => Promise<void>;
+}
+
+interface CreateEventData {
+  title: string;
+  description: string;
+  start: string;
+  end: string;
+  eventId: string;
+  teamId: string;
+}
+
+interface EventErrors {
+  title?: string;
+  description?: string;
+  start?: string;
+  end?: string;
+  eventId?: string;
+  teamId?: string;
+}
+
+export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalendarProps) {
+  const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
+  const { data: calenderGames } = useTeamGames(false, (loggedInUser as any).teams?.map((team: any) => team.teamId) ?? [])
   const createEvent = useCreateTeamEvent()
-  const calendarRef = useRef(null)
-  const [createEvents, setCreateEvents] = useState({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
-  const [eventErrors, setEventErrors] = useState({})
-  const [showCreateModal, setShowCreateModal] = useState(false)
-  const [showCreateGameModal, setshowCreateGameModal] = useState(false)
-  const [DetailsModal, setDetailsModal] = useState(false)
-  const [GameDetailsModal, setGameDetailsModal] = useState(false)
-  const [EditModel, setEditModel] = useState(false)
-  const [EditGameModel, setEditGameModel] = useState(false)
-  const [chosenEventId, setChosenEventId] = useState(null)
-  const [choosenGameId, setchoosenGameId] = useState(null)
-  const [StarterFormData, SetStarterFormData] = useState({})
+  const calendarRef = useRef<FullCalendar>(null)
+  const [createEvents, setCreateEvents] = useState<CreateEventData>({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
+  const [eventErrors, setEventErrors] = useState<EventErrors>({})
+  const [showCreateModal, setShowCreateModal] = useState<boolean>(false)
+  const [showCreateGameModal, setshowCreateGameModal] = useState<boolean>(false)
+  const [DetailsModal, setDetailsModal] = useState<boolean>(false)
+  const [GameDetailsModal, setGameDetailsModal] = useState<boolean>(false)
+  const [EditModel, setEditModel] = useState<boolean>(false)
+  const [EditGameModel, setEditGameModel] = useState<boolean>(false)
+  const [chosenEventId, setChosenEventId] = useState<number | null>(null)
+  const [choosenGameId, setchoosenGameId] = useState<number | null>(null)
+  const [StarterFormData, SetStarterFormData] = useState<any>({})
 
-  const validateEvent = () => {
-    const errors = {}
+  const validateEvent = (): EventErrors => {
+    const errors: EventErrors = {}
     if (!createEvents.title.trim()) {
       errors.title = 'Title is required'
     }
@@ -61,18 +84,18 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
     }
     setEventErrors({})
     const event = { title: createEvents.title, description: createEvents.description,
-      start: createEvents.start, end: createEvents.end, eventId: createEvents.eventId, teamId: createEvents.teamId}
+      start: createEvents.start, end: createEvents.end, eventId: parseInt(createEvents.eventId), teamId: parseInt(createEvents.teamId)}
     createEvent.mutate(event)
     setShowCreateModal(false)
     setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
   }
-  const handleEventClick = (info) => {
+  const handleEventClick = (info: string) => {
       setDetailsModal(true)
-      setChosenEventId(info)
+      setChosenEventId(parseInt(info))
   }
-  const handleGameClick = (info) => {
+  const handleGameClick = (info: string) => {
       setGameDetailsModal(true)
-      setchoosenGameId(info)
+      setchoosenGameId(parseInt(info))
   }
 
   useEffect(() => {
@@ -107,22 +130,22 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
           center: 'title',
           right: 'createEvent createGame', 
         }}
-        events={[  
+        events={[
             ...(calenderGames ?? []).map(game => ({
-            id: game.id,
+            id: game.id.toString(),
             title: `${game.homeTeam?.name} vs ${game.awayTeam?.name}`,
             start: game.start,
             end: game.end,
             color: 'green',
-            type: 'game'
+            extendedProps: { type: 'game' }
           })),
           ...(calendarEvents ?? []).map(event => ({
-            id: event.id,
+            id: event.id.toString(),
             title: event.title,
             start: event.start,
             end: event.end,
             color: 'blue',
-            type: 'calendarEvent'
+            extendedProps: { type: 'calendarEvent' }
           })),
         ]}
         eventDisplay="block"
@@ -182,7 +205,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}) {
         <GameEditModal
           StarterFormData={StarterFormData}
           choosenGameId={choosenGameId}
-          setchoosenGameId={setchoosenGameId}
+          setChosenGameId={setchoosenGameId}
           onClose={() => setEditGameModel(false)}
         />
       )}

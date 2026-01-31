@@ -1,4 +1,3 @@
-// @ts-nocheck
 export const LoadingSpinner = () => {
     return (
       <div role="status">

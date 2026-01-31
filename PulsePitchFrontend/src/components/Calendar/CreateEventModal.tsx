@@ -1,12 +1,36 @@
-// @ts-nocheck
 import { useGetEventsForDropdown } from "../../hooks/useEvents"
 import { useTeams } from "../../hooks/useTeams"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
 import { Textarea, Select } from "../ui/Input"
+import { UserProfileDTO } from "../../types"
 
-export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser, isLoading: isSubmitting = false, errors = {} }) {
+interface CreateEventModalProps {
+  formData: {
+    title: string;
+    description: string;
+    start: string;
+    end: string;
+    eventId: string;
+    teamId: string;
+  };
+  setFormData: (data: any) => void;
+  onClose: () => void;
+  onSubmit: () => void;
+  loggedInUser: UserProfileDTO;
+  isLoading?: boolean;
+  errors?: {
+    title?: string;
+    description?: string;
+    start?: string;
+    end?: string;
+    eventId?: string;
+    teamId?: string;
+  };
+}
+
+export default function CreateEventModal({ formData, setFormData, onClose, onSubmit, loggedInUser, isLoading: isSubmitting = false, errors = {} }: CreateEventModalProps) {
       const { data: events, isLoading, isError } = useGetEventsForDropdown()
       const { data: team } = useTeams()
     if (isError || isLoading ){
@@ -52,7 +76,7 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
           onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
           options={[
             { value: "", label: "Select event" },
-            ...events.map(e => ({ value: e.id, label: e.name }))
+            ...(events ?? []).map(e => ({ value: e.id, label: e.name }))
           ]}
           error={errors.eventId}
           className="mb-2"
@@ -63,10 +87,10 @@ export default function CreateEventModal({ formData, setFormData, onClose, onSub
           onChange={(e) => setFormData({ ...formData, teamId: e.target.value })}
           options={[
             { value: "", label: "Select Team" },
-            ...loggedInUser.teams.map(e => ({
+            ...(loggedInUser as any).teams?.map((e: any) => ({
               value: e.id,
               label: team?.find(t => t.id == e.id)?.name
-            }))
+            })) ?? []
           ]}
           error={errors.teamId}
         />

@@ -1,12 +1,16 @@
-// @ts-nocheck
 import { useState } from 'react'
 import { Messages } from './Messages'
 import { MatchRequest } from './MatchRequest'
 import { Card } from '../ui/Card'
 import { Button } from '../ui/Button'
+import { UserProfileDTO } from '../../types'
 
-export const Inbox = ({ loggedInUser }) => {
-  const [activeTab, setActiveTab] = useState('messages')
+interface InboxProps {
+  loggedInUser: UserProfileDTO;
+}
+
+export const Inbox = ({ loggedInUser }: InboxProps) => {
+  const [activeTab, setActiveTab] = useState<'messages' | 'notifications'>('messages')
   return (
     <div className="min-h-screen bg-neutral-100 flex items-center justify-center px-4 py-8">
       <Card className="w-full max-w-4xl overflow-hidden">

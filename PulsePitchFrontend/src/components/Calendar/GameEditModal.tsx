@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useTeamGame, useEditTeamGame } from "../../hooks/UseGames"
 import { useTeams } from "../../hooks/useTeams"
@@ -6,9 +5,16 @@ import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Input, Select } from "../ui/Input"
 
-export const GameEditModal = ({ choosenGameId, setChosenGameId, onClose, StarterFormData }) => {
+interface GameEditModalProps {
+  choosenGameId: number | null;
+  setChosenGameId: (id: number | null) => void;
+  onClose: () => void;
+  StarterFormData: any;
+}
+
+export const GameEditModal = ({ choosenGameId, setChosenGameId, onClose, StarterFormData }: GameEditModalProps) => {
   const [formData, setFormData] = useState(StarterFormData)
-  const { data: gameData } = useTeamGame(choosenGameId, { enabled: !!choosenGameId })
+  const { data: gameData } = useTeamGame(choosenGameId ?? undefined)
   const { mutate: updateTeamGame } = useEditTeamGame()
   const { data: teams, isLoading, isError } = useTeams()
   if (!gameData || isLoading || isError) return null
@@ -16,7 +22,7 @@ export const GameEditModal = ({ choosenGameId, setChosenGameId, onClose, Starter
   const handleUpdate = () => {
     const payload = { start: formData.start, end: formData.end, homeTeamId: formData.homeTeamId,
         awayTeamId: formData.awayTeamId, result: formData.result,}
-        updateTeamGame({ id: choosenGameId, data: payload },
+        updateTeamGame({ id: choosenGameId!, data: payload },
         { onSuccess: () => {onClose(); setChosenGameId(null)}})}
 
   return (
@@ -41,7 +47,7 @@ export const GameEditModal = ({ choosenGameId, setChosenGameId, onClose, Starter
           onChange={(e) => setFormData({ ...formData, homeTeamId: parseInt(e.target.value) })}
           options={[
             { value: "", label: "Select Home Team" },
-            ...teams.map((team) => ({ value: team.id, label: team.name }))
+            ...(teams ?? []).map((team) => ({ value: team.id, label: team.name }))
           ]}
           className="mb-2"
         />
@@ -50,7 +56,7 @@ export const GameEditModal = ({ choosenGameId, setChosenGameId, onClose, Starter
           onChange={(e) => setFormData({ ...formData, awayTeamId: parseInt(e.target.value) })}
           options={[
             { value: "", label: "Select Away Team" },
-            ...teams.map((team) => ({ value: team.id, label: team.name }))
+            ...(teams ?? []).map((team) => ({ value: team.id, label: team.name }))
           ]}
           className="mb-2"
         />

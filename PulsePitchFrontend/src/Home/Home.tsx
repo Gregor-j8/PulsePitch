@@ -1,14 +1,18 @@
-// @ts-nocheck
 import { useState } from "react"
 import { CreateTeamModal } from "../components/Modals/CreateTeamModals"
 import { JoinTeamModal } from "../components/Modals/JoinTeamModal"
 import { LoadingSpinner } from "../components/Loading/LoadingPage"
 import { Card } from "../components/ui/Card"
 import { Button } from "../components/ui/Button"
+import { UserProfileDTO } from "../types"
 
-export const Home = ({loggedInUser}) => {
-  const [showCreateTeamModal, setShowCreateTeamModal] = useState(false)
-  const [showJoinTeamModal, setShowJoinTeamModal] = useState(false)
+interface HomeProps {
+  loggedInUser: UserProfileDTO | null;
+}
+
+export const Home = ({loggedInUser}: HomeProps) => {
+  const [showCreateTeamModal, setShowCreateTeamModal] = useState<boolean>(false)
+  const [showJoinTeamModal, setShowJoinTeamModal] = useState<boolean>(false)
 
   if (!loggedInUser) return <LoadingSpinner/>
   return (

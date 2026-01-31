@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useDeleteTeamGame, useTeamGame } from "../../hooks/UseGames"
 import { CalendarDays } from 'lucide-react'
@@ -6,14 +5,25 @@ import { LoadingSpinner } from "../Loading/LoadingPage"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { ConfirmDialog } from "../ui"
+import { UserProfileDTO } from "../../types"
 
-export const GameDetailsModals = ({ loggedInUser, choosenGameId, setchoosenGameId, onClose, setEditGameModel, SetStarterFormData }) => {
-  const { data: gameData } = useTeamGame(choosenGameId, { enabled: !!choosenGameId })
+interface GameDetailsModalsProps {
+  loggedInUser: UserProfileDTO;
+  choosenGameId: number | null;
+  setchoosenGameId: (id: number | null) => void;
+  onClose: () => void;
+  setEditGameModel: (value: boolean) => void;
+  SetStarterFormData: (data: any) => void;
+}
+
+export const GameDetailsModals = ({ loggedInUser, choosenGameId, setchoosenGameId, onClose, setEditGameModel, SetStarterFormData }: GameDetailsModalsProps) => {
+  const { data: gameData } = useTeamGame(choosenGameId ?? undefined)
   const deleteTeamGameMutation = useDeleteTeamGame()
   const { mutate: deleteTeamGame } = deleteTeamGameMutation
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false)
 
-if (!loggedInUser || !gameData) return <LoadingSpinner/>
+  if (!loggedInUser || !gameData) return <LoadingSpinner/>
+
   return (
     <Modal isOpen={true} onClose={onClose} title={<div className="flex items-center gap-2"><CalendarDays /> Game Details</div>} size="md">
       <ModalBody>

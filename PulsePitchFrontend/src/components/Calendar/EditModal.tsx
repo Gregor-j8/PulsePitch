@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from "react";
 import { useTeamEvent, useEditTeamEvent, useGetEventsForDropdown } from "../../hooks/useEvents";
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
@@ -6,9 +5,16 @@ import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
 import { Textarea, Select } from "../ui/Input"
 
-export default function EditEventModal({ chosenEventId, setChosenEventId, onClose, StarterFormData }) {
+interface EditEventModalProps {
+  chosenEventId: number | null;
+  setChosenEventId: (id: number | null) => void;
+  onClose: () => void;
+  StarterFormData: any;
+}
+
+export default function EditEventModal({ chosenEventId, setChosenEventId, onClose, StarterFormData }: EditEventModalProps) {
   const [formData, setFormData] = useState(StarterFormData)
-  const { data: eventData } = useTeamEvent(chosenEventId, { enabled: !!chosenEventId });
+  const { data: eventData } = useTeamEvent(chosenEventId ?? undefined);
   const updateTeamEventMutation = useEditTeamEvent();
   const { mutate: updateTeamEvent } = updateTeamEventMutation;
   const { data: events, isLoading, isError } = useGetEventsForDropdown();
@@ -24,7 +30,7 @@ export default function EditEventModal({ chosenEventId, setChosenEventId, onClos
         eventId: formData.eventId,
         teamId: formData.teamId,
     }
-    updateTeamEvent({ id: chosenEventId, data: form },
+    updateTeamEvent({ id: chosenEventId!, data: form },
         {onSuccess: () => {
           setChosenEventId(null)}}
     )
@@ -64,7 +70,7 @@ export default function EditEventModal({ chosenEventId, setChosenEventId, onClos
           onChange={(e) => setFormData({ ...formData, eventId: e.target.value })}
           options={[
             { value: "", label: "Select Event" },
-            ...events.map((event) => ({ value: event.id, label: event.name }))
+            ...(events ?? []).map((event) => ({ value: event.id, label: event.name }))
           ]}
         />
       </ModalBody>

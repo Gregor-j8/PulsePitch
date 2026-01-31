@@ -1,26 +1,30 @@
-// @ts-nocheck
 import { useState } from "react"
 import { useAllUserProfile } from "../../hooks/useUserProfile"
-import { X } from "lucide-react"
 import { useCreateChatRoom } from "../../hooks/useChatRoom";
 import { Modal, ModalBody } from "../ui/Modal"
 import { Input } from "../ui/Input"
 import { Card } from "../ui/Card"
+import { UserProfileDTO } from "../../types"
 
-export const ChooseNewMessage = ({setNewMessageModal, loggedInUser, }) => {
+interface ChooseNewMessageProps {
+  setNewMessageModal: (value: boolean) => void;
+  loggedInUser: UserProfileDTO;
+}
+
+export const ChooseNewMessage = ({setNewMessageModal, loggedInUser}: ChooseNewMessageProps) => {
   const { data: contacts, isLoading } = useAllUserProfile()
   const createNewChatRoom = useCreateChatRoom()
-  const [searchTerm, setSearchTerm] = useState("")
+  const [searchTerm, setSearchTerm] = useState<string>("")
 
   if (isLoading) return <div className="text-center p-4">Loading...</div>
 
-  const filteredContacts = contacts.filter(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()))
-  const handleNewChat = (id) => {
+  const filteredContacts = (contacts ?? []).filter(contact => `${contact.firstName} ${contact.lastName}`.toLowerCase().includes(searchTerm.toLowerCase()))
+  const handleNewChat = (id: number) => {
     const form = {
         UserOneId: loggedInUser.id,
-        UserTwoId: parseInt(id)
+        UserTwoId: id
     }
-    createNewChatRoom.mutate(form, {
+    createNewChatRoom.mutate(form as any, {
         onSuccess: () => {
             setNewMessageModal(false)
         }

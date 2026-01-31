@@ -1,4 +1,3 @@
-// @ts-nocheck
 import NavBar from "./components/Navbar";
 import ApplicationViews from "./components/ApplicationViews";
 import { useEffect, useState } from "react";
@@ -14,14 +13,15 @@ function App() {
       setLoggedInUser(user);
     });
   }, []);
+
   if (loggedInUser === undefined) {
     return <LoadingSpinner/>
   }
 
-  const refreshLoggedInUser = async () => {
-  const user = await tryGetLoggedInUser();
-  setLoggedInUser(user);
-};
+  const refreshLoggedInUser = async (): Promise<void> => {
+    const user = await tryGetLoggedInUser();
+    setLoggedInUser(user);
+  };
 
   return (
     <>
