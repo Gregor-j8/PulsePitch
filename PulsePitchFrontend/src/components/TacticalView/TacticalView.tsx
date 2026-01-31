@@ -6,6 +6,8 @@ import {CreateFormationModal} from "./CreateFormationModal"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Select } from "../ui/Input"
+import { EmptyState } from "../ui"
+import { Layout } from "lucide-react"
 import { UserProfileDTO } from "../../types"
 
 interface TacticalViewProps {
@@ -19,6 +21,8 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
     const  [createFormationModal, setCreateFormationModal] = useState<boolean>(false)
     const {data: formations } = useGetFormationsByTeamId((loggedInUser as any).teams?.map((team: any) => team.teamId) ?? [])
 
+    const hasFormations = formations && formations.length > 0;
+
       return (
         <>
           {formationModal && (
@@ -31,17 +35,23 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
                 >
                   Add A Formation
                 </Button>
-                <Select
-                  value="default"
-                  onChange={(e) => {setFormationModal(false); setFormationId(parseInt(e.target.value))}}
-                  options={[
-                    { value: 'default', label: 'Choose a formation' },
-                    ...(formations ?? []).map(formation => ({
-                      value: formation.id,
-                      label: formation.description
-                    }))
-                  ]}
-                />
+                {!hasFormations ? (
+                  <div className="py-4">
+                    <p className="text-center text-neutral-500 text-sm">No formations available. Create your first formation to get started.</p>
+                  </div>
+                ) : (
+                  <Select
+                    value="default"
+                    onChange={(e) => {setFormationModal(false); setFormationId(parseInt(e.target.value))}}
+                    options={[
+                      { value: 'default', label: 'Choose a formation' },
+                      ...(formations ?? []).map(formation => ({
+                        value: formation.id,
+                        label: formation.description
+                      }))
+                    ]}
+                  />
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button variant="primary" onClick={() => navigate("/")}>
@@ -51,8 +61,16 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
             </Modal>
           )}
           <div className="mt-4">
-            {formationId && (
+            {formationId ? (
               <PitchComponent formationId={formationId} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} />
+            ) : !createFormationModal && (
+              <EmptyState
+                icon={Layout}
+                title="No Formation Selected"
+                description="Select or create a formation to view and edit your team's tactical setup."
+                actionLabel="Choose Formation"
+                onAction={() => setFormationModal(true)}
+              />
             )}
             {createFormationModal && (
               <CreateFormationModal loggedInUser={loggedInUser} setFormationModal={setFormationModal} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId}/>

@@ -12,6 +12,8 @@ import { GameDetailsModals } from "./GameDetailsModal"
 import { useTeamGames } from "../../hooks/UseGames"
 import { GameEditModal } from "./GameEditModal"
 import { Button } from "../ui/Button"
+import { EmptyState } from "../ui"
+import { Calendar as CalendarIcon } from "lucide-react"
 import { UserProfileDTO } from "../../types"
 
 interface MyCalendarProps {
@@ -104,6 +106,9 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
     }
     refreshUser()
   },[refreshLoggedInUser])
+
+  const hasEvents = (calendarEvents && calendarEvents.length > 0) || (calenderGames && calenderGames.length > 0);
+
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
       <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
@@ -111,7 +116,16 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
           Create Event
         </Button>
       </div>
-      <FullCalendar
+      {!hasEvents ? (
+        <EmptyState
+          icon={CalendarIcon}
+          title="No Events or Games Scheduled"
+          description="Get started by creating your first event or scheduling a game with another team."
+          actionLabel="Create Event"
+          onAction={() => setShowCreateModal(true)}
+        />
+      ) : (
+        <FullCalendar
         ref={calendarRef}
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridMonth"
@@ -162,6 +176,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
         editable={true}
         height="auto"
       />
+      )}
       {showCreateModal  && (
         <CreateEventModal
           formData={createEvents}

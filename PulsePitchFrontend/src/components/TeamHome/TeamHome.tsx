@@ -5,7 +5,8 @@ import { useTeams } from "../../hooks/useTeams"
 import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
 import { Select } from "../ui/Input"
-import { ConfirmDialog } from "../ui"
+import { ConfirmDialog, EmptyState } from "../ui"
+import { Users } from "lucide-react"
 import { UserProfileDTO, PlayerTeamDTO } from "../../types"
 
 interface TeamHomeProps {
@@ -26,6 +27,8 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
     }
   }, [teamId, loggedInUser])
 
+  const hasPlayers = teams && Array.isArray(teams) && teams.length > 0;
+
   return (
     <div className="flex flex-col items-center justify-center h-full">
       <Select
@@ -40,7 +43,14 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
         ]}
         className="mb-4 w-full max-w-md"
       />
-      {teams && Array.isArray(teams) && teams.map((team: any) => (
+      {!hasPlayers ? (
+        <EmptyState
+          icon={Users}
+          title="No Players on This Team"
+          description="This team doesn't have any players yet. Invite players to join your team to get started."
+        />
+      ) : (
+        teams.map((team: any) => (
         <Card key={team.id} className="flex justify-between items-center p-6 mb-4 w-full max-w-md">
           <h2 className="text-xl font-bold text-neutral-800">
             <Link to={`/profile/${team.playerId}`} className="text-primary-600 hover:underline">
@@ -53,7 +63,8 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
             </Button>
           )}
         </Card>
-      ))}
+        ))
+      )}
       <ConfirmDialog
         isOpen={!!deleteConfirmPlayer}
         onClose={() => setDeleteConfirmPlayer(null)}

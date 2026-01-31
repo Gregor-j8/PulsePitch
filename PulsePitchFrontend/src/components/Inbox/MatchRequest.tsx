@@ -1,8 +1,9 @@
 import { useRespondToMatchRequest, useUserMatchRequests } from "../../hooks/useMatchRequest"
 import { LoadingSpinner } from "../Loading/LoadingPage"
-import { Check, X } from "lucide-react"
+import { Check, X, Trophy } from "lucide-react"
 import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
+import { EmptyState } from "../ui"
 import { UserProfileDTO } from "../../types"
 
 interface MatchRequestProps {
@@ -32,7 +33,11 @@ export const MatchRequest = ({ loggedInUser }: MatchRequestProps) => {
     <div className="max-w-3xl mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4 text-center text-neutral-800">Your Match Requests</h2>
       {MatchRequests.length === 0 ? (
-        <p className="text-center text-neutral-500">No match requests found.</p>
+        <EmptyState
+          icon={Trophy}
+          title="No Match Requests"
+          description="You don't have any pending match requests at the moment. Check back later or challenge another team to a match."
+        />
       ) : (
         <div className="space-y-4">
           {MatchRequests.map(match => (

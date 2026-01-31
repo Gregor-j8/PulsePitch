@@ -4,6 +4,8 @@ import { useCreateChatRoom } from "../../hooks/useChatRoom";
 import { Modal, ModalBody } from "../ui/Modal"
 import { Input } from "../ui/Input"
 import { Card } from "../ui/Card"
+import { EmptyState } from "../ui"
+import { UserPlus } from "lucide-react"
 import { UserProfileDTO } from "../../types"
 
 interface ChooseNewMessageProps {
@@ -53,6 +55,13 @@ export const ChooseNewMessage = ({setNewMessageModal, loggedInUser}: ChooseNewMe
               </p>
             </Card>
           ))}
+          {filteredContacts.length > 0 && (contacts ?? []).length === 0 && (
+            <EmptyState
+              icon={UserPlus}
+              title="No Contacts Available"
+              description="There are no other users in the system yet. Check back later to start conversations."
+            />
+          )}
           {filteredContacts.length === 0 && (
             <div className="text-center text-neutral-500 mt-4">No contacts found.</div>
           )}
