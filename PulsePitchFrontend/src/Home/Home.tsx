@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { CreateTeamModal } from "../components/Modals/CreateTeamModals"
 import { JoinTeamModal } from "../components/Modals/JoinTeamModal"
-import { LoadingSpinner } from "../components/Loading/LoadingPage"
+import { LoadingSpinner } from "../components/LoadingPage"
 import { Card } from "../components/ui/Card"
 import { Button } from "../components/ui/Button"
 import { UserProfileDTO } from "../types"
@@ -17,7 +17,7 @@ export const Home = ({loggedInUser}: HomeProps) => {
   if (!loggedInUser) return <LoadingSpinner/>
   return (
     <div className="w-full flex justify-center items-center min-h-screen bg-neutral-100">
-      <Card className="p-10 w-full max-w-md text-center">
+      <Card className="p-10 w-full text-center">
         <h2 className="text-2xl font-semibold mb-6 text-neutral-800">Team Options</h2>
         <div className="flex flex-col space-y-4">
           <Button

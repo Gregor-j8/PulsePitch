@@ -2,7 +2,7 @@ import NavBar from "./components/Navbar";
 import ApplicationViews from "./components/ApplicationViews";
 import { useEffect, useState } from "react";
 import { tryGetLoggedInUser } from "./managers/authManagers";
-import { LoadingSpinner } from "./components/Loading/LoadingPage";
+import { LoadingSpinner } from "./components/LoadingPage";
 import { UserProfileDTO } from "./types";
 
 function App() {

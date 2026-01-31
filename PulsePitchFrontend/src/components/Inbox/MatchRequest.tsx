@@ -1,5 +1,5 @@
 import { useRespondToMatchRequest, useUserMatchRequests } from "../../hooks/useMatchRequest"
-import { LoadingSpinner } from "../Loading/LoadingPage"
+import { LoadingSpinner } from "../LoadingPage"
 import { Check, X, Trophy } from "lucide-react"
 import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"

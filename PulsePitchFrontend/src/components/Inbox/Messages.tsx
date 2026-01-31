@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react"
 import { useChatRooms } from "../../hooks/useChatRoom"
 import { useCreateMessage, useDeleteMessageById, useRoomMessages } from "../../hooks/useMessages"
-import { LoadingSpinner } from "../Loading/LoadingPage"
+import { LoadingSpinner } from "../LoadingPage"
 import { toast } from "react-toastify"
 import { Plus, Trash, MessageSquare } from "lucide-react"
 import { ChooseNewMessage } from "./ChooseNewMessage"

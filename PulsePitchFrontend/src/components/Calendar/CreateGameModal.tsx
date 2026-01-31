@@ -1,7 +1,7 @@
 import { useCreateTeamGame } from "../../hooks/UseGames"
 import { useTeams } from "../../hooks/useTeams"
 import { useState } from "react"
-import {LoadingSpinner} from "../Loading/LoadingPage"
+import {LoadingSpinner} from "../LoadingPage"
 import { useCreateMatchRequest } from "../../hooks/useMatchRequest"
 import { toast } from "react-toastify"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"

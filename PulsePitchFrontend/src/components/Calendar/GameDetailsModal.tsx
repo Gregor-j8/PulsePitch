@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDeleteTeamGame, useTeamGame } from "../../hooks/UseGames"
 import { CalendarDays } from 'lucide-react'
-import { LoadingSpinner } from "../Loading/LoadingPage"
+import { LoadingSpinner } from "../LoadingPage"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { ConfirmDialog } from "../ui"
