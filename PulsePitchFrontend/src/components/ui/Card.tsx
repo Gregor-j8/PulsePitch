@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { CardProps } from '../../types';
 
-export const Card: React.FC<CardProps> = ({
+export const Card: React.FC<CardProps> = memo(({
   children,
   variant = 'default',
   className = '',
@@ -26,6 +26,8 @@ export const Card: React.FC<CardProps> = ({
       {children}
     </div>
   );
-};
+});
+
+Card.displayName = 'Card';
 
 export default Card;

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useCallback } from "react"
 import { useChatRooms } from "../../hooks/useChatRoom"
 import { useCreateMessage, useDeleteMessageById, useRoomMessages } from "../../hooks/useMessages"
 import { LoadingSpinner } from "../Loading/LoadingPage"
@@ -28,7 +28,7 @@ export const Messages = ({ loggedInUser }: MessagesProps) => {
   const deleteMessage = useDeleteMessageById()
   if (isLoading) return <LoadingSpinner />
 
-  const handleNewMessage = (formData: ChatRoomDTO) => {
+  const handleNewMessage = useCallback((formData: ChatRoomDTO) => {
      if (!formData || !formData.id || !loggedInUser?.id || !formData.userOne?.identityUserId || !formData.userTwo?.identityUserId || !newMessage || newMessage.trim() === "") {
     toast.error("Missing required message data")
     return
@@ -45,7 +45,7 @@ export const Messages = ({ loggedInUser }: MessagesProps) => {
         setNewMessage('')
       }
     })
-  }
+  }, [loggedInUser, newMessage, mutate])
   const hasConversations = useChatRoom && useChatRoom.length > 0;
 
   return (

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, useMemo, useCallback } from "react"
 import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
@@ -78,7 +78,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
     return errors
   }
 
-  const handleAddEvent = () => {
+  const handleAddEvent = useCallback(() => {
     const errors = validateEvent()
     if (Object.keys(errors).length > 0) {
       setEventErrors(errors)
@@ -90,15 +90,17 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
     createEvent.mutate(event)
     setShowCreateModal(false)
     setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
-  }
-  const handleEventClick = (info: string) => {
+  }, [createEvents, createEvent, validateEvent])
+
+  const handleEventClick = useCallback((info: string) => {
       setDetailsModal(true)
       setChosenEventId(parseInt(info))
-  }
-  const handleGameClick = (info: string) => {
+  }, [])
+
+  const handleGameClick = useCallback((info: string) => {
       setGameDetailsModal(true)
       setchoosenGameId(parseInt(info))
-  }
+  }, [])
 
   useEffect(() => {
     const refreshUser = async () => {
@@ -108,6 +110,25 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
   },[refreshLoggedInUser])
 
   const hasEvents = (calendarEvents && calendarEvents.length > 0) || (calenderGames && calenderGames.length > 0);
+
+  const formattedEvents = useMemo(() => [
+    ...(calenderGames ?? []).map(game => ({
+      id: game.id.toString(),
+      title: `${game.homeTeam?.name} vs ${game.awayTeam?.name}`,
+      start: game.start,
+      end: game.end,
+      color: 'green',
+      extendedProps: { type: 'game' }
+    })),
+    ...(calendarEvents ?? []).map(event => ({
+      id: event.id.toString(),
+      title: event.title,
+      start: event.start,
+      end: event.end,
+      color: 'blue',
+      extendedProps: { type: 'calendarEvent' }
+    })),
+  ], [calenderGames, calendarEvents]);
 
   return (
     <div className="w-full max-w-5xl mx-auto p-4">
@@ -144,24 +165,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
           center: 'title',
           right: 'createEvent createGame', 
         }}
-        events={[
-            ...(calenderGames ?? []).map(game => ({
-            id: game.id.toString(),
-            title: `${game.homeTeam?.name} vs ${game.awayTeam?.name}`,
-            start: game.start,
-            end: game.end,
-            color: 'green',
-            extendedProps: { type: 'game' }
-          })),
-          ...(calendarEvents ?? []).map(event => ({
-            id: event.id.toString(),
-            title: event.title,
-            start: event.start,
-            end: event.end,
-            color: 'blue',
-            extendedProps: { type: 'calendarEvent' }
-          })),
-        ]}
+        events={formattedEvents}
         eventDisplay="block"
         eventClick={(e) => {
           const event = e.event;

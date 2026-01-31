@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { ButtonProps } from '../../types';
 
-export const Button: React.FC<ButtonProps> = ({
+export const Button: React.FC<ButtonProps> = memo(({
   children,
   variant = 'primary',
   size = 'md',
@@ -62,6 +62,8 @@ export const Button: React.FC<ButtonProps> = ({
       {children}
     </button>
   );
-};
+});
+
+Button.displayName = 'Button';
 
 export default Button;

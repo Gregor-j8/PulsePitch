@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { LucideIcon } from 'lucide-react';
 import { Button } from './Button';
 
@@ -11,7 +11,7 @@ interface EmptyStateProps {
   className?: string;
 }
 
-export const EmptyState: React.FC<EmptyStateProps> = ({
+export const EmptyState: React.FC<EmptyStateProps> = memo(({
   icon: Icon,
   title,
   description,
@@ -37,4 +37,6 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
       )}
     </div>
   );
-};
+});
+
+EmptyState.displayName = 'EmptyState';
