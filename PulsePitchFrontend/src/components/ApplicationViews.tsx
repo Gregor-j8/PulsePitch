@@ -11,6 +11,7 @@ import {TacticalView} from "./TacticalView/TacticalView";
 import { Inbox } from "./Inbox/Inbox";
 import Layout from "./Layout/Layout";
 import { LoggedInUserProps } from "../types";
+import { Dashboard } from "./Dashboard";
 
 export default function ApplicationViews({loggedInUser, setLoggedInUser, refreshLoggedInUser}: LoggedInUserProps) {
   
@@ -18,6 +19,16 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
     <Routes>
       <Route
         index
+        element={
+          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
+            <Layout variant="default">
+              <Dashboard loggedInUser={loggedInUser!} refreshLoggedInUser={refreshLoggedInUser}/>
+            </Layout>
+          </AuthorizedRoute>
+        }
+      />
+      <Route
+        path="calendar"
         element={
           <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
             <Layout variant="default">

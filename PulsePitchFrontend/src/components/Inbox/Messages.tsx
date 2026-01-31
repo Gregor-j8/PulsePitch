@@ -26,7 +26,6 @@ export const Messages = ({ loggedInUser }: MessagesProps) => {
   const { data: messages } = useRoomMessages(selectedChat?.id)
   const mutate = useCreateMessage()
   const deleteMessage = useDeleteMessageById()
-  if (isLoading) return <LoadingSpinner />
 
   const handleNewMessage = useCallback((formData: ChatRoomDTO) => {
      if (!formData || !formData.id || !loggedInUser?.id || !formData.userOne?.identityUserId || !formData.userTwo?.identityUserId || !newMessage || newMessage.trim() === "") {
@@ -47,6 +46,8 @@ export const Messages = ({ loggedInUser }: MessagesProps) => {
     })
   }, [loggedInUser, newMessage, mutate])
   const hasConversations = useChatRoom && useChatRoom.length > 0;
+
+  if (isLoading) return <LoadingSpinner />
 
   return (
     <div className="flex bg-white rounded-lg shadow-md overflow-hidden h-[500px]">
