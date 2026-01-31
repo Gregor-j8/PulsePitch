@@ -55,6 +55,7 @@ export const Select: React.FC<SelectProps> = ({
 }) => {
   const selectStyles = `
     w-full px-4 py-2 rounded-lg border
+    text-neutral-900 bg-white
     ${error
       ? 'border-danger-500 focus:ring-danger-500 focus:border-danger-500'
       : 'border-neutral-300 focus:ring-primary-500 focus:border-primary-500'
@@ -77,7 +78,7 @@ export const Select: React.FC<SelectProps> = ({
         {...props}
       >
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value} value={option.value} className="text-neutral-900 bg-white">
             {option.label}
           </option>
         ))}

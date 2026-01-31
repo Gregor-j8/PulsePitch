@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../../managers/authManagers";
-import { Card } from "../ui/Card";
+import { AuthCard } from "./AuthCard";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { UserProfileDTO } from "../../types";
@@ -29,8 +29,7 @@ export default function Login({ setLoggedInUser }: LoginProps) {
   };
 
   return (
-    <Card className="max-w-md mx-auto mt-10 p-6">
-      <h3 className="text-2xl font-semibold mb-6 text-center">Login</h3>
+    <AuthCard title="Login">
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label="Email"
@@ -56,12 +55,12 @@ export default function Login({ setLoggedInUser }: LoginProps) {
           Login
         </Button>
       </form>
-      <p className="mt-4 text-sm text-center">
+      <p className="text-sm text-center text-neutral-600">
         Not signed up?{" "}
-        <Link to="/register" className="text-primary-600 hover:underline">
+        <Link to="/register" className="text-primary-600 hover:underline font-medium">
           Register here
         </Link>
       </p>
-    </Card>
+    </AuthCard>
   );
 }

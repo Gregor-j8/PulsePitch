@@ -3,6 +3,8 @@ import FullCalendar from "@fullcalendar/react"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
+import { useFormik } from "formik"
+import * as Yup from "yup"
 import { useCreateTeamEvent, useTeamEvents } from "../../hooks/useEvents"
 import CreateEventModal from "./CreateEventModal"
 import { EventDetailsModal } from "./EventDetailsModal"
@@ -21,31 +23,27 @@ interface MyCalendarProps {
   refreshLoggedInUser: () => Promise<void>;
 }
 
-interface CreateEventData {
-  title: string;
-  description: string;
-  start: string;
-  end: string;
-  eventId: string;
-  teamId: string;
-}
-
-interface EventErrors {
-  title?: string;
-  description?: string;
-  start?: string;
-  end?: string;
-  eventId?: string;
-  teamId?: string;
-}
+// Yup validation schema
+const eventValidationSchema = Yup.object({
+  title: Yup.string().trim().required('Title is required'),
+  description: Yup.string(),
+  start: Yup.string().required('Start time is required'),
+  end: Yup.string()
+    .required('End time is required')
+    .test('end-after-start', 'End time must be after start time', function(value) {
+      const { start } = this.parent;
+      if (!start || !value) return true;
+      return new Date(value) > new Date(start);
+    }),
+  eventId: Yup.string().required('Event type is required'),
+  teamId: Yup.string().required('Team is required'),
+});
 
 export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalendarProps) {
   const { data: calendarEvents } = useTeamEvents(loggedInUser.id)
   const { data: calenderGames } = useTeamGames(false, (loggedInUser as any).teams?.map((team: any) => team.teamId) ?? [])
   const createEvent = useCreateTeamEvent()
   const calendarRef = useRef<FullCalendar>(null)
-  const [createEvents, setCreateEvents] = useState<CreateEventData>({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
-  const [eventErrors, setEventErrors] = useState<EventErrors>({})
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false)
   const [showCreateGameModal, setshowCreateGameModal] = useState<boolean>(false)
   const [DetailsModal, setDetailsModal] = useState<boolean>(false)
@@ -56,41 +54,31 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
   const [choosenGameId, setchoosenGameId] = useState<number | null>(null)
   const [StarterFormData, SetStarterFormData] = useState<any>({})
 
-  const validateEvent = (): EventErrors => {
-    const errors: EventErrors = {}
-    if (!createEvents.title.trim()) {
-      errors.title = 'Title is required'
-    }
-    if (!createEvents.start) {
-      errors.start = 'Start time is required'
-    }
-    if (!createEvents.end) {
-      errors.end = 'End time is required'
-    } else if (createEvents.start && new Date(createEvents.end) <= new Date(createEvents.start)) {
-      errors.end = 'End time must be after start time'
-    }
-    if (!createEvents.eventId) {
-      errors.eventId = 'Event type is required'
-    }
-    if (!createEvents.teamId) {
-      errors.teamId = 'Team is required'
-    }
-    return errors
-  }
-
-  const handleAddEvent = useCallback(() => {
-    const errors = validateEvent()
-    if (Object.keys(errors).length > 0) {
-      setEventErrors(errors)
-      return
-    }
-    setEventErrors({})
-    const event = { title: createEvents.title, description: createEvents.description,
-      start: createEvents.start, end: createEvents.end, eventId: parseInt(createEvents.eventId), teamId: parseInt(createEvents.teamId)}
-    createEvent.mutate(event)
-    setShowCreateModal(false)
-    setCreateEvents({ title: '', description: '', start: '', end: '', eventId: '', teamId: '' })
-  }, [createEvents, createEvent, validateEvent])
+  // Formik form configuration
+  const formik = useFormik({
+    initialValues: {
+      title: '',
+      description: '',
+      start: '',
+      end: '',
+      eventId: '',
+      teamId: '',
+    },
+    validationSchema: eventValidationSchema,
+    onSubmit: (values, { resetForm }) => {
+      const event = {
+        title: values.title,
+        description: values.description,
+        start: values.start,
+        end: values.end,
+        eventId: parseInt(values.eventId),
+        teamId: parseInt(values.teamId),
+      }
+      createEvent.mutate(event)
+      setShowCreateModal(false)
+      resetForm()
+    },
+  })
 
   const handleEventClick = useCallback((info: string) => {
       setDetailsModal(true)
@@ -103,11 +91,12 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
   }, [])
 
   useEffect(() => {
+    console.log("Refreshing user data in Calendar component")
     const refreshUser = async () => {
     await refreshLoggedInUser();
     }
     refreshUser()
-  },[refreshLoggedInUser])
+  },[])
 
   const hasEvents = (calendarEvents && calendarEvents.length > 0) || (calenderGames && calenderGames.length > 0);
 
@@ -145,6 +134,7 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
           actionLabel="Create Event"
           onAction={() => setShowCreateModal(true)}
         />
+        // need to fix error in the db so that I can add events to see the map
       ) : (
         <FullCalendar
         ref={calendarRef}
@@ -183,13 +173,13 @@ export default function MyCalendar({loggedInUser, refreshLoggedInUser}: MyCalend
       )}
       {showCreateModal  && (
         <CreateEventModal
-          formData={createEvents}
-          setFormData={setCreateEvents}
-          onClose={() => setShowCreateModal(false)}
-          onSubmit={handleAddEvent}
+          formik={formik}
+          onClose={() => {
+            setShowCreateModal(false)
+            formik.resetForm()
+          }}
           loggedInUser={loggedInUser}
           isLoading={createEvent.isPending}
-          errors={eventErrors}
         />
       )}
       {DetailsModal && (

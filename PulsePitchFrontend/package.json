@@ -22,6 +22,7 @@
     "d3-soccer": "^0.3.0",
     "date-fns": "^4.1.0",
     "flatpickr": "^4.6.13",
+    "formik": "^2.4.9",
     "immer": "^10.1.1",
     "lodash": "^4.17.23",
     "lodash.throttle": "^4.1.1",
@@ -33,7 +34,8 @@
     "react-flatpickr": "^4.0.10",
     "react-router-dom": "^7.9.6",
     "react-toastify": "^11.0.5",
-    "use-immer": "^0.11.0"
+    "use-immer": "^0.11.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

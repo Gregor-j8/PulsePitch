@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { register } from "../../managers/authManagers";
 import { Link, useNavigate } from "react-router-dom";
-import { Card } from "../ui/Card";
+import { AuthCard } from "./AuthCard";
 import { Input } from "../ui/Input";
 import { Button } from "../ui/Button";
 import { UserProfileDTO, RegisterCredentials } from "../../types";
@@ -51,8 +51,7 @@ export default function Register({ setLoggedInUser }: RegisterProps) {
   };
 
   return (
-    <Card className="max-w-md mx-auto mt-10 p-6">
-      <h3 className="text-2xl font-semibold mb-6 text-center">Sign Up</h3>
+    <AuthCard title="Sign Up">
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input
           label="First Name"
@@ -118,12 +117,12 @@ export default function Register({ setLoggedInUser }: RegisterProps) {
           Register
         </Button>
       </form>
-      <p className="text-center mt-4 text-sm">
+      <p className="text-sm text-center text-neutral-600">
         Already signed up?{" "}
-        <Link to="/login" className="text-primary-600 hover:underline">
+        <Link to="/login" className="text-primary-600 hover:underline font-medium">
           Log in here
         </Link>
       </p>
-    </Card>
+    </AuthCard>
   );
 }
