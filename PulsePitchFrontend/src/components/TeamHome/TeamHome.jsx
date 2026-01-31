@@ -5,12 +5,15 @@ import { useTeams } from "../../hooks/useTeams"
 import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
 import { Select } from "../ui/Input"
+import { ConfirmDialog } from "../ui"
 
 export const TeamHome = ({loggedInUser}) => {
   const [teamId, setTeamId] = useState()
   const { data: teamNames } = useTeams()
   const {data: teams} = useGetPlayersFromTeam(teamId, {enabled: !!teamId})
-  const {mutate: deletePlayerTeam} = useDeletePlayerTeam()
+  const deletePlayerTeamMutation = useDeletePlayerTeam()
+  const {mutate: deletePlayerTeam} = deletePlayerTeamMutation
+  const [deleteConfirmPlayer, setDeleteConfirmPlayer] = useState(null)
 
   useEffect(() => {
     if (!teamId && loggedInUser.teams && loggedInUser.teams.length > 0) {
@@ -40,12 +43,24 @@ export const TeamHome = ({loggedInUser}) => {
             </Link>
           </h2>
           {loggedInUser.roles.includes("Coach") && (
-            <Button variant="danger" size="sm" onClick={() => deletePlayerTeam(team.id)}>
+            <Button variant="danger" size="sm" onClick={() => setDeleteConfirmPlayer(team)} loading={deletePlayerTeamMutation.isPending}>
               Delete
             </Button>
           )}
         </Card>
       ))}
+      <ConfirmDialog
+        isOpen={!!deleteConfirmPlayer}
+        onClose={() => setDeleteConfirmPlayer(null)}
+        onConfirm={() => {
+          deletePlayerTeam(deleteConfirmPlayer.id)
+          setDeleteConfirmPlayer(null)
+        }}
+        title="Remove Player from Team"
+        message={`Are you sure you want to remove ${deleteConfirmPlayer?.player?.firstName} ${deleteConfirmPlayer?.player?.lastName} from this team?`}
+        confirmText="Remove"
+        isLoading={deletePlayerTeamMutation.isPending}
+      />
     </div>
   )
 }

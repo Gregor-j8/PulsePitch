@@ -1,12 +1,15 @@
+import { useState } from "react"
 import { useDeleteTeamEvent, useTeamEvent } from "../../hooks/useEvents"
 import { CalendarDays } from 'lucide-react'
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
+import { ConfirmDialog } from "../ui"
 
 export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventId, onClose, setEditModel, SetStarterFormData }) => {
     const {data: eventData } = useTeamEvent(chosenEventId, {enabled: !!chosenEventId})
     const deleteTeamEventMutation = useDeleteTeamEvent()
     const {mutate: deleteTeamEvent} = deleteTeamEventMutation
+    const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   return (
     <Modal isOpen={true} onClose={onClose} title={<div className="flex items-center gap-2"><CalendarDays/>Event Details</div>} size="md">
       <ModalBody>
@@ -30,11 +33,7 @@ export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventI
               }}>
                 Edit
               </Button>
-              <Button variant="danger" onClick={() => {
-                deleteTeamEvent(eventData.id)
-                setChosenEventId(null)
-                onClose()
-              }} loading={deleteTeamEventMutation.isPending}>
+              <Button variant="danger" onClick={() => setShowDeleteConfirm(true)} loading={deleteTeamEventMutation.isPending}>
                 Delete
               </Button>
             </div>
@@ -42,6 +41,20 @@ export const EventDetailsModal = ({ loggedInUser, chosenEventId, setChosenEventI
         </div>
         <Button variant="ghost" onClick={onClose}>Close</Button>
       </ModalFooter>
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => {
+          deleteTeamEvent(eventData.id)
+          setChosenEventId(null)
+          setShowDeleteConfirm(false)
+          onClose()
+        }}
+        title="Delete Event"
+        message="Are you sure you want to delete this event? This action cannot be undone."
+        confirmText="Delete"
+        isLoading={deleteTeamEventMutation.isPending}
+      />
     </Modal>
   )
 }

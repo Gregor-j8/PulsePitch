@@ -7,12 +7,14 @@ import { Plus, Trash } from "lucide-react"
 import { ChooseNewMessage } from "./ChooseNewMessage"
 import { Button } from "../ui/Button"
 import { Input } from "../ui/Input"
+import { ConfirmDialog } from "../ui"
 
 export const Messages = ({ loggedInUser }) => {
   const [selectedChat, setSelectedChat] = useState(null)
   const [newMessage, setNewMessage] = useState(null)
   const [newMessageModal, setNewMessageModal] = useState(null)
   const [hoveredId, setHoveredId] = useState(null)
+  const [deleteConfirmId, setDeleteConfirmId] = useState(null)
   const { data: useChatRoom, isLoading } = useChatRooms(loggedInUser.id)
   const { data: messages } = useRoomMessages(selectedChat?.id)
   const mutate = useCreateMessage()
@@ -80,7 +82,7 @@ export const Messages = ({ loggedInUser }) => {
                       {message.content}
                       {loggedInUser.id === message.senderId && hoveredId === message.id && (
                         <div className="absolute -top-2 -right-2 flex gap-1 bg-white shadow-md p-1 rounded-md">
-                          <button className="text-gray-500 hover:text-red-600" onClick={() => deleteMessage.mutate(message.id)}>
+                          <button className="text-gray-500 hover:text-red-600" onClick={() => setDeleteConfirmId(message.id)}>
                             <Trash size={16} />
                           </button>
                         </div>
@@ -113,6 +115,18 @@ export const Messages = ({ loggedInUser }) => {
       {newMessageModal && (
         <ChooseNewMessage loggedInUser={loggedInUser} setNewMessageModal={setNewMessageModal}/>
       )}
+      <ConfirmDialog
+        isOpen={!!deleteConfirmId}
+        onClose={() => setDeleteConfirmId(null)}
+        onConfirm={() => {
+          deleteMessage.mutate(deleteConfirmId)
+          setDeleteConfirmId(null)
+        }}
+        title="Delete Message"
+        message="Are you sure you want to delete this message? This action cannot be undone."
+        confirmText="Delete"
+        isLoading={deleteMessage.isPending}
+      />
     </div>
   )
 }

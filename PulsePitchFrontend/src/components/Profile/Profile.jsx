@@ -6,6 +6,7 @@ import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Input } from "../ui/Input"
+import { ConfirmDialog } from "../ui"
 
 export const Profile = ({ loggedInUser }) => {
   const { id } = useParams()
@@ -13,6 +14,7 @@ export const Profile = ({ loggedInUser }) => {
   const updateUserProfileMutation = useEditUserProfile()
   const { mutate: updateUserProfile } = updateUserProfileMutation
   const [showModal, setShowModal] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [formData, setFormData] = useState({ firstName: '', lastName: '', email: ''})
   const [errors, setErrors] = useState({})
 
@@ -64,7 +66,7 @@ export const Profile = ({ loggedInUser }) => {
             <Button variant="primary" onClick={() => {setShowModal(true)}}>
               Edit Profile
             </Button>
-            <Button variant="danger">Delete Account</Button>
+            <Button variant="danger" onClick={() => setShowDeleteConfirm(true)}>Delete Account</Button>
           </div>
         )}
       </Card>
@@ -106,6 +108,17 @@ export const Profile = ({ loggedInUser }) => {
           </ModalFooter>
         </Modal>
       )}
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => {
+          console.log("Delete account confirmed")
+          setShowDeleteConfirm(false)
+        }}
+        title="Delete Account"
+        message="Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed."
+        confirmText="Delete Account"
+      />
     </div>
   )
 }

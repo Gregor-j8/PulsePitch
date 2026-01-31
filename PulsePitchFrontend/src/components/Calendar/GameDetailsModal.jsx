@@ -1,12 +1,16 @@
+import { useState } from "react"
 import { useDeleteTeamGame, useTeamGame } from "../../hooks/UseGames"
 import { CalendarDays } from 'lucide-react'
 import { LoadingSpinner } from "../Loading/LoadingPage"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
+import { ConfirmDialog } from "../ui"
 
 export const GameDetailsModals = ({ loggedInUser, choosenGameId, setchoosenGameId, onClose, setEditGameModel, SetStarterFormData }) => {
   const { data: gameData } = useTeamGame(choosenGameId, { enabled: !!choosenGameId })
-  const { mutate: deleteTeamGame } = useDeleteTeamGame()
+  const deleteTeamGameMutation = useDeleteTeamGame()
+  const { mutate: deleteTeamGame } = deleteTeamGameMutation
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
 if (!loggedInUser || !gameData) return <LoadingSpinner/>
   return (
@@ -41,7 +45,7 @@ if (!loggedInUser || !gameData) return <LoadingSpinner/>
               }}>
                 Edit
               </Button>
-              <Button variant="danger" onClick={() => { deleteTeamGame(gameData.id); setchoosenGameId(null); onClose()}}>
+              <Button variant="danger" onClick={() => setShowDeleteConfirm(true)} loading={deleteTeamGameMutation.isPending}>
                 Delete
               </Button>
             </div>
@@ -49,6 +53,20 @@ if (!loggedInUser || !gameData) return <LoadingSpinner/>
         </div>
         <Button variant="ghost" onClick={onClose}>Close</Button>
       </ModalFooter>
+      <ConfirmDialog
+        isOpen={showDeleteConfirm}
+        onClose={() => setShowDeleteConfirm(false)}
+        onConfirm={() => {
+          deleteTeamGame(gameData.id)
+          setchoosenGameId(null)
+          setShowDeleteConfirm(false)
+          onClose()
+        }}
+        title="Delete Game"
+        message="Are you sure you want to delete this game? This action cannot be undone."
+        confirmText="Delete"
+        isLoading={deleteTeamGameMutation.isPending}
+      />
     </Modal>
   )
 }
