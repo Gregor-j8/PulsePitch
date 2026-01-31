@@ -4,6 +4,7 @@ import { Check, X, Trophy } from "lucide-react"
 import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
 import { EmptyState } from "../ui"
+import { formatDate } from "../../utils"
 import { UserProfileDTO } from "../../types"
 
 interface MatchRequestProps {
@@ -47,7 +48,7 @@ export const MatchRequest = ({ loggedInUser }: MatchRequestProps) => {
                   {match.homeTeam?.name} <span className="text-neutral-400">vs</span> {match.awayTeam?.name}
                 </p>
                 <p className="text-sm text-neutral-500">
-                  Scheduled for: {new Date(match.proposedDate).toLocaleString()}
+                  Scheduled for: {formatDate(match.proposedDate)}
                 </p>
               </div>
               {match.status === null && loggedInUser.identityUserId === match.awayTeam?.coachId && (

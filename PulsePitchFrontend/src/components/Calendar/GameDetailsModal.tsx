@@ -5,6 +5,7 @@ import { LoadingSpinner } from "../Loading/LoadingPage"
 import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { ConfirmDialog } from "../ui"
+import { formatDate } from "../../utils"
 import { UserProfileDTO } from "../../types"
 
 interface GameDetailsModalsProps {
@@ -35,10 +36,10 @@ export const GameDetailsModals = ({ loggedInUser, choosenGameId, setchoosenGameI
             Away Team <p>{gameData.awayTeam?.name}</p>
           </div>
           <div className="block text-sm font-semibold text-neutral-500">
-            Start <p>{new Date(gameData.start).toLocaleString()}</p>
+            Start <p>{formatDate(gameData.start)}</p>
           </div>
           <div className="block text-sm font-semibold text-neutral-500">
-            End <p>{new Date(gameData.end).toLocaleString()}</p>
+            End <p>{formatDate(gameData.end)}</p>
           </div>
           <div className="block text-sm font-semibold text-neutral-500">
             Result <p>{gameData.result}</p>
