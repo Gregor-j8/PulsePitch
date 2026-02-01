@@ -12,6 +12,7 @@ import { Inbox } from "./Inbox/Inbox";
 import Layout from "./Layout/Layout";
 import { LoggedInUserProps } from "../types";
 import { Dashboard } from "./Dashboard";
+import { BrowseTeams } from "./Teams/BrowseTeams";
 
 export default function ApplicationViews({loggedInUser, setLoggedInUser, refreshLoggedInUser}: LoggedInUserProps) {
   
@@ -109,6 +110,15 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
         <AuthorizedRoute loggedInUser={loggedInUser} >
           <Layout variant="default">
             <Inbox loggedInUser={loggedInUser!}/>
+          </Layout>
+        </AuthorizedRoute>}
+        />
+      <Route
+        path="browse-teams"
+        element={
+        <AuthorizedRoute loggedInUser={loggedInUser} roles={["Player", "Coach"]}>
+          <Layout variant="default">
+            <BrowseTeams loggedInUser={loggedInUser!}/>
           </Layout>
         </AuthorizedRoute>}
         />

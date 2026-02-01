@@ -14,6 +14,8 @@ export interface TeamDTO {
   name: string;
   joinCode: string;
   coachId?: string;
+  isPublic: boolean;
+  requiresApproval: boolean;
 }
 
 export interface JoinTeamDTO {
@@ -26,6 +28,8 @@ export interface EditTeamDTO {
   name?: string;
   joinCode?: string;
   coachId?: string;
+  isPublic?: boolean;
+  requiresApproval?: boolean;
 }
 
 export interface TeamGameDTO {
@@ -142,6 +146,9 @@ export interface PlayerTeamDTO {
   player?: UserProfileDTO;
   teamId: number;
   team?: TeamDTO;
+  status?: string;
+  requestedAt?: string;
+  respondedAt?: string;
 }
 
 export interface GetTeamsByPlayerIdDTO {
@@ -149,4 +156,32 @@ export interface GetTeamsByPlayerIdDTO {
   playerId: number;
   teamId: number;
   team?: TeamDTO;
+}
+
+export interface PublicTeamSearchDTO {
+  id: number;
+  name: string;
+  coachId: string;
+  coachName: string;
+  requiresApproval: boolean;
+  memberCount: number;
+}
+
+export interface JoinRequestDTO {
+  teamId: number;
+  playerId: number;
+  joinCode?: string;
+}
+
+export interface JoinRequestResponseDTO {
+  status: string;
+}
+
+export interface PendingJoinRequestDTO {
+  id: number;
+  playerId: number;
+  player?: UserProfileDTO;
+  teamId: number;
+  status?: string;
+  requestedAt?: string;
 }

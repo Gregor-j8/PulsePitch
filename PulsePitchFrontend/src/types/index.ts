@@ -17,6 +17,10 @@ export type {
   MatchResponseDTO,
   PlayerTeamDTO,
   GetTeamsByPlayerIdDTO,
+  PublicTeamSearchDTO,
+  JoinRequestDTO,
+  JoinRequestResponseDTO,
+  PendingJoinRequestDTO,
 } from './dtos';
 
 export type {
