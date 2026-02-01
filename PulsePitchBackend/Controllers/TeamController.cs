@@ -198,4 +198,185 @@ public class TeamController : ControllerBase
             return StatusCode(500, new { message = "An error occurred while joining team" });
         }
     }
+
+    [HttpGet("public")]
+    [ResponseCache(Duration = 60)]
+    public async Task<ActionResult<IEnumerable<PublicTeamSearchDTO>>> GetPublicTeams()
+    {
+        try
+        {
+            var teams = await _teamRepo.GetPublicTeams();
+
+            var publicTeamDtos = teams.Select(t => new PublicTeamSearchDTO
+            {
+                Id = t.Id,
+                Name = t.Name,
+                CoachId = t.CoachId,
+                CoachName = GetCoachName(t.CoachId),
+                RequiresApproval = t.RequiresApproval,
+                MemberCount = GetTeamMemberCount(t.Id)
+            }).ToList();
+
+            return Ok(publicTeamDtos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving public teams");
+            return StatusCode(500, new { message = "An error occurred while retrieving public teams" });
+        }
+    }
+
+    [HttpGet("public/search")]
+    public async Task<ActionResult<IEnumerable<PublicTeamSearchDTO>>> SearchPublicTeams([FromQuery] string q)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return BadRequest("Search term is required");
+
+            var teams = await _teamRepo.SearchPublicTeams(q);
+
+            var publicTeamDtos = teams.Select(t => new PublicTeamSearchDTO
+            {
+                Id = t.Id,
+                Name = t.Name,
+                CoachId = t.CoachId,
+                CoachName = GetCoachName(t.CoachId),
+                RequiresApproval = t.RequiresApproval,
+                MemberCount = GetTeamMemberCount(t.Id)
+            }).ToList();
+
+            return Ok(publicTeamDtos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error searching public teams with term {SearchTerm}", q);
+            return StatusCode(500, new { message = "An error occurred while searching public teams" });
+        }
+    }
+
+    [HttpPost("request-join")]
+    public async Task<ActionResult> RequestJoinTeam([FromBody] JoinRequestDTO request)
+    {
+        try
+        {
+            var result = await _teamRepo.RequestJoinTeam(request);
+
+            var userProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.Id == request.PlayerId);
+            if (userProfile != null)
+            {
+                var user = await _userManager.FindByIdAsync(userProfile.IdentityUserId);
+                if (user != null)
+                {
+                    if (!await _roleManager.RoleExistsAsync("Player"))
+                    {
+                        await _roleManager.CreateAsync(new IdentityRole("Player"));
+                    }
+
+                    if (!await _userManager.IsInRoleAsync(user, "Player"))
+                    {
+                        await _userManager.AddToRoleAsync(user, "Player");
+                    }
+                }
+            }
+
+            return Ok(new
+            {
+                status = result.Status ?? "accepted",
+                message = result.Status == "pending"
+                    ? "Join request submitted for approval"
+                    : "Successfully joined team"
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "Invalid operation while requesting to join team {TeamId}", request.TeamId);
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error requesting to join team {TeamId}", request.TeamId);
+            return StatusCode(500, new { message = "An error occurred while requesting to join team" });
+        }
+    }
+
+    [HttpGet("{teamId}/pending-requests")]
+    public async Task<ActionResult<IEnumerable<PendingJoinRequestDTO>>> GetPendingJoinRequests(int teamId)
+    {
+        try
+        {
+            var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var team = await _teamRepo.GetByIdTeams(teamId);
+
+            if (team == null)
+                return NotFound("Team not found");
+
+            if (team.CoachId != coachId)
+                return Forbid();
+
+            var pendingRequests = await _teamRepo.GetPendingJoinRequests(teamId);
+            var dtos = _mapper.Map<List<PendingJoinRequestDTO>>(pendingRequests);
+
+            return Ok(dtos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving pending join requests for team {TeamId}", teamId);
+            return StatusCode(500, new { message = "An error occurred while retrieving pending requests" });
+        }
+    }
+
+    [HttpPut("join-request/{playerTeamId}/respond")]
+    public async Task<ActionResult> RespondToJoinRequest(int playerTeamId, [FromBody] JoinRequestResponseDTO response)
+    {
+        try
+        {
+            if (response.Status != "accepted" && response.Status != "rejected")
+                return BadRequest("Status must be 'accepted' or 'rejected'");
+
+            var playerTeam = await _context.PlayerTeams
+                .Include(pt => pt.Team)
+                .FirstOrDefaultAsync(pt => pt.Id == playerTeamId);
+
+            if (playerTeam == null)
+                return NotFound("Join request not found");
+
+            var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (playerTeam.Team.CoachId != coachId)
+                return Forbid();
+
+            var result = await _teamRepo.RespondToJoinRequest(playerTeamId, response);
+
+            return Ok(new
+            {
+                status = result.Status,
+                message = $"Join request {response.Status}"
+            });
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "Invalid operation while responding to join request {PlayerTeamId}", playerTeamId);
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error responding to join request {PlayerTeamId}", playerTeamId);
+            return StatusCode(500, new { message = "An error occurred while responding to join request" });
+        }
+    }
+
+    private string GetCoachName(string coachId)
+    {
+        var userProfile = _context.UserProfiles.FirstOrDefault(p => p.IdentityUserId == coachId);
+        if (userProfile != null)
+        {
+            return $"{userProfile.FirstName} {userProfile.LastName}";
+        }
+        return "Unknown Coach";
+    }
+
+    private int GetTeamMemberCount(int teamId)
+    {
+        return _context.PlayerTeams.Count(pt => pt.TeamId == teamId && pt.Status == null);
+    }
 }

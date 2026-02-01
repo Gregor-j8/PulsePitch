@@ -15,5 +15,10 @@ namespace PulsePitch.Interfaces
         Task<Team?> UpdateTeams(int id, Team TeamModel);
         Task<PlayerTeam?> JoinTeams(JoinTeamDTO TeamModel);
         Task<Team?> DeleteTeams(int id);
+        Task<List<Team>> GetPublicTeams();
+        Task<List<Team>> SearchPublicTeams(string searchTerm);
+        Task<PlayerTeam?> RequestJoinTeam(JoinRequestDTO request);
+        Task<List<PlayerTeam>> GetPendingJoinRequests(int teamId);
+        Task<PlayerTeam?> RespondToJoinRequest(int playerTeamId, JoinRequestResponseDTO response);
     }
 }

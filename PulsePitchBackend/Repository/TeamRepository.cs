@@ -72,6 +72,8 @@ namespace PulsePitch.Repository
 
             existingTeam.Name = teamModel.Name;
             existingTeam.JoinCode = teamModel.JoinCode;
+            existingTeam.IsPublic = teamModel.IsPublic;
+            existingTeam.RequiresApproval = teamModel.RequiresApproval;
             await _context.SaveChangesAsync();
 
             return existingTeam;
@@ -95,11 +97,81 @@ namespace PulsePitch.Repository
                 {
                 return joinTeamData;
                 }
-                
+
                 await _context.PlayerTeams.AddAsync(joinTeamData);
                 await _context.SaveChangesAsync();
                 return joinTeamData;
 
+        }
+
+        public async Task<List<Team>> GetPublicTeams()
+        {
+            return await _context.Teams
+                .Where(t => t.IsPublic)
+                .OrderBy(t => t.Name)
+                .ToListAsync();
+        }
+
+        public async Task<List<Team>> SearchPublicTeams(string searchTerm)
+        {
+            return await _context.Teams
+                .Where(t => t.IsPublic && t.Name.Contains(searchTerm))
+                .OrderBy(t => t.Name)
+                .ToListAsync();
+        }
+
+        public async Task<PlayerTeam?> RequestJoinTeam(JoinRequestDTO request)
+        {
+            var team = await _context.Teams.FindAsync(request.TeamId);
+            if (team == null)
+                throw new InvalidOperationException("Team not found");
+
+            if (!team.IsPublic)
+            {
+                if (string.IsNullOrEmpty(request.JoinCode) || request.JoinCode != team.JoinCode)
+                    throw new InvalidOperationException("Invalid join code");
+            }
+
+            var existing = await _context.PlayerTeams
+                .FirstOrDefaultAsync(pt => pt.PlayerId == request.PlayerId && pt.TeamId == request.TeamId);
+
+            if (existing != null)
+                return existing;
+
+            var playerTeam = new PlayerTeam
+            {
+                PlayerId = request.PlayerId,
+                TeamId = request.TeamId,
+                Status = team.RequiresApproval ? "pending" : null,
+                RequestedAt = DateTime.UtcNow
+            };
+
+            await _context.PlayerTeams.AddAsync(playerTeam);
+            await _context.SaveChangesAsync();
+            return playerTeam;
+        }
+
+        public async Task<List<PlayerTeam>> GetPendingJoinRequests(int teamId)
+        {
+            return await _context.PlayerTeams
+                .Include(pt => pt.Player)
+                .Where(pt => pt.TeamId == teamId && pt.Status == "pending")
+                .OrderByDescending(pt => pt.RequestedAt)
+                .ToListAsync();
+        }
+
+        public async Task<PlayerTeam?> RespondToJoinRequest(int playerTeamId, JoinRequestResponseDTO response)
+        {
+            var playerTeam = await _context.PlayerTeams.FindAsync(playerTeamId);
+
+            if (playerTeam == null || playerTeam.Status != "pending")
+                throw new InvalidOperationException("Invalid join request");
+
+            playerTeam.Status = response.Status;
+            playerTeam.RespondedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return playerTeam;
         }
     }
 }
