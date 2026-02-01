@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useTeamEvents, useCreateTeamEvent } from "../../hooks/useEvents";
@@ -58,6 +59,7 @@ const isSameDay = (date1: Date, date2: Date) => {
 };
 
 export const UpcomingEventsWidget = ({ loggedInUser }: UpcomingEventsWidgetProps) => {
+  const navigate = useNavigate();
   const { data: events, isLoading: eventsLoading } = useTeamEvents(loggedInUser.id);
   const teamIds = (loggedInUser as any).teams?.map((team: any) => team.teamId) ?? [];
   const { data: games, isLoading: gamesLoading } = useTeamGames(false, teamIds);
@@ -137,18 +139,26 @@ export const UpcomingEventsWidget = ({ loggedInUser }: UpcomingEventsWidgetProps
       <Card className="p-6 bg-white">
         <div className="mb-6 flex justify-between items-center">
           <h2 className="text-lg font-semibold text-neutral-900">This Week</h2>
-          {loggedInUser.roles.includes("Coach") && (
+          <div className="flex gap-2">
+            {loggedInUser.roles.includes("Coach") && (
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => setShowCreateModal(true)}
+              >
+                New Event
+              </Button>
+            )}
             <Button
-              variant="primary"
+              variant="ghost"
               size="sm"
-              onClick={() => setShowCreateModal(true)}
+              onClick={() => navigate('/calendar')}
             >
-              New Event
+              View More
             </Button>
-          )}
+          </div>
         </div>
 
-        {/* 7-Day Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
           {eventsByDay.map(({ day, events: dayEvents }, index) => {
             const isToday = isSameDay(day, new Date());
