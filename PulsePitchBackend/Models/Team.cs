@@ -10,7 +10,9 @@ public class Team
     [Required]
     public string JoinCode { get; set; }
     [Required]
-
     public string CoachId { get; set; }
+
+    public bool IsPublic { get; set; }
+    public bool RequiresApproval { get; set; }
 
 }

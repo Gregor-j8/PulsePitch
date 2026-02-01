@@ -11,4 +11,8 @@ public class PlayerTeam
     [Required]
     public int TeamId { get; set; }
     public Team? Team { get; set; }
+
+    public string? Status { get; set; }
+    public DateTime? RequestedAt { get; set; }
+    public DateTime? RespondedAt { get; set; }
 }
