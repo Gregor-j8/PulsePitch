@@ -6,6 +6,7 @@ using PulsePitch.DTO;
 using PulsePitch.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace PulsePitch.Controllers;
 
@@ -18,13 +19,15 @@ public class FormationsController : ControllerBase
     private readonly IFormationRepository _FormationRepo;
     private readonly IMapper _mapper;
     private readonly ILogger<FormationsController> _logger;
+    private readonly ITeamAuthorizationService _authService;
 
-    public FormationsController(PulsePitchDbContext context, IFormationRepository FormationRepo, IMapper mapper, ILogger<FormationsController> logger)
+    public FormationsController(PulsePitchDbContext context, IFormationRepository FormationRepo, IMapper mapper, ILogger<FormationsController> logger, ITeamAuthorizationService authService)
     {
         _context = context;
         _FormationRepo = FormationRepo;
         _mapper = mapper;
         _logger = logger;
+        _authService = authService;
     }
 
     [HttpGet("team")]
@@ -71,6 +74,13 @@ public class FormationsController : ControllerBase
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageFormations(formationDTO.TeamId, userId))
+                return Forbid();
+
             Formations formation = _mapper.Map<Formations>(formationDTO);
             Formations newformation = await _FormationRepo.CreateFormation(formation);
             return Ok(newformation);
@@ -90,6 +100,17 @@ public class FormationsController : ControllerBase
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            var formation = await _FormationRepo.GetFormationsById(id);
+            if (formation == null)
+                return NotFound("Formation not found");
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageFormations(formation.TeamId, userId))
+                return Forbid();
+
             await _FormationRepo.EditFormation(id, formationDTO);
             return Ok();
         }
@@ -105,6 +126,17 @@ public class FormationsController : ControllerBase
     {
         try
         {
+            var formation = await _FormationRepo.GetFormationsById(id);
+            if (formation == null)
+                return NotFound("Formation not found");
+
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageFormations(formation.TeamId, userId))
+                return Forbid();
+
             await _FormationRepo.DeleteFormation(id);
             return NoContent();
         }

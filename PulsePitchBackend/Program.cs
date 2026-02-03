@@ -8,6 +8,7 @@ using PulsePitch.Mapper;
 using AutoMapper;
 using PulsePitch.Interfaces;
 using PulsePitch.Repository;
+using PulsePitch.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -101,6 +102,7 @@ builder.Services.AddScoped<IPlayersInFormationRepository, PlayersInFormationRepo
 builder.Services.AddScoped<IMessageRepository, MessagesRepository>();
 builder.Services.AddScoped<IMatchRequestRepository, MatchRequestRepository>();
 builder.Services.AddScoped<IChatRoomRepository, ChatRoomRepository>();
+builder.Services.AddScoped<ITeamAuthorizationService, TeamAuthorizationService>();
 
 var app = builder.Build();
 

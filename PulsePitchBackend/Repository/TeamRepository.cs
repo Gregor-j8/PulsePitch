@@ -28,7 +28,8 @@ namespace PulsePitch.Repository
                 PlayerTeam pt = new PlayerTeam
                 {
                     PlayerId = coachesProfile.Id,
-                    TeamId = teamModel.Id
+                    TeamId = teamModel.Id,
+                    Role = "Manager"
                 };
                 await _context.PlayerTeams.AddAsync(pt);
 
@@ -90,6 +91,7 @@ namespace PulsePitch.Repository
                 {
                     PlayerId = teamModel.PlayerId,
                     TeamId = team.Id,
+                    Role = "Player"
                 };
 
                 var alreadyJoined = await _context.PlayerTeams.AnyAsync(pt => pt.PlayerId == joinTeamData.PlayerId && pt.TeamId == joinTeamData.TeamId);
@@ -142,6 +144,7 @@ namespace PulsePitch.Repository
             {
                 PlayerId = request.PlayerId,
                 TeamId = request.TeamId,
+                Role = "Player",
                 Status = team.RequiresApproval ? "pending" : null,
                 RequestedAt = DateTime.UtcNow
             };
@@ -172,6 +175,88 @@ namespace PulsePitch.Repository
 
             await _context.SaveChangesAsync();
             return playerTeam;
+        }
+
+        public async Task<bool> AddTeamMember(int teamId, int userProfileId, string role)
+        {
+            var validRoles = new[] { "Manager", "Coach", "Player" };
+            if (!validRoles.Contains(role))
+                throw new InvalidOperationException("Invalid role. Must be 'Manager', 'Coach', or 'Player'.");
+
+            var existing = await _context.PlayerTeams
+                .FirstOrDefaultAsync(pt => pt.TeamId == teamId && pt.PlayerId == userProfileId);
+
+            if (existing != null)
+                return false;
+
+            var playerTeam = new PlayerTeam
+            {
+                PlayerId = userProfileId,
+                TeamId = teamId,
+                Role = role,
+                Status = null
+            };
+
+            await _context.PlayerTeams.AddAsync(playerTeam);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateTeamMemberRole(int teamId, int userProfileId, string newRole)
+        {
+            var validRoles = new[] { "Manager", "Coach", "Player" };
+            if (!validRoles.Contains(newRole))
+                throw new InvalidOperationException("Invalid role. Must be 'Manager', 'Coach', or 'Player'.");
+
+            var playerTeam = await _context.PlayerTeams
+                .FirstOrDefaultAsync(pt => pt.TeamId == teamId && pt.PlayerId == userProfileId);
+
+            if (playerTeam == null)
+                return false;
+
+            if (playerTeam.Role == "Manager")
+            {
+                var managerCount = await _context.PlayerTeams
+                    .CountAsync(pt => pt.TeamId == teamId && pt.Role == "Manager");
+
+                if (managerCount <= 1)
+                    throw new InvalidOperationException("Cannot remove the last manager from the team.");
+            }
+
+            playerTeam.Role = newRole;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> RemoveTeamMember(int teamId, int userProfileId)
+        {
+            var playerTeam = await _context.PlayerTeams
+                .FirstOrDefaultAsync(pt => pt.TeamId == teamId && pt.PlayerId == userProfileId);
+
+            if (playerTeam == null)
+                return false;
+
+            if (playerTeam.Role == "Manager")
+            {
+                var managerCount = await _context.PlayerTeams
+                    .CountAsync(pt => pt.TeamId == teamId && pt.Role == "Manager");
+
+                if (managerCount <= 1)
+                    throw new InvalidOperationException("Cannot remove the last manager from the team.");
+            }
+
+            _context.PlayerTeams.Remove(playerTeam);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<UserProfile>> GetTeamMembersByRole(int teamId, string role)
+        {
+            return await _context.PlayerTeams
+                .Where(pt => pt.TeamId == teamId && pt.Role == role)
+                .Include(pt => pt.Player)
+                .Select(pt => pt.Player!)
+                .ToListAsync();
         }
     }
 }

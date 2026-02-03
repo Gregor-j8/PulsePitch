@@ -22,9 +22,10 @@ public class TeamController : ControllerBase
     private readonly ITeamRepository _teamRepo;
     private readonly IMapper _mapper;
     private readonly ILogger<TeamController> _logger;
+    private readonly ITeamAuthorizationService _authService;
 
     public TeamController(PulsePitchDbContext context, ITeamRepository teamRepo, IMapper mapper, UserManager<IdentityUser> userManager,
-     RoleManager<IdentityRole> roleManager, ILogger<TeamController> logger)
+     RoleManager<IdentityRole> roleManager, ILogger<TeamController> logger, ITeamAuthorizationService authService)
     {
         _context = context;
         _teamRepo = teamRepo;
@@ -32,6 +33,7 @@ public class TeamController : ControllerBase
         _userManager = userManager;
         _roleManager = roleManager;
         _logger = logger;
+        _authService = authService;
     }
 
     [HttpGet]
@@ -78,24 +80,24 @@ public class TeamController : ControllerBase
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (coachId == null)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
             {
-                return Unauthorized("Coach ID not found");
+                return Unauthorized("User ID not found");
             }
-            teamDTO.CoachId = coachId;
+            teamDTO.CoachId = userId;
 
-            var user = await _userManager.FindByIdAsync(coachId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return Unauthorized("User not found");
 
-            if (!await _roleManager.RoleExistsAsync("Coach"))
+            if (!await _roleManager.RoleExistsAsync("Manager"))
             {
-                await _roleManager.CreateAsync(new IdentityRole("Coach"));
+                await _roleManager.CreateAsync(new IdentityRole("Manager"));
             }
-            if (!await _userManager.IsInRoleAsync(user, "Coach"))
+            if (!await _userManager.IsInRoleAsync(user, "Manager"))
             {
-                await _userManager.AddToRoleAsync(user, "Coach");
+                await _userManager.AddToRoleAsync(user, "Manager");
             }
 
             Team team = _mapper.Map<Team>(teamDTO);
@@ -211,8 +213,8 @@ public class TeamController : ControllerBase
             {
                 Id = t.Id,
                 Name = t.Name,
-                CoachId = t.CoachId,
-                CoachName = GetCoachName(t.CoachId),
+                ManagerNames = GetManagerNames(t.Id),
+                CoachNames = GetCoachNames(t.Id),
                 RequiresApproval = t.RequiresApproval,
                 MemberCount = GetTeamMemberCount(t.Id)
             }).ToList();
@@ -240,8 +242,8 @@ public class TeamController : ControllerBase
             {
                 Id = t.Id,
                 Name = t.Name,
-                CoachId = t.CoachId,
-                CoachName = GetCoachName(t.CoachId),
+                ManagerNames = GetManagerNames(t.Id),
+                CoachNames = GetCoachNames(t.Id),
                 RequiresApproval = t.RequiresApproval,
                 MemberCount = GetTeamMemberCount(t.Id)
             }).ToList();
@@ -305,13 +307,16 @@ public class TeamController : ControllerBase
     {
         try
         {
-            var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
             var team = await _teamRepo.GetByIdTeams(teamId);
 
             if (team == null)
                 return NotFound("Team not found");
 
-            if (team.CoachId != coachId)
+            if (!await _authService.CanManageRoster(teamId, userId))
                 return Forbid();
 
             var pendingRequests = await _teamRepo.GetPendingJoinRequests(teamId);
@@ -341,8 +346,11 @@ public class TeamController : ControllerBase
             if (playerTeam == null)
                 return NotFound("Join request not found");
 
-            var coachId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (playerTeam.Team.CoachId != coachId)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageRoster(playerTeam.TeamId, userId))
                 return Forbid();
 
             var result = await _teamRepo.RespondToJoinRequest(playerTeamId, response);
@@ -365,15 +373,140 @@ public class TeamController : ControllerBase
         }
     }
 
-    private string GetCoachName(string coachId)
+    [HttpPost("{teamId}/staff")]
+    public async Task<ActionResult> AddTeamMember(int teamId, [FromBody] AddTeamMemberDTO dto)
     {
-        var userProfile = _context.UserProfiles.FirstOrDefault(p => p.IdentityUserId == coachId);
-        if (userProfile != null)
+        try
         {
-            return $"{userProfile.FirstName} {userProfile.LastName}";
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageRoster(teamId, userId))
+                return Forbid();
+
+            var success = await _teamRepo.AddTeamMember(teamId, dto.UserProfileId, dto.Role);
+            if (!success)
+                return BadRequest(new { message = "User is already a member of this team" });
+
+            return Ok(new { message = $"User added as {dto.Role}" });
         }
-        return "Unknown Coach";
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "Invalid operation while adding team member");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error adding team member to team {TeamId}", teamId);
+            return StatusCode(500, new { message = "An error occurred while adding team member" });
+        }
     }
+
+    [HttpPut("{teamId}/staff/{userProfileId}/role")]
+    public async Task<ActionResult> UpdateTeamMemberRole(int teamId, int userProfileId, [FromBody] UpdateTeamMemberRoleDTO dto)
+    {
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageRoster(teamId, userId))
+                return Forbid();
+
+            var success = await _teamRepo.UpdateTeamMemberRole(teamId, userProfileId, dto.Role);
+            if (!success)
+                return NotFound(new { message = "Team member not found" });
+
+            return Ok(new { message = $"Role updated to {dto.Role}" });
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "Invalid operation while updating team member role");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error updating team member role for team {TeamId}", teamId);
+            return StatusCode(500, new { message = "An error occurred while updating team member role" });
+        }
+    }
+
+    [HttpDelete("{teamId}/staff/{userProfileId}")]
+    public async Task<ActionResult> RemoveTeamMember(int teamId, int userProfileId)
+    {
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.CanManageRoster(teamId, userId))
+                return Forbid();
+
+            var success = await _teamRepo.RemoveTeamMember(teamId, userProfileId);
+            if (!success)
+                return NotFound(new { message = "Team member not found" });
+
+            return Ok(new { message = "Team member removed" });
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError(ex, "Invalid operation while removing team member");
+            return BadRequest(new { message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error removing team member from team {TeamId}", teamId);
+            return StatusCode(500, new { message = "An error occurred while removing team member" });
+        }
+    }
+
+    [HttpGet("{teamId}/staff")]
+    public async Task<ActionResult<TeamStaffDTO>> GetTeamStaff(int teamId)
+    {
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null)
+                return Unauthorized();
+
+            if (!await _authService.IsTeamMember(teamId, userId))
+                return Forbid();
+
+            var managers = await _teamRepo.GetTeamMembersByRole(teamId, "Manager");
+            var coaches = await _teamRepo.GetTeamMembersByRole(teamId, "Coach");
+            var players = await _teamRepo.GetTeamMembersByRole(teamId, "Player");
+
+            var staffDto = new TeamStaffDTO
+            {
+                Managers = _mapper.Map<List<UserProfileDTO>>(managers),
+                Coaches = _mapper.Map<List<UserProfileDTO>>(coaches),
+                Players = _mapper.Map<List<UserProfileDTO>>(players)
+            };
+
+            return Ok(staffDto);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving team staff for team {TeamId}", teamId);
+            return StatusCode(500, new { message = "An error occurred while retrieving team staff" });
+        }
+    }
+
+    private List<string> GetStaffNames(int teamId, string role)
+    {
+        return _context.PlayerTeams
+            .Where(pt => pt.TeamId == teamId && pt.Role == role)
+            .Include(pt => pt.Player)
+            .Select(pt => $"{pt.Player.FirstName} {pt.Player.LastName}")
+            .ToList();
+    }
+
+    private List<string> GetManagerNames(int teamId) => GetStaffNames(teamId, "Manager");
+
+    private List<string> GetCoachNames(int teamId) => GetStaffNames(teamId, "Coach");
 
     private int GetTeamMemberCount(int teamId)
     {

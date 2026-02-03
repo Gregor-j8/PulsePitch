@@ -20,5 +20,9 @@ namespace PulsePitch.Interfaces
         Task<PlayerTeam?> RequestJoinTeam(JoinRequestDTO request);
         Task<List<PlayerTeam>> GetPendingJoinRequests(int teamId);
         Task<PlayerTeam?> RespondToJoinRequest(int playerTeamId, JoinRequestResponseDTO response);
+        Task<bool> AddTeamMember(int teamId, int userProfileId, string role);
+        Task<bool> UpdateTeamMemberRole(int teamId, int userProfileId, string newRole);
+        Task<bool> RemoveTeamMember(int teamId, int userProfileId);
+        Task<List<UserProfile>> GetTeamMembersByRole(int teamId, string role);
     }
 }
