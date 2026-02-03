@@ -391,71 +391,61 @@ namespace PulsePitch.Data
                 {
                     Id = 1,
                     Name = "Eagles",
-                    JoinCode = "EGL123",
-                    CoachId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f"
+                    JoinCode = "EGL123"
                 },
                 new Team
                 {
                     Id = 2,
                     Name = "Falcons",
-                    JoinCode = "FLC123",
-                    CoachId = "d8d76512-74f1-43bb-b1fd-87d3a8aa36df"
+                    JoinCode = "FLC123"
                 },
                 new Team
                 {
                     Id = 3,
                     Name = "Wolves",
-                    JoinCode = "WLV456",
-                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                    JoinCode = "WLV456"
                 },
                 new Team
                 {
                     Id = 4,
                     Name = "Sharks",
-                    JoinCode = "SHK789",
-                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                    JoinCode = "SHK789"
                 },
                 new Team
                 {
                     Id = 5,
                     Name = "Titans",
-                    JoinCode = "TTN321",
-                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                    JoinCode = "TTN321"
                 },
                 new Team
                 {
                     Id = 6,
                     Name = "Panthers",
-                    JoinCode = "PNR654",
-                    CoachId = "a7d21fac-3b21-454a-a747-075f072d0cf3"
+                    JoinCode = "PNR654"
                 },
                 new Team
                 {
                     Id = 7,
                     Name = "Warriors",
-                    JoinCode = "WAR789",
-                    CoachId = "e5c98b1e-5b93-4a7a-9b5a-7a9f9b7b9b7b"
+                    JoinCode = "WAR789"
                 },
                 new Team
                 {
                     Id = 8,
                     Name = "Royals",
-                    JoinCode = "ROY321",
-                    CoachId = "f6d87a2d-6c84-4b8f-a9e3-8e7a6f5b4c3d"
+                    JoinCode = "ROY321"
                 },
                 new Team
                 {
                     Id = 9,
                     Name = "Stars",
-                    JoinCode = "STR654",
-                    CoachId = "g7e96c3e-7d95-4c9a-b0f4-9c8b7a5d3e2f"
+                    JoinCode = "STR654"
                 },
                 new Team
                 {
                     Id = 10,
                     Name = "Rangers",
-                    JoinCode = "RNG987",
-                    CoachId = "h8f05d4f-8e06-4d0b-a105-ad9c6b4e4d1a"
+                    JoinCode = "RNG987"
                 }
             );
 

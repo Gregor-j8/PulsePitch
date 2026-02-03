@@ -18,16 +18,16 @@ namespace PulsePitch.Repository
             _context = context;
         }
 
-        public async Task<Team> CreateTeams(Team teamModel)
+        public async Task<Team> CreateTeams(Team teamModel, string creatorIdentityUserId)
         {
             await _context.Teams.AddAsync(teamModel);
             await _context.SaveChangesAsync();
-            UserProfile coachesProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.IdentityUserId == teamModel.CoachId);
-            if (coachesProfile != null)
+            UserProfile creatorProfile = await _context.UserProfiles.FirstOrDefaultAsync(p => p.IdentityUserId == creatorIdentityUserId);
+            if (creatorProfile != null)
             {
                 PlayerTeam pt = new PlayerTeam
                 {
-                    PlayerId = coachesProfile.Id,
+                    PlayerId = creatorProfile.Id,
                     TeamId = teamModel.Id,
                     Role = "Manager"
                 };

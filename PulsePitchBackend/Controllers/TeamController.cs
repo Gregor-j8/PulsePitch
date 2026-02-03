@@ -85,7 +85,6 @@ public class TeamController : ControllerBase
             {
                 return Unauthorized("User ID not found");
             }
-            teamDTO.CoachId = userId;
 
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -101,7 +100,7 @@ public class TeamController : ControllerBase
             }
 
             Team team = _mapper.Map<Team>(teamDTO);
-            await _teamRepo.CreateTeams(team);
+            await _teamRepo.CreateTeams(team, userId);
             return Ok();
         }
         catch (Exception ex)

@@ -11,7 +11,7 @@ namespace PulsePitch.Interfaces
     {
         Task<List<Team>> GetAllTeams();
         Task<Team?> GetByIdTeams(int id);
-        Task<Team> CreateTeams(Team TeamModel);
+        Task<Team> CreateTeams(Team TeamModel, string creatorIdentityUserId);
         Task<Team?> UpdateTeams(int id, Team TeamModel);
         Task<PlayerTeam?> JoinTeams(JoinTeamDTO TeamModel);
         Task<Team?> DeleteTeams(int id);
