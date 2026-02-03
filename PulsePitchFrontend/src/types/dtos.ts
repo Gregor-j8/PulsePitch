@@ -7,6 +7,7 @@ export interface UserProfileDTO {
   lastName: string;
   address: string;
   roles: string[];
+  teams?: string[];
 }
 
 export interface TeamDTO {
@@ -76,6 +77,7 @@ export interface FormationsDTO {
   name: string;
   id: number;
   description: string;
+  template?: string;
   teamId: number;
   team?: TeamDTO;
   players: PlayersInFormationDTO[];
@@ -84,6 +86,7 @@ export interface FormationsDTO {
 export interface EditFormationsDTO {
   name?: string;
   description?: string;
+  template?: string;
   teamId?: number;
 }
 

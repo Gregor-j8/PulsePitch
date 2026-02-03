@@ -6,6 +6,7 @@ import { Modal, ModalBody, ModalFooter } from "../ui/Modal"
 import { Button } from "../ui/Button"
 import { Input, Select } from "../ui/Input"
 import { UserProfileDTO } from "../../types/dtos"
+import { FORMATION_TEMPLATE_OPTIONS } from "../../constants/formationTemplates"
 
 interface CreateFormationModalProps {
   loggedInUser: UserProfileDTO;
@@ -17,15 +18,15 @@ interface CreateFormationModalProps {
 export const CreateFormationModal = ({ loggedInUser, setCreateFormationModal, setFormationModal, setFormationId}: CreateFormationModalProps) => {
   const {mutate} = useCreateFormations()
   const { data: teamNames } = useTeams()
-  const [formation, setFormation] = useState<{ description: string; name: string; teamId: string }>({ description: "", name: "", teamId: "" });
+  const [formation, setFormation] = useState<{ description: string; name: string; teamId: string; template: string }>({ description: "", name: "", teamId: "", template: "4-4-2" });
   const handleSubmit = () => {
     if (!formation.description && !formation.name && formation.teamId !== "0") return toast.error("no valid entries")
     const teamsId = teamNames?.find(team => team.id == parseInt(formation.teamId))
     if (teamsId?.coachId !== loggedInUser.identityUserId) return toast.error("You are not the coach of this team")
-    mutate({ ...formation, teamId: parseInt(formation.teamId) } as any, {
+    mutate({ ...formation, teamId: parseInt(formation.teamId), template: formation.template } as any, {
         onSuccess: (newFormation: any) => {
         setFormationId(newFormation.id)
-        setFormation({ description: "", name: "", teamId: "" })
+        setFormation({ description: "", name: "", teamId: "", template: "4-4-2" })
         setCreateFormationModal(false)
     }})
   }
@@ -45,6 +46,14 @@ export const CreateFormationModal = ({ loggedInUser, setCreateFormationModal, se
           className="mb-2"
         />
         <Select
+          label="Formation Template"
+          value={formation.template}
+          onChange={(e) => setFormation({ ...formation, template: e.target.value })}
+          options={FORMATION_TEMPLATE_OPTIONS}
+          className="mb-2"
+        />
+        <Select
+          label="Team"
           value={formation.teamId}
           onChange={(e) => setFormation({ ...formation, teamId: e.target.value })}
           options={[

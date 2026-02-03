@@ -67,7 +67,7 @@ export const Home = ({loggedInUser}: HomeProps) => {
             <h1 className="text-3xl font-bold text-neutral-900 mb-2">Browse Public Teams</h1>
             <p className="text-neutral-600">Discover and join teams in your area</p>
           </div>
-
+{/* error with the ids for formation/teams/ids */}
           <Card className="p-6 mb-6 bg-white">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-neutral-400 w-5 h-5" />

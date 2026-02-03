@@ -6,7 +6,7 @@ interface ActivityWidgetProps {
   loggedInUser: UserProfileDTO;
 }
 
-export const ActivityWidget = ({ loggedInUser }: ActivityWidgetProps) => {
+export const ActivityWidget = ({ }: ActivityWidgetProps) => {
   return (
     <Card className="p-6 bg-white h-[500px] flex flex-col">
       <div className="mb-6 flex justify-between items-center flex-shrink-0">

@@ -38,12 +38,12 @@ export const EditFormationModal = ({ formationId, setEditFormationModal, setForm
     }
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md relative">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+      <div className="bg-white p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-[95vw] sm:max-w-md relative mx-4">
         <button onClick={() => setEditFormationModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
           <X size={20} />
         </button>
-        <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">Edit Formation</h2>
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6 text-center text-gray-800">Edit Formation</h2>
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -56,15 +56,15 @@ export const EditFormationModal = ({ formationId, setEditFormationModal, setForm
                 className="w-full px-4 py-2 border rounded-lg "/>
           </div>
         </div>
-        <div className="flex justify-end space-x-3 mt-6">
-          <button onClick={() => setEditFormationModal(false)}className="px-4 py-2 rounded-lg text-gray-600 hover:text-gray-800 cursor-pointer">
+        <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-3 mt-4 sm:mt-6">
+          <button onClick={() => setEditFormationModal(false)}className="w-full sm:w-auto px-4 py-2 rounded-lg text-gray-600 hover:text-gray-800 cursor-pointer text-sm sm:text-base">
             Cancel
           </button>
-          <button onClick={handleEditFormation} className="px-5 py-2 bg-blue-600 text-white rounded-lg cursor-pointer">
+          <button onClick={handleEditFormation} className="w-full sm:w-auto px-5 py-2 bg-blue-600 text-white rounded-lg cursor-pointer text-sm sm:text-base">
             Save
           </button>
           <button onClick={() => {deleteMutation.mutate(formationId); setEditFormationModal(false); setFormationModal(true); setFormationId(null)}}
-           className="px-5 py-2 bg-red-600 text-white rounded-lg cursor-pointer">
+           className="w-full sm:w-auto px-5 py-2 bg-red-600 text-white rounded-lg cursor-pointer text-sm sm:text-base">
             Delete
           </button>
         </div>
