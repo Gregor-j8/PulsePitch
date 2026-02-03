@@ -17,34 +17,39 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
     const teamId = (loggedInUser.teams as unknown as Array<{teamId: number}>)?.[0]?.teamId ?? 0;
     const {data: formations } = useGetFormationsByTeamId(teamId)
 
+    const userTeamRole = (loggedInUser.teams as unknown as Array<{teamId: number, role: string}>)?.find((t: any) => t.teamId === teamId)?.role
+    const canManageFormations = userTeamRole === "Manager" || userTeamRole === "Coach"
+
     const hasFormations = formations && formations.length > 0;
 
       return (
         <>
           <div className="mt-4">
             {formationId ? (
-              <PitchComponent formationId={formationId} setFormationModal={() => setFormationId(0)} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} />
+              <PitchComponent formationId={formationId} setFormationModal={() => setFormationId(0)} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} canManageFormations={canManageFormations} />
             ) : createFormationModal ? (
               <CreateFormationModal loggedInUser={loggedInUser} setFormationModal={() => {}} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId}/>
             ) : (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-neutral-900">Your Formations</h2>
-                  <Button
-                    variant="primary"
-                    onClick={() => { setFormationId(null); setCreateFormationModal(true); }}
-                  >
-                    Add Formation
-                  </Button>
+                  {canManageFormations && (
+                    <Button
+                      variant="primary"
+                      onClick={() => { setFormationId(null); setCreateFormationModal(true); }}
+                    >
+                      Add Formation
+                    </Button>
+                  )}
                 </div>
 
                 {!hasFormations ? (
                   <EmptyState
                     icon={Layout}
                     title="No Formations Yet"
-                    description="Create your first formation to get started with tactical planning."
-                    actionLabel="Create Formation"
-                    onAction={() => setCreateFormationModal(true)}
+                    description={canManageFormations ? "Create your first formation to get started with tactical planning." : "No formations have been created for this team yet."}
+                    actionLabel={canManageFormations ? "Create Formation" : undefined}
+                    onAction={canManageFormations ? () => setCreateFormationModal(true) : undefined}
                   />
                 ) : (
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -60,7 +65,7 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
                             <Layout className="h-5 w-5 text-primary-500" />
                           </div>
                           <div className="bg-gradient-to-b from-green-600 to-green-700 rounded-lg h-40 flex items-center justify-center">
-                            <span className="text-white text-3xl font-bold">{formation.formation}</span>
+                            <span className="text-white text-3xl font-bold">{formation.template || formation.name}</span>
                           </div>
                           <div className="text-sm text-neutral-500">
                             Click to view and edit

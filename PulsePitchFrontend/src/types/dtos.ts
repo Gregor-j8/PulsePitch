@@ -14,7 +14,8 @@ export interface TeamDTO {
   id: number;
   name: string;
   joinCode: string;
-  coachId?: string;
+  managerNames?: string[];
+  coachNames?: string[];
   isPublic: boolean;
   requiresApproval: boolean;
 }
@@ -28,7 +29,6 @@ export interface JoinTeamDTO {
 export interface EditTeamDTO {
   name?: string;
   joinCode?: string;
-  coachId?: string;
   isPublic?: boolean;
   requiresApproval?: boolean;
 }
@@ -149,6 +149,7 @@ export interface PlayerTeamDTO {
   player?: UserProfileDTO;
   teamId: number;
   team?: TeamDTO;
+  role: string;
   status?: string;
   requestedAt?: string;
   respondedAt?: string;
@@ -164,8 +165,8 @@ export interface GetTeamsByPlayerIdDTO {
 export interface PublicTeamSearchDTO {
   id: number;
   name: string;
-  coachId: string;
-  coachName: string;
+  managerNames: string[];
+  coachNames: string[];
   requiresApproval: boolean;
   memberCount: number;
 }
@@ -187,4 +188,32 @@ export interface PendingJoinRequestDTO {
   teamId: number;
   status?: string;
   requestedAt?: string;
+}
+
+export interface TeamStaffDTO {
+  managers: UserProfileDTO[];
+  coaches: UserProfileDTO[];
+  players: UserProfileDTO[];
+}
+
+export interface AddTeamMemberDTO {
+  userProfileId: number;
+  role: string;
+}
+
+export interface UpdateTeamMemberRoleDTO {
+  newRole: string;
+}
+
+export interface UpdateUserRolesDTO {
+  roles: string[];
+}
+
+export interface AnalyticsDTO {
+  totalUsers: number;
+  totalTeams: number;
+  usersByRole: { [key: string]: number };
+  publicTeams: number;
+  privateTeams: number;
+  activeUsersLast7Days: number;
 }

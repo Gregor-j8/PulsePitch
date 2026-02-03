@@ -51,7 +51,7 @@ export const MatchRequest = ({ loggedInUser }: MatchRequestProps) => {
                   Scheduled for: {formatDate(match.proposedDate)}
                 </p>
               </div>
-              {match.status === null && loggedInUser.identityUserId === match.awayTeam?.coachId && (
+              {match.status === null && (loggedInUser as any).teams?.some((t: any) => t.teamId === match.awayTeam?.id && (t.role === "Manager" || t.role === "Coach")) && (
                 <div className="flex space-x-2 mt-2 sm:mt-0">
                   <Button
                     variant="success"

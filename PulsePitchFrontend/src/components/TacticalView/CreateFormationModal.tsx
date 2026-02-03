@@ -21,8 +21,12 @@ export const CreateFormationModal = ({ loggedInUser, setCreateFormationModal, se
   const [formation, setFormation] = useState<{ description: string; name: string; teamId: string; template: string }>({ description: "", name: "", teamId: "", template: "4-4-2" });
   const handleSubmit = () => {
     if (!formation.description && !formation.name && formation.teamId !== "0") return toast.error("no valid entries")
-    const teamsId = teamNames?.find(team => team.id == parseInt(formation.teamId))
-    if (teamsId?.coachId !== loggedInUser.identityUserId) return toast.error("You are not the coach of this team")
+
+    const userTeam = (loggedInUser as any).teams?.find((t: any) => t.teamId === parseInt(formation.teamId))
+    if (!userTeam || (userTeam.role !== "Manager" && userTeam.role !== "Coach")) {
+      return toast.error("You don't have permission to create formations for this team")
+    }
+
     mutate({ ...formation, teamId: parseInt(formation.teamId), template: formation.template } as any, {
         onSuccess: (newFormation: any) => {
         setFormationId(newFormation.id)

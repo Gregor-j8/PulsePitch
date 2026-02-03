@@ -45,10 +45,18 @@ export const JoinTeamConfirmModal = ({
           <h3 className="text-lg font-semibold text-neutral-900 mb-3">{team.name}</h3>
 
           <div className="space-y-2 text-sm">
-            <div className="flex items-center text-neutral-600">
-              <UserCheck className="w-4 h-4 mr-2" />
-              <span>Coach: {team.coachName}</span>
-            </div>
+            {team.managerNames && team.managerNames.length > 0 && (
+              <div className="flex items-center text-neutral-600">
+                <UserCheck className="w-4 h-4 mr-2" />
+                <span>Manager{team.managerNames.length > 1 ? 's' : ''}: {team.managerNames.join(', ')}</span>
+              </div>
+            )}
+            {team.coachNames && team.coachNames.length > 0 && (
+              <div className="flex items-center text-neutral-600">
+                <UserCheck className="w-4 h-4 mr-2" />
+                <span>Coach{team.coachNames.length > 1 ? 'es' : ''}: {team.coachNames.join(', ')}</span>
+              </div>
+            )}
 
             <div className="flex items-center text-neutral-600">
               <Users className="w-4 h-4 mr-2" />

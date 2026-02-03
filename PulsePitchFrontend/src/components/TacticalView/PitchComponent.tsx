@@ -13,9 +13,10 @@ interface PitchComponentProps {
   setFormationId: (value: number | null) => void;
   setFormationModal: (value: boolean) => void;
   setCreateFormationModal: (value: boolean) => void;
+  canManageFormations: boolean;
 }
 
-export const PitchComponent = ({ formationId, setFormationId, setFormationModal, setCreateFormationModal }: PitchComponentProps) => {
+export const PitchComponent = ({ formationId, setFormationId, setFormationModal, setCreateFormationModal, canManageFormations }: PitchComponentProps) => {
   const [selectedPlayer, setSelectedPlayer] = useState<PlayersInFormationDTO | null>(null)
   const [editFormationModal, setEditFormationModal] = useState<boolean>(false)
   const [ball, setBall] = useState<{ x: number; y: number }>({ x: 500, y: 350 })
@@ -286,13 +287,24 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
         Tactical Pitch
       </h2>
      <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-2 sm:gap-4 mb-6 px-2">
-      <Button
-        variant="primary"
-        onClick={() => { setCreateFormationModal(true); setFormationId(null);}}
-        className="w-full sm:w-auto text-sm"
-      >
-        + Add Formation
-      </Button>
+      {canManageFormations && (
+        <>
+          <Button
+            variant="primary"
+            onClick={() => { setCreateFormationModal(true); setFormationId(null);}}
+            className="w-full sm:w-auto text-sm"
+          >
+            + Add Formation
+          </Button>
+          <Button
+            variant="primary"
+            onClick={() => { setEditFormationModal(true)}}
+            className="w-full sm:w-auto text-sm"
+          >
+            Edit Formation
+          </Button>
+        </>
+      )}
       <Button
         variant="primary"
         onClick={() => { setFormationModal(true); setFormationId(null)}}
@@ -300,21 +312,14 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
       >
         Change Formation
       </Button>
-      <Button
-        variant="primary"
-        onClick={() => { setEditFormationModal(true)}}
-        className="w-full sm:w-auto text-sm"
-      >
-        Edit Formation
-      </Button>
     </div>
       <div ref={containerRef} className="relative w-full max-w-[1000px] md:max-w-[1000px] sm:max-w-full aspect-[4/3] mx-auto">
         <Field isMobile={isMobile} />
         <div id="d3-overlay" className="absolute inset-0 z-10 pointer-events-none" />
           <div
             ref={ballRef}
-            onMouseDown={startDragBall}
-            onTouchStart={startDragBallTouch}
+            onMouseDown={canManageFormations ? startDragBall : undefined}
+            onTouchStart={canManageFormations ? startDragBallTouch : undefined}
             style={{
               position: "absolute",
               left: `${scaleCoordinate(ball.x, REFERENCE_WIDTH, containerSize.width)}px`,
@@ -324,7 +329,7 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
               borderRadius: "50%",
               backgroundColor: "white",
               border: "3px solid black",
-              cursor: "grab",
+              cursor: canManageFormations ? "grab" : "default",
               transform: "translate(-50%, -50%)",
               zIndex: 20,
             }}
@@ -342,12 +347,12 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
                 if (player) playerRefs.current[p.id] = player;
               }}
               title={`${p.name} - ${p.role}`}
-              onMouseDown={(e) => startDrag(e, p.id)}
-              onTouchStart={(e) => startDragTouch(e, p.id)}
-              onDoubleClick={(e) => {
+              onMouseDown={canManageFormations ? (e) => startDrag(e, p.id) : undefined}
+              onTouchStart={canManageFormations ? (e) => startDragTouch(e, p.id) : undefined}
+              onDoubleClick={canManageFormations ? (e) => {
                   e.stopPropagation()
                   setSelectedPlayer(p)
-                }}
+                } : undefined}
               style={{
                 position: "absolute",
                 left: scaledX,
@@ -362,7 +367,7 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
                 fontWeight: "bold",
                 fontSize: isMobile ? "11px" : "10px",
                 userSelect: "none",
-                cursor: "grab",
+                cursor: canManageFormations ? "grab" : "default",
                 transform: "translate(-50%, -50%)",
                 zIndex: 10,
               }}

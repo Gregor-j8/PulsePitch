@@ -6,16 +6,17 @@ import { Card } from "../ui/Card"
 import { Button } from "../ui/Button"
 import { Select } from "../ui/Input"
 import { ConfirmDialog, EmptyState } from "../ui"
-import { Users, Settings as SettingsIcon, Clock } from "lucide-react"
+import { Users, Settings as SettingsIcon, Clock, UserCog } from "lucide-react"
 import { UserProfileDTO, PlayerTeamDTO } from "../../types"
 import { TeamSettings } from "./TeamSettings"
 import { PendingJoinRequests } from "./PendingJoinRequests"
+import { TeamStaffManagement } from "./TeamStaffManagement"
 
 interface TeamHomeProps {
   loggedInUser: UserProfileDTO | null;
 }
 
-type TabType = 'overview' | 'settings' | 'requests';
+type TabType = 'overview' | 'settings' | 'requests' | 'staff';
 
 export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
   const [teamId, setTeamId] = useState<number | undefined>()
@@ -28,8 +29,9 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
   const {mutate: deletePlayerTeam} = deletePlayerTeamMutation
   const [deleteConfirmPlayer, setDeleteConfirmPlayer] = useState<PlayerTeamDTO | null>(null)
 
-  const isCoach = loggedInUser?.roles.includes("Coach")
-  const isTeamCoach = selectedTeam?.coachId === loggedInUser?.identityUserId
+  const userTeamRole = (loggedInUser as any)?.teams?.find((t: any) => t.teamId === teamId)?.role
+  const canManageRoster = userTeamRole === "Manager"
+
   const pendingCount = pendingRequests?.length || 0
 
   useEffect(() => {
@@ -57,7 +59,7 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
 
       {teamId && (
         <>
-          {isCoach && isTeamCoach && (
+          {canManageRoster && (
             <div className="mb-6 border-b border-neutral-200">
               <div className="flex gap-4">
                 <button
@@ -98,6 +100,17 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
                     </span>
                   )}
                 </button>
+                <button
+                  onClick={() => setActiveTab('staff')}
+                  className={`pb-3 px-1 border-b-2 font-medium text-sm transition-colors ${
+                    activeTab === 'staff'
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-neutral-600 hover:text-neutral-900 hover:border-neutral-300'
+                  }`}
+                >
+                  <UserCog className="w-4 h-4 inline mr-2" />
+                  Staff Management
+                </button>
               </div>
             </div>
           )}
@@ -114,12 +127,17 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
                 <div className="space-y-4">
                   {teams.map((team: any) => (
                     <Card key={team.id} className="flex justify-between items-center p-6">
-                      <h2 className="text-xl font-bold text-neutral-800">
-                        <Link to={`/profile/${team.playerId}`} className="text-primary-600 hover:underline">
-                          {team?.player.firstName} {team?.player.lastName}
-                        </Link>
-                      </h2>
-                      {isCoach && (
+                      <div>
+                        <h2 className="text-xl font-bold text-neutral-800">
+                          <Link to={`/profile/${team.playerId}`} className="text-primary-600 hover:underline">
+                            {team?.player.firstName} {team?.player.lastName}
+                          </Link>
+                        </h2>
+                        <p className="text-sm text-neutral-600 mt-1">
+                          Role: <span className="font-medium">{team.role || 'Player'}</span>
+                        </p>
+                      </div>
+                      {canManageRoster && (
                         <Button variant="danger" size="sm" onClick={() => setDeleteConfirmPlayer(team)} loading={deletePlayerTeamMutation.isPending}>
                           Delete
                         </Button>
@@ -131,12 +149,20 @@ export const TeamHome = ({loggedInUser}: TeamHomeProps) => {
             </>
           )}
 
-          {activeTab === 'settings' && selectedTeam && isTeamCoach && (
+          {activeTab === 'settings' && selectedTeam && canManageRoster && (
             <TeamSettings team={selectedTeam} />
           )}
 
-          {activeTab === 'requests' && isTeamCoach && (
+          {activeTab === 'requests' && canManageRoster && (
             <PendingJoinRequests teamId={teamId} />
+          )}
+
+          {activeTab === 'staff' && canManageRoster && (
+            <TeamStaffManagement
+              teamId={teamId}
+              teamMembers={Array.isArray(teams) ? teams : []}
+              availableUsers={[]}
+            />
           )}
         </>
       )}

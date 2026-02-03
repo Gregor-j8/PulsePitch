@@ -37,14 +37,14 @@ export const CreateGameModal = ({ onClose, loggedInUser }: CreateGameModalProps)
       awayTeamId: parseInt(formData.awayTeamId),
       result: ""
     }
-    const oppteamChoach = teams?.find(t => t.id == parseInt(formData.awayTeamId))
+
     CreateMatchRequest.mutate({
       proposedDate: formData.start,
       message: formData.message,
       homeTeamId: parseInt(formData.homeTeamId),
       awayTeamId: parseInt(formData.awayTeamId),
       senderId: loggedInUser.id,
-      recieverId: oppteamChoach?.coachId ?? '',
+      recieverId: '',
       status: 'pending'
     } as any)
     createTeamEvent.mutate(data as any, {
