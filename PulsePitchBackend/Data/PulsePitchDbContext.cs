@@ -62,6 +62,18 @@ namespace PulsePitch.Data
                     Id = "e9b4c5a4-76c6-44b7-88fb-35a0228c9572",
                     Name = "Coach",
                     NormalizedName = "COACH"
+                },
+                new IdentityRole
+                {
+                    Id = "a1b2c3d4-e5f6-47g8-h9i0-j1k2l3m4n5o6",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "b2c3d4e5-f6g7-48h9-i0j1-k2l3m4n5o6p7",
+                    Name = "Manager",
+                    NormalizedName = "MANAGER"
                 }
             );
 

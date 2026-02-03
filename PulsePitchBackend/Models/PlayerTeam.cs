@@ -12,6 +12,10 @@ public class PlayerTeam
     public int TeamId { get; set; }
     public Team? Team { get; set; }
 
+    [Required]
+    [MaxLength(50)]
+    public string Role { get; set; } = "Player";
+
     public string? Status { get; set; }
     public DateTime? RequestedAt { get; set; }
     public DateTime? RespondedAt { get; set; }
