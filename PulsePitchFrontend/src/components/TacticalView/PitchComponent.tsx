@@ -7,6 +7,11 @@ import { Button } from "../ui/Button"
 import * as d3 from "d3"
 import { PlayersInFormationDTO } from "../../types/dtos"
 import { Field } from "./Field"
+import { EnhancedPlayer } from "./EnhancedPlayer"
+import { SoccerBall } from "./SoccerBall"
+import { toPng } from 'html-to-image'
+import { toast } from 'react-toastify'
+import { useGetFormationsById } from "../../hooks/useFormation"
 
 interface PitchComponentProps {
   formationId: number | null;
@@ -23,7 +28,11 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
   const [players, setPlayers] = useImmer<PlayersInFormationDTO[]>([])
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 })
+
+  const [history, setHistory] = useState<PlayersInFormationDTO[][]>([])
+  const [historyIndex, setHistoryIndex] = useState(-1)
   const { data: Players } = usePlayersByFormationId(formationId ?? 0)
+  const { data: formation } = useGetFormationsById(formationId ?? 0)
   const mutation = useEditPlayersInFormations()
   const ballRef = useRef<HTMLDivElement | null>(null)
   const draggedBallRef = useRef<boolean | null>(null)
@@ -32,7 +41,6 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
   const draggedPlayerRef = useRef<{ id: number; x?: number; y?: number } | null>(null)
   const circleRef = useRef<d3.Selection<SVGCircleElement, unknown, HTMLElement, any> | null>(null)
 
-  // Backend stores coordinates in reference system: 1000px width x 700px height
   const REFERENCE_WIDTH = 1000
   const REFERENCE_HEIGHT = 700
 
@@ -49,6 +57,8 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
   useEffect(() => {
     if (Players) {
       setPlayers(Players)
+      setHistory([JSON.parse(JSON.stringify(Players))])
+      setHistoryIndex(0)
     }
   }, [Players, setPlayers])
 
@@ -105,6 +115,70 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
           .attr("cy", ball.y)
       }
     }, [ball])
+
+  const saveToHistory = useCallback((newPlayers: PlayersInFormationDTO[]) => {
+    setHistory((prev) => {
+      const newHistory = prev.slice(0, historyIndex + 1)
+      newHistory.push(JSON.parse(JSON.stringify(newPlayers)))
+      return newHistory.slice(-50)
+    })
+    setHistoryIndex((prev) => Math.min(prev + 1, 49))
+  }, [historyIndex])
+
+  const undo = useCallback(() => {
+    if (historyIndex > 0) {
+      const newIndex = historyIndex - 1
+      setHistoryIndex(newIndex)
+      setPlayers(JSON.parse(JSON.stringify(history[newIndex])))
+    }
+  }, [historyIndex, history, setPlayers])
+
+  const redo = useCallback(() => {
+    if (historyIndex < history.length - 1) {
+      const newIndex = historyIndex + 1
+      setHistoryIndex(newIndex)
+      setPlayers(JSON.parse(JSON.stringify(history[newIndex])))
+    }
+  }, [historyIndex, history, setPlayers])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
+        e.preventDefault()
+        undo()
+      } else if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) {
+        e.preventDefault()
+        redo()
+      }
+    }
+
+    if (canManageFormations) {
+      window.addEventListener('keydown', handleKeyDown)
+      return () => window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [undo, redo, canManageFormations])
+
+  const exportAsPNG = useCallback(async () => {
+    if (!containerRef.current) return
+
+    try {
+      const dataUrl = await toPng(containerRef.current, {
+        quality: 1.0,
+        pixelRatio: 2,
+        backgroundColor: '#5fb830',
+      })
+
+      const link = document.createElement('a')
+      link.download = `formation-${formation?.description || 'tactical-view'}.png`
+      link.href = dataUrl
+      link.click()
+
+      toast.success('Formation exported successfully!')
+    } catch (error) {
+      console.error('Export failed:', error)
+      toast.error('Failed to export formation')
+    }
+  }, [formation])
 
   const handlePlayerUpdate = useCallback((id: number, x: number, y: number) => {
     const player = players.find((p) => p.id === id)
@@ -218,6 +292,10 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
             player.y = unscaledY
           }
         })
+        const updatedPlayers = players.map((p) =>
+          p.id === id ? { ...p, x: unscaledX, y: unscaledY } : p
+        )
+        saveToHistory(updatedPlayers)
         handlePlayerUpdate(id, unscaledX, unscaledY)
       }
     }
@@ -269,6 +347,10 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
               player.y = unscaledY
             }
           })
+          const updatedPlayers = players.map((p) =>
+            p.id === id ? { ...p, x: unscaledX, y: unscaledY } : p
+          )
+          saveToHistory(updatedPlayers)
           handlePlayerUpdate(id, unscaledX, unscaledY)
         }
       }
@@ -303,6 +385,34 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
           >
             Edit Formation
           </Button>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Button
+              variant="ghost"
+              onClick={undo}
+              disabled={historyIndex <= 0}
+              className="flex-1 sm:flex-initial text-sm"
+              title="Undo (Ctrl+Z)"
+            >
+              ↶ Undo
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={redo}
+              disabled={historyIndex >= history.length - 1}
+              className="flex-1 sm:flex-initial text-sm"
+              title="Redo (Ctrl+Y)"
+            >
+              ↷ Redo
+            </Button>
+          </div>
+          <Button
+            variant="ghost"
+            onClick={exportAsPNG}
+            className="w-full sm:w-auto text-sm"
+            title="Export formation as PNG"
+          >
+            📸 Export PNG
+          </Button>
         </>
       )}
       <Button
@@ -316,64 +426,38 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
       <div ref={containerRef} className="relative w-full max-w-[1000px] md:max-w-[1000px] sm:max-w-full aspect-[4/3] mx-auto">
         <Field isMobile={isMobile} />
         <div id="d3-overlay" className="absolute inset-0 z-10 pointer-events-none" />
-          <div
-            ref={ballRef}
-            onMouseDown={canManageFormations ? startDragBall : undefined}
-            onTouchStart={canManageFormations ? startDragBallTouch : undefined}
-            style={{
-              position: "absolute",
-              left: `${scaleCoordinate(ball.x, REFERENCE_WIDTH, containerSize.width)}px`,
-              top: `${scaleCoordinate(ball.y, REFERENCE_HEIGHT, containerSize.height)}px`,
-              width: 20,
-              height: 20,
-              borderRadius: "50%",
-              backgroundColor: "white",
-              border: "3px solid black",
-              cursor: canManageFormations ? "grab" : "default",
-              transform: "translate(-50%, -50%)",
-              zIndex: 20,
-            }}
-            title="Ball"
+          <SoccerBall
+            x={scaleCoordinate(ball.x, REFERENCE_WIDTH, containerSize.width)}
+            y={scaleCoordinate(ball.y, REFERENCE_HEIGHT, containerSize.height)}
+            canManageFormations={canManageFormations}
+            onMouseDown={startDragBall}
+            onTouchStart={startDragBallTouch}
+            ballRef={ballRef}
           />
         {players.map((p) => {
           const scaledX = scaleCoordinate(p.x, REFERENCE_WIDTH, containerSize.width)
           const scaledY = scaleCoordinate(p.y, REFERENCE_HEIGHT, containerSize.height)
-          const playerSize = isMobile ? 40 : 30
+          const playerSize = isMobile ? 50 : 40
 
           return (
-            <div
+            <EnhancedPlayer
               key={p.id}
-              ref={(player) => {
-                if (player) playerRefs.current[p.id] = player;
+              player={p}
+              scaledX={scaledX}
+              scaledY={scaledY}
+              playerSize={playerSize}
+              isMobile={isMobile}
+              canManageFormations={canManageFormations}
+              onMouseDown={(e) => startDrag(e, p.id)}
+              onTouchStart={(e) => startDragTouch(e, p.id)}
+              onDoubleClick={(e) => {
+                e.stopPropagation()
+                setSelectedPlayer(p)
               }}
-              title={`${p.name} - ${p.role}`}
-              onMouseDown={canManageFormations ? (e) => startDrag(e, p.id) : undefined}
-              onTouchStart={canManageFormations ? (e) => startDragTouch(e, p.id) : undefined}
-              onDoubleClick={canManageFormations ? (e) => {
-                  e.stopPropagation()
-                  setSelectedPlayer(p)
-                } : undefined}
-              style={{
-                position: "absolute",
-                left: scaledX,
-                top: scaledY,
-                width: playerSize,
-                height: playerSize,
-                borderRadius: "50%",
-                backgroundColor: p.color,
-                color: "black",
-                textAlign: "center",
-                lineHeight: `${playerSize}px`,
-                fontWeight: "bold",
-                fontSize: isMobile ? "11px" : "10px",
-                userSelect: "none",
-                cursor: canManageFormations ? "grab" : "default",
-                transform: "translate(-50%, -50%)",
-                zIndex: 10,
+              playerRef={(player) => {
+                if (player) playerRefs.current[p.id] = player
               }}
-            >
-              {p.name}
-            </div>
+            />
           )
         })}
       </div>

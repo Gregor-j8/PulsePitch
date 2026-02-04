@@ -23,10 +23,43 @@ export const Field = ({ isMobile }: FieldProps) => {
       .attr("height", "100%")
       .attr("viewBox", "-5 0 130 80")
       .attr("preserveAspectRatio", "xMidYMid meet")
-      .style("background-color", "#7ec850")
 
-    // Define clip path for penalty arcs
+    // Define patterns and gradients for realistic grass
     const defs = svg.append("defs")
+
+    // Grass stripe pattern
+    const stripePattern = defs.append("pattern")
+      .attr("id", "grass-stripes")
+      .attr("patternUnits", "userSpaceOnUse")
+      .attr("width", 10)
+      .attr("height", 80)
+
+    // Alternating light and dark green stripes (mowed lawn effect)
+    for (let i = 0; i < 13; i++) {
+      stripePattern.append("rect")
+        .attr("x", i * 10)
+        .attr("y", 0)
+        .attr("width", 5)
+        .attr("height", 80)
+        .attr("fill", i % 2 === 0 ? "#5fb830" : "#68c241")
+    }
+
+    // Vignette gradient for depth
+    const vignetteGradient = defs.append("radialGradient")
+      .attr("id", "vignette")
+      .attr("cx", "50%")
+      .attr("cy", "50%")
+      .attr("r", "60%")
+
+    vignetteGradient.append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "#000000")
+      .attr("stop-opacity", "0")
+
+    vignetteGradient.append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "#000000")
+      .attr("stop-opacity", "0.2")
 
     // Clip path for left penalty arc (only show part outside the box)
     defs.append("clipPath")
@@ -47,6 +80,22 @@ export const Field = ({ isMobile }: FieldProps) => {
       .attr("height", 80)
 
     const g = svg.append("g")
+
+    // Background with grass pattern
+    g.append("rect")
+      .attr("x", -5)
+      .attr("y", 0)
+      .attr("width", 130)
+      .attr("height", 80)
+      .attr("fill", "url(#grass-stripes)")
+
+    // Vignette overlay for depth
+    g.append("rect")
+      .attr("x", -5)
+      .attr("y", 0)
+      .attr("width", 130)
+      .attr("height", 80)
+      .attr("fill", "url(#vignette)")
 
     // Pitch outline
     g.append("rect")
@@ -157,56 +206,78 @@ export const Field = ({ isMobile }: FieldProps) => {
       .attr("stroke-width", 0.3)
       .attr("clip-path", "url(#right-arc-clip)")
 
-    // Left goal
-    g.append("line")
+    // Left goal with depth effect
+    const leftGoal = g.append("g")
+
+    // Goal shadow
+    leftGoal.append("rect")
+      .attr("x", -2.5)
+      .attr("y", 33.5)
+      .attr("width", 0.5)
+      .attr("height", 13)
+      .attr("fill", "#00000040")
+
+    // Goal posts
+    leftGoal.append("line")
       .attr("x1", 0)
       .attr("y1", 34)
       .attr("x2", -2)
       .attr("y2", 34)
       .attr("stroke", "#ffffff")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 0.4)
 
-    g.append("line")
+    leftGoal.append("line")
       .attr("x1", -2)
       .attr("y1", 34)
       .attr("x2", -2)
       .attr("y2", 46)
       .attr("stroke", "#ffffff")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 0.4)
 
-    g.append("line")
+    leftGoal.append("line")
       .attr("x1", -2)
       .attr("y1", 46)
       .attr("x2", 0)
       .attr("y2", 46)
       .attr("stroke", "#ffffff")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 0.4)
 
-    // Right goal
-    g.append("line")
+    // Right goal with depth effect
+    const rightGoal = g.append("g")
+
+    // Goal shadow
+    rightGoal.append("rect")
+      .attr("x", 122)
+      .attr("y", 33.5)
+      .attr("width", 0.5)
+      .attr("height", 13)
+      .attr("fill", "#00000040")
+
+    // Goal posts
+    rightGoal.append("line")
       .attr("x1", 120)
       .attr("y1", 34)
       .attr("x2", 122)
       .attr("y2", 34)
       .attr("stroke", "#ffffff")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 0.4)
 
-    g.append("line")
+    rightGoal.append("line")
       .attr("x1", 122)
       .attr("y1", 34)
       .attr("x2", 122)
       .attr("y2", 46)
       .attr("stroke", "#ffffff")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 0.4)
 
-    g.append("line")
+    rightGoal.append("line")
       .attr("x1", 122)
       .attr("y1", 46)
       .attr("x2", 120)
       .attr("y2", 46)
       .attr("stroke", "#ffffff")
-      .attr("stroke-width", 0.3)
+      .attr("stroke-width", 0.4)
   }, [isMobile])
 
-  return <div ref={pitchRef} className="absolute inset-0 bg-green-600" />
+  return <div ref={pitchRef} className="absolute inset-0 bg-[#5fb830]" />
 }
