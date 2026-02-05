@@ -10,6 +10,7 @@ interface PathOverlayProps {
   referenceHeight: number;
   showPaths: boolean;
   onKeyframeDrag?: (playerId: number, keyframeIndex: number, newX: number, newY: number) => void;
+  onKeyframeDragEnd?: () => void;
 }
 
 export const PathOverlay = ({
@@ -20,6 +21,7 @@ export const PathOverlay = ({
   referenceHeight,
   showPaths,
   onKeyframeDrag,
+  onKeyframeDragEnd,
 }: PathOverlayProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -114,6 +116,9 @@ export const PathOverlay = ({
               const newX = unscaleX(event.x);
               const newY = unscaleY(event.y);
               onKeyframeDrag(Number(playerId), kfIdx, newX, newY);
+            })
+            .on('end', () => {
+              if (onKeyframeDragEnd) onKeyframeDragEnd();
             });
 
           marker.call(drag);
@@ -144,7 +149,7 @@ export const PathOverlay = ({
         .attr('opacity', 0.8);
 
       // Draw ball keyframe markers
-      timeline.ball.keyframes.forEach((kf, kfIdx) => {
+      timeline.ball.keyframes.forEach((kf) => {
         svg.append('circle')
           .attr('class', 'ball-keyframe-marker')
           .attr('cx', scaleX(kf.x))
@@ -155,7 +160,7 @@ export const PathOverlay = ({
           .attr('stroke-width', 1);
       });
     }
-  }, [timeline, width, height, referenceWidth, referenceHeight, showPaths, onKeyframeDrag]);
+  }, [timeline, width, height, referenceWidth, referenceHeight, showPaths, onKeyframeDrag, onKeyframeDragEnd]);
 
   return (
     <svg

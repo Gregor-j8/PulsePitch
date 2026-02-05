@@ -15,6 +15,10 @@ interface WalkthroughControlsProps {
   onGoToEnd: () => void;
   onSetSpeed: (speed: PlaybackSpeed) => void;
   onToggleLoop: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
+  onUndo: () => void;
+  onRedo: () => void;
 }
 
 export const WalkthroughControls = ({
@@ -30,6 +34,10 @@ export const WalkthroughControls = ({
   onGoToEnd,
   onSetSpeed,
   onToggleLoop,
+  canUndo,
+  canRedo,
+  onUndo,
+  onRedo,
 }: WalkthroughControlsProps) => {
   return (
     <div className="bg-white border border-neutral-200 rounded-lg p-4 shadow-sm">
@@ -113,6 +121,27 @@ export const WalkthroughControls = ({
           />
           <span className="text-sm text-neutral-700">Loop</span>
         </label>
+
+        <div className="flex items-center gap-2 border-l border-neutral-200 pl-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onUndo}
+            disabled={!canUndo}
+            title="Undo (Ctrl+Z)"
+          >
+            ↶
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={onRedo}
+            disabled={!canRedo}
+            title="Redo (Ctrl+Y)"
+          >
+            ↷
+          </Button>
+        </div>
 
         <div className="text-sm font-mono text-neutral-700">
           {formatTime(currentTime)} / {formatTime(duration)}

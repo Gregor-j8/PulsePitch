@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useImmer } from 'use-immer';
+import { Draft } from 'immer';
 import { Field } from '../Field';
 import { Button } from '../../ui/Button';
 import { WalkthroughControls } from './WalkthroughControls';
@@ -26,7 +27,7 @@ export const WalkthroughPlannerCanvas = ({
   players,
   onBack,
 }: WalkthroughPlannerCanvasProps) => {
-  const [selectedWalkthroughId, setSelectedWalkthroughId] = useState<number | null>(null);
+  const [selectedWalkthroughId, _setSelectedWalkthroughId] = useState<number | null>(null);
   const [timeline, setTimeline] = useImmer<WalkthroughTimelineType>(() => generateEmptyTimeline(players.map(p => p.id)));
 
   const [playbackState, setPlaybackState] = useImmer({
@@ -39,14 +40,57 @@ export const WalkthroughPlannerCanvas = ({
   const [showPaths, setShowPaths] = useState(true);
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
+  const [selectedEntityType, setSelectedEntityType] = useState<'player' | 'ball'>('player');
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement | null>(null);
   const animationFrameRef = useRef<number | null>(null);
   const lastTimestampRef = useRef<number>(0);
 
+  const [history, setHistory] = useState<WalkthroughTimelineType[]>(() => [generateEmptyTimeline(players.map(p => p.id))]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const pendingHistorySave = useRef(false);
+
   useGetWalkthroughsByFormationId(formationId);
   const createWalkthrough = useCreateWalkthrough();
   const updateWalkthrough = useUpdateWalkthrough();
+
+  const mutateTimeline = useCallback((updater: (draft: Draft<WalkthroughTimelineType>) => void) => {
+    setTimeline(updater);
+    pendingHistorySave.current = true;
+  }, [setTimeline]);
+
+  useEffect(() => {
+    if (!pendingHistorySave.current) return;
+    pendingHistorySave.current = false;
+
+    const snapshot = JSON.parse(JSON.stringify(timeline)) as WalkthroughTimelineType;
+    setHistory(prev => {
+      const newHistory = prev.slice(0, historyIndex + 1);
+      newHistory.push(snapshot);
+      if (newHistory.length > 50) newHistory.shift();
+      return newHistory;
+    });
+    setHistoryIndex(prev => Math.min(prev + 1, 49));
+  }, [timeline, historyIndex]);
+
+  const handleUndo = useCallback(() => {
+    if (historyIndex <= 0) return;
+    const newIndex = historyIndex - 1;
+    setHistoryIndex(newIndex);
+    const snapshot = JSON.parse(JSON.stringify(history[newIndex])) as WalkthroughTimelineType;
+    setTimeline(() => snapshot);
+  }, [historyIndex, history, setTimeline]);
+
+  const handleRedo = useCallback(() => {
+    if (historyIndex >= history.length - 1) return;
+    const newIndex = historyIndex + 1;
+    setHistoryIndex(newIndex);
+    const snapshot = JSON.parse(JSON.stringify(history[newIndex])) as WalkthroughTimelineType;
+    setTimeline(() => snapshot);
+  }, [historyIndex, history, setTimeline]);
+
+  const canUndo = historyIndex > 0;
+  const canRedo = historyIndex < history.length - 1;
 
   const handleTogglePlay = useCallback(() => {
     setPlaybackState(draft => {
@@ -130,7 +174,7 @@ export const WalkthroughPlannerCanvas = ({
   }, [formationId, timeline, selectedWalkthroughId, createWalkthrough, updateWalkthrough]);
 
   const handleFieldClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isEditMode || !selectedPlayerId || !containerRef.current) return;
+    if (!isEditMode || !containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -139,34 +183,90 @@ export const WalkthroughPlannerCanvas = ({
     const refX = (x / containerSize.width) * REFERENCE_WIDTH;
     const refY = (y / containerSize.height) * REFERENCE_HEIGHT;
 
-    setTimeline(draft => {
-      if (!draft.players[selectedPlayerId]) {
-        const player = players.find(p => p.id === selectedPlayerId);
-        draft.players[selectedPlayerId] = {
-          playerId: selectedPlayerId,
-          keyframes: [],
-          pathType: 'straight',
-          color: player?.color || '#3B82F6',
-        };
-      }
-
-      draft.players[selectedPlayerId].keyframes.push({
-        time: playbackState.currentTime,
-        x: refX,
-        y: refY,
+    if (selectedEntityType === 'ball') {
+      mutateTimeline(draft => {
+        if (draft.ball.keyframes.length === 0 && playbackState.currentTime > 0) {
+          draft.ball.keyframes.push({ time: 0, x: 500, y: 350 });
+        }
+        draft.ball.keyframes.push({
+          time: playbackState.currentTime,
+          x: refX,
+          y: refY,
+        });
+        draft.ball.keyframes.sort((a, b) => a.time - b.time);
       });
+    } else {
+      if (!selectedPlayerId) return;
 
-      draft.players[selectedPlayerId].keyframes.sort((a, b) => a.time - b.time);
+      mutateTimeline(draft => {
+        if (!draft.players[selectedPlayerId]) {
+          const player = players.find(p => p.id === selectedPlayerId);
+          draft.players[selectedPlayerId] = {
+            playerId: selectedPlayerId,
+            keyframes: [],
+            pathType: 'straight',
+            color: player?.color || '#3B82F6',
+          };
+        }
+
+        const pw = draft.players[selectedPlayerId];
+        if (pw.keyframes.length === 0 && playbackState.currentTime > 0) {
+          const player = players.find(p => p.id === selectedPlayerId);
+          if (player) {
+            pw.keyframes.push({ time: 0, x: player.x, y: player.y });
+          }
+        }
+
+        pw.keyframes.push({
+          time: playbackState.currentTime,
+          x: refX,
+          y: refY,
+        });
+
+        pw.keyframes.sort((a, b) => a.time - b.time);
+      });
+    }
+
+    setPlaybackState(draft => {
+      draft.currentTime = Math.min(playbackState.currentTime + 1500, timeline.duration);
     });
-  }, [isEditMode, selectedPlayerId, containerSize, REFERENCE_WIDTH, REFERENCE_HEIGHT, playbackState.currentTime, setTimeline, players]);
+  }, [isEditMode, selectedEntityType, selectedPlayerId, containerSize, playbackState.currentTime, mutateTimeline, players, setPlaybackState, timeline.duration]);
+
+  const handleKeyframeDrag = useCallback((playerId: number, keyframeIndex: number, newX: number, newY: number) => {
+    setTimeline(draft => {
+      const pw = draft.players[playerId];
+      if (pw && pw.keyframes[keyframeIndex]) {
+        pw.keyframes[keyframeIndex].x = newX;
+        pw.keyframes[keyframeIndex].y = newY;
+      }
+    });
+  }, [setTimeline]);
+
+  const handleKeyframeDragEnd = useCallback(() => {
+    pendingHistorySave.current = true;
+    setTimeline(draft => draft);
+  }, [setTimeline]);
 
   const handleClearPath = useCallback((playerId: number) => {
-    setTimeline(draft => {
+    mutateTimeline(draft => {
       if (draft.players[playerId]) {
         draft.players[playerId].keyframes = [];
       }
     });
-  }, [setTimeline]);
+  }, [mutateTimeline]);
+
+  const handleClearBallPath = useCallback(() => {
+    mutateTimeline(draft => {
+      draft.ball.keyframes = [];
+    });
+  }, [mutateTimeline]);
+
+  const handleSelectEntityType = useCallback((type: 'player' | 'ball') => {
+    setSelectedEntityType(type);
+    if (type === 'ball') {
+      setSelectedPlayerId(null);
+    }
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -187,21 +287,26 @@ export const WalkthroughPlannerCanvas = ({
         e.preventDefault();
         handleTogglePlay();
       }
+      else if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        e.preventDefault();
+        handleUndo();
+      }
+      else if ((e.ctrlKey || e.metaKey) && e.key === 'y') {
+        e.preventDefault();
+        handleRedo();
+      }
       else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault();
         handleRestart();
       }
-
       else if (e.key === 'e' || e.key === 'E') {
         e.preventDefault();
         setIsEditMode(prev => !prev);
       }
-
       else if (e.key === 'p' || e.key === 'P') {
         e.preventDefault();
         setShowPaths(prev => !prev);
       }
-
       else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         handlePrevFrame();
@@ -226,7 +331,7 @@ export const WalkthroughPlannerCanvas = ({
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleTogglePlay, handleRestart, handlePrevFrame, handleNextFrame, handleSetSpeed]);
+  }, [handleTogglePlay, handleRestart, handlePrevFrame, handleNextFrame, handleSetSpeed, handleUndo, handleRedo]);
 
   useEffect(() => {
     if (!playbackState.isPlaying) {
@@ -311,11 +416,16 @@ export const WalkthroughPlannerCanvas = ({
       <PathEditor
         players={players}
         selectedPlayerId={selectedPlayerId}
-        onSelectPlayer={setSelectedPlayerId}
-        onAddKeyframe={() => {}}
+        onSelectPlayer={(id) => {
+          setSelectedPlayerId(id);
+          if (id !== null) setSelectedEntityType('player');
+        }}
         onClearPath={handleClearPath}
         isEditMode={isEditMode}
         onToggleEditMode={() => setIsEditMode(!isEditMode)}
+        selectedEntityType={selectedEntityType}
+        onSelectEntityType={handleSelectEntityType}
+        onClearBallPath={handleClearBallPath}
       />
 
       <div
@@ -329,7 +439,7 @@ export const WalkthroughPlannerCanvas = ({
           margin: '0 auto',
         }}
       >
-        <Field width={containerSize.width} height={containerSize.height} />
+        <Field isMobile={containerSize.width < 768} />
 
         {showPaths && (
           <PathOverlay
@@ -339,6 +449,8 @@ export const WalkthroughPlannerCanvas = ({
             referenceWidth={REFERENCE_WIDTH}
             referenceHeight={REFERENCE_HEIGHT}
             showPaths={showPaths}
+            onKeyframeDrag={handleKeyframeDrag}
+            onKeyframeDragEnd={handleKeyframeDragEnd}
           />
         )}
 
@@ -383,6 +495,10 @@ export const WalkthroughPlannerCanvas = ({
         onGoToEnd={handleGoToEnd}
         onSetSpeed={handleSetSpeed}
         onToggleLoop={handleToggleLoop}
+        canUndo={canUndo}
+        canRedo={canRedo}
+        onUndo={handleUndo}
+        onRedo={handleRedo}
       />
 
       <WalkthroughTimeline

@@ -1,4 +1,4 @@
-import { Keyframe, BallKeyframe, InterpolatedPosition } from '../types';
+import { Keyframe, BallKeyframe, InterpolatedPosition, PlayerWalkthrough, WalkthroughTimeline } from '../types';
 
 
 export const getInterpolatedPosition = (
@@ -6,24 +6,26 @@ export const getInterpolatedPosition = (
   currentTime: number
 ): InterpolatedPosition => {
   if (keyframes.length === 0) return { x: 0, y: 0 };
-  if (keyframes.length === 1) return { x: keyframes[0].x, y: keyframes[0].y };
 
-  if (currentTime <= keyframes[0].time) {
-    return { x: keyframes[0].x, y: keyframes[0].y };
+  const first = keyframes[0]!;
+  if (keyframes.length === 1) return { x: first.x, y: first.y };
+
+  if (currentTime <= first.time) {
+    return { x: first.x, y: first.y };
   }
 
-  if (currentTime >= keyframes[keyframes.length - 1].time) {
-    const last = keyframes[keyframes.length - 1];
+  const last = keyframes[keyframes.length - 1]!;
+  if (currentTime >= last.time) {
     return { x: last.x, y: last.y };
   }
 
-  let prevKf = keyframes[0];
-  let nextKf = keyframes[keyframes.length - 1];
+  let prevKf = first;
+  let nextKf = last;
 
   for (let i = 0; i < keyframes.length - 1; i++) {
-    if (keyframes[i].time <= currentTime && keyframes[i + 1].time >= currentTime) {
-      prevKf = keyframes[i];
-      nextKf = keyframes[i + 1];
+    if (keyframes[i]!.time <= currentTime && keyframes[i + 1]!.time >= currentTime) {
+      prevKf = keyframes[i]!;
+      nextKf = keyframes[i + 1]!;
       break;
     }
   }
@@ -69,18 +71,19 @@ export const getPlayerColor = (playerId: number): string => {
     '#84CC16',
     '#6366F1',
   ];
-  return colors[playerId % colors.length];
+  return colors[playerId % colors.length] ?? '#3B82F6';
 };
 
 export const clamp = (value: number, min: number, max: number): number => {
   return Math.max(min, Math.min(max, value));
 };
 
-export const generateEmptyTimeline = (playerIds: number[]) => {
-  const players: Record<number, { keyframes: Keyframe[]; pathType: string; color: string }> = {};
+export const generateEmptyTimeline = (playerIds: number[]): WalkthroughTimeline => {
+  const players: Record<number, PlayerWalkthrough> = {};
 
   playerIds.forEach((id) => {
     players[id] = {
+      playerId: id,
       keyframes: [],
       pathType: 'straight',
       color: getPlayerColor(id),
