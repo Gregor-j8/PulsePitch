@@ -21,6 +21,13 @@ export type {
   JoinRequestDTO,
   JoinRequestResponseDTO,
   PendingJoinRequestDTO,
+  KeyframeDTO,
+  BallKeyframeDTO,
+  PlayerWalkthroughDTO,
+  BallWalkthroughDTO,
+  WalkthroughEventDTO,
+  WalkthroughTimelineDTO,
+  WalkthroughPlannerDTO,
 } from './dtos';
 
 export type {
@@ -60,3 +67,19 @@ export type {
   PaginatedResult,
   FormState,
 } from './hooks';
+
+export type {
+  PathType,
+  PlaybackSpeed,
+  EditorMode,
+  Keyframe,
+  BallKeyframe,
+  PlayerWalkthrough,
+  BallWalkthrough,
+  WalkthroughEvent,
+  WalkthroughTimeline,
+  PlaybackState,
+  EditorState,
+  WalkthroughState,
+  InterpolatedPosition,
+} from './walkthrough';

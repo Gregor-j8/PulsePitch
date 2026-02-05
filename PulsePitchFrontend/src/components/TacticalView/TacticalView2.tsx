@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useGetFormationsByTeamId } from "../../hooks/useFormation"
 import { PitchComponent } from "./PitchComponent"
 import {CreateFormationModal} from "./CreateFormationModal"
 import { FormationPreviewCard } from "./FormationPreviewCard"
+import { WalkthroughPlannerCanvas } from "./WalkthroughPlanner/WalkthroughPlannerCanvas"
+import { usePlayersByFormationId } from "../../hooks/usePlayersInFormation"
 import { Button } from "../ui/Button"
 import { EmptyState } from "../ui"
 import { Layout } from "lucide-react"
@@ -13,12 +14,13 @@ interface TacticalViewProps {
   loggedInUser: UserProfileDTO;
 }
 
-export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
-    const navigate = useNavigate()
+export const TacticalView2 = ({loggedInUser}: TacticalViewProps) => {
     const [formationId, setFormationId] = useState<number | null>(0)
-    const  [createFormationModal, setCreateFormationModal] = useState<boolean>(false)
+    const [createFormationModal, setCreateFormationModal] = useState<boolean>(false)
+    const [viewMode, setViewMode] = useState<'static' | 'walkthrough'>('static')
     const teamId = (loggedInUser.teams as unknown as Array<{teamId: number}>)?.[0]?.teamId ?? 0;
     const {data: formations } = useGetFormationsByTeamId(teamId)
+    const {data: players } = usePlayersByFormationId(formationId ?? 0)
 
     const userTeamRole = (loggedInUser.teams as unknown as Array<{teamId: number, role: string}>)?.find((t: any) => t.teamId === teamId)?.role
     const canManageFormations = userTeamRole === "Manager" || userTeamRole === "Coach"
@@ -29,29 +31,54 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
         <>
           <div className="mt-4">
             {formationId ? (
-              <PitchComponent formationId={formationId} setFormationModal={() => setFormationId(0)} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId} canManageFormations={canManageFormations} />
+              viewMode === 'walkthrough' && players ? (
+                <WalkthroughPlannerCanvas
+                  formationId={formationId}
+                  players={players}
+                  onBack={() => {
+                    setFormationId(0);
+                    setViewMode('static');
+                  }}
+                />
+              ) : (
+                <div className="space-y-4">
+                  <div className="flex gap-2">
+                    <Button
+                      variant={viewMode === 'static' ? 'primary' : 'outline'}
+                      onClick={() => setViewMode('static')}
+                    >
+                      Static Formation
+                    </Button>
+                    <Button
+                      variant={viewMode === 'walkthrough' ? 'primary' : 'outline'}
+                      onClick={() => setViewMode('walkthrough')}
+                    >
+                      Walkthrough Planner
+                    </Button>
+                  </div>
+                  <PitchComponent
+                    formationId={formationId}
+                    setFormationModal={() => setFormationId(0)}
+                    setCreateFormationModal={setCreateFormationModal}
+                    setFormationId={setFormationId}
+                    canManageFormations={canManageFormations}
+                  />
+                </div>
+              )
             ) : createFormationModal ? (
               <CreateFormationModal loggedInUser={loggedInUser} setFormationModal={() => {}} setCreateFormationModal={setCreateFormationModal} setFormationId={setFormationId}/>
             ) : (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-neutral-900">Your Formations</h2>
-                  <div className="flex gap-3">
+                  {canManageFormations && (
                     <Button
-                      variant="outline"
-                      onClick={() => navigate('/pitch2')}
+                      variant="primary"
+                      onClick={() => { setFormationId(null); setCreateFormationModal(true); }}
                     >
-                      Go to Tactical View 2
+                      Add Formation
                     </Button>
-                    {canManageFormations && (
-                      <Button
-                        variant="primary"
-                        onClick={() => { setFormationId(null); setCreateFormationModal(true); }}
-                      >
-                        Add Formation
-                      </Button>
-                    )}
-                  </div>
+                  )}
                 </div>
 
                 {!hasFormations ? (

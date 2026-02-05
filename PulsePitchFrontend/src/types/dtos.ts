@@ -217,3 +217,53 @@ export interface AnalyticsDTO {
   privateTeams: number;
   activeUsersLast7Days: number;
 }
+
+export interface KeyframeDTO {
+  time: number;
+  x: number;
+  y: number;
+  action?: string;
+}
+
+export interface BallKeyframeDTO {
+  time: number;
+  x: number;
+  y: number;
+  action?: string;
+  holderId?: number;
+}
+
+export interface PlayerWalkthroughDTO {
+  keyframes: KeyframeDTO[];
+  pathType: string;
+  color?: string;
+}
+
+export interface BallWalkthroughDTO {
+  keyframes: BallKeyframeDTO[];
+  pathColor: string;
+}
+
+export interface WalkthroughEventDTO {
+  time: number;
+  type: string;
+  description: string;
+}
+
+export interface WalkthroughTimelineDTO {
+  duration: number;
+  players: Record<number, PlayerWalkthroughDTO>;
+  ball: BallWalkthroughDTO;
+  events: WalkthroughEventDTO[];
+}
+
+export interface WalkthroughPlannerDTO {
+  id: number;
+  formationId: number;
+  duration: number;
+  name: string;
+  description?: string;
+  timeline: WalkthroughTimelineDTO;
+  createdAt: string;
+  updatedAt: string;
+}

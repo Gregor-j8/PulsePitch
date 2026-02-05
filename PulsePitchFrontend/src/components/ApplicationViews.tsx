@@ -8,6 +8,7 @@ import MyCalendar from "./Calendar/Calendar";
 import { TeamHome } from "./TeamHome/TeamHome";
 import { Profile } from "./Profile/Profile";
 import {TacticalView} from "./TacticalView/TacticalView";
+import {TacticalView2} from "./TacticalView/TacticalView2";
 import { Inbox } from "./Inbox/Inbox";
 import Layout from "./Layout/Layout";
 import { LoggedInUserProps } from "../types";
@@ -81,6 +82,16 @@ export default function ApplicationViews({loggedInUser, setLoggedInUser, refresh
           <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
             <Layout variant="full-width">
               <TacticalView loggedInUser={loggedInUser!} />
+            </Layout>
+          </AuthorizedRoute>
+      }
+      />
+      <Route
+        path="pitch2"
+        element={
+          <AuthorizedRoute loggedInUser={loggedInUser} roles={["Coach"]}>
+            <Layout variant="full-width">
+              <TacticalView2 loggedInUser={loggedInUser!} />
             </Layout>
           </AuthorizedRoute>
       }

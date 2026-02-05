@@ -1,5 +1,4 @@
 import { motion } from "framer-motion"
-import { Layout } from "lucide-react"
 import { FormationsDTO } from "../../types/dtos"
 
 interface FormationPreviewCardProps {
@@ -25,17 +24,15 @@ export const FormationPreviewCard = ({ formation, onClick }: FormationPreviewCar
       className="bg-white border border-neutral-200 rounded-lg p-6 cursor-pointer hover:border-primary-500 transition-all duration-200"
     >
       <div className="space-y-4">
-          <div className="flex-1">
-            <h3 className="text-lg font-semibold text-neutral-900 mb-1">
-              {formation.description}
-            </h3>
-            <div className="flex items-center gap-2 text-sm text-neutral-500">
-              <span className="font-medium text-primary-600">{formation.template || formation.name}</span>
-              <span>•</span>
-              <span>{playerCount} players</span>
-            </div>
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold text-neutral-900 mb-1">
+            {formation.description}
+          </h3>
+          <div className="flex items-center gap-2 text-sm text-neutral-500">
+            <span className="font-medium text-primary-600">{formation.template || formation.name}</span>
+            <span>•</span>
+            <span>{playerCount} players</span>
           </div>
-          <Layout className="h-5 w-5 text-primary-500 flex-shrink-0" />
         </div>
 
         <div className="relative w-full h-40 rounded-lg overflow-hidden bg-gradient-to-b from-[#5fb830] to-[#68c241]">

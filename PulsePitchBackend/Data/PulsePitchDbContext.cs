@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using PulsePitch.Models;
+using PulsePitchBackend.Models;
 
 namespace PulsePitch.Data
 {
@@ -16,6 +17,7 @@ namespace PulsePitch.Data
         public DbSet<TeamGame> TeamGames { get; set; }
         public DbSet<Formations> Formations { get; set; }
         public DbSet<PlayersInFormation> PlayersInFormation { get; set; }
+        public DbSet<WalkthroughPlanner> WalkthroughPlanners { get; set; }
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<ChatRoom> ChatRoom { get; set; }
         public DbSet<Message> Messages { get; set; }
