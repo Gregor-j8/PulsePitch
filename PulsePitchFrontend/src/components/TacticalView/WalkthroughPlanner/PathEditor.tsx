@@ -4,24 +4,20 @@ import { Button } from '../../ui/Button';
 interface PathEditorProps {
   players: PlayersInFormationDTO[];
   selectedPlayerId: number | null;
-  onSelectPlayer: (playerId: number | null) => void;
   onClearPath: (playerId: number) => void;
   isEditMode: boolean;
   onToggleEditMode: () => void;
   selectedEntityType: 'player' | 'ball';
-  onSelectEntityType: (type: 'player' | 'ball') => void;
   onClearBallPath: () => void;
 }
 
 export const PathEditor = ({
   players,
   selectedPlayerId,
-  onSelectPlayer,
   onClearPath,
   isEditMode,
   onToggleEditMode,
   selectedEntityType,
-  onSelectEntityType,
   onClearBallPath,
 }: PathEditorProps) => {
   const selectedPlayer = players.find(p => p.id === selectedPlayerId);
@@ -41,88 +37,48 @@ export const PathEditor = ({
         </div>
 
         {isEditMode && (
-          <>
-            <div>
-              <label className="block text-xs font-medium text-neutral-600 mb-2">
-                Select Player or Ball
-              </label>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {players.slice(0, 11).map(player => (
-                  <button
-                    key={player.id}
-                    onClick={() => onSelectPlayer(player.id === selectedPlayerId ? null : player.id)}
-                    className={`px-3 py-2 text-xs rounded border transition-colors ${
-                      player.id === selectedPlayerId && selectedEntityType === 'player'
-                        ? 'bg-primary-50 border-primary-500 text-primary-700'
-                        : 'bg-white border-neutral-300 text-neutral-700 hover:border-neutral-400'
-                    }`}
-                    style={{
-                      borderLeftWidth: '4px',
-                      borderLeftColor: player.color,
-                    }}
-                  >
-                    {player.name || `P${player.positionId}`}
-                  </button>
-                ))}
-                <button
-                  onClick={() => onSelectEntityType('ball')}
-                  className={`px-3 py-2 text-xs rounded border transition-colors ${
-                    selectedEntityType === 'ball'
-                      ? 'bg-neutral-800 border-neutral-900 text-white'
-                      : 'bg-white border-neutral-300 text-neutral-700 hover:border-neutral-400'
-                  }`}
-                  style={{
-                    borderLeftWidth: '4px',
-                    borderLeftColor: '#FFFFFF',
-                  }}
-                >
-                  Ball
-                </button>
-              </div>
-            </div>
-
+          <div className="flex flex-wrap items-center gap-3">
             {selectedEntityType === 'ball' ? (
-              <div className="bg-neutral-100 border border-neutral-300 rounded p-3">
-                <p className="text-sm text-neutral-800">
-                  <strong>Ball</strong> selected.
-                  Click on the field to add keyframes to the ball path.
-                </p>
+              <div className="flex items-center gap-3 bg-neutral-100 border border-neutral-300 rounded px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-4 h-4 rounded-full bg-white border-2 border-neutral-400" />
+                  <span className="text-sm text-neutral-800 font-medium">Ball</span>
+                </div>
                 <Button
                   variant="danger"
                   size="sm"
                   onClick={onClearBallPath}
-                  className="mt-2"
                 >
-                  Clear Ball Path
+                  Clear Path
                 </Button>
               </div>
             ) : selectedPlayer ? (
-              <div className="bg-primary-50 border border-primary-200 rounded p-3">
-                <p className="text-sm text-primary-800">
-                  <strong>{selectedPlayer.name || `Player ${selectedPlayer.positionId}`}</strong> selected.
-                  Click on the field to add keyframes to their path.
-                </p>
+              <div className="flex items-center gap-3 bg-primary-50 border border-primary-200 rounded px-3 py-2">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="w-4 h-4 rounded-full"
+                    style={{ backgroundColor: selectedPlayer.color }}
+                  />
+                  <span className="text-sm text-primary-800 font-medium">
+                    {selectedPlayer.name || `Player ${selectedPlayer.positionId}`}
+                  </span>
+                </div>
                 <Button
                   variant="danger"
                   size="sm"
-                  onClick={() => {
-                    if (selectedPlayer) {
-                      onClearPath(selectedPlayer.id);
-                    }
-                  }}
-                  className="mt-2"
+                  onClick={() => onClearPath(selectedPlayer.id)}
                 >
                   Clear Path
                 </Button>
               </div>
             ) : (
-              <div className="bg-neutral-50 border border-neutral-200 rounded p-3">
+              <div className="bg-neutral-50 border border-neutral-200 rounded px-3 py-2">
                 <p className="text-sm text-neutral-600">
-                  Select a player or ball above to start editing their path.
+                  Use the panel on the left to select a player or ball.
                 </p>
               </div>
             )}
-          </>
+          </div>
         )}
       </div>
     </div>

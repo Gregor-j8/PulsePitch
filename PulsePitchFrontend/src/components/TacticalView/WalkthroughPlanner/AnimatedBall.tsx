@@ -83,7 +83,6 @@ export const AnimatedBall = ({
           fill="url(#ball-gradient)"
           stroke="#000000"
           strokeWidth="1"
-          filter="url(#ball-shadow)"
         />
 
         <g fill="#000000" opacity="0.8">

@@ -7,6 +7,7 @@ import { WalkthroughControls } from './WalkthroughControls';
 import { WalkthroughTimeline } from './WalkthroughTimeline';
 import { PathOverlay } from './PathOverlay';
 import { PathEditor } from './PathEditor';
+import { EntitySelectorSidebar } from './EntitySelectorSidebar';
 import { AnimatedPlayer } from './AnimatedPlayer';
 import { AnimatedBall } from './AnimatedBall';
 import { PlayersInFormationDTO, WalkthroughPlannerDTO, PlaybackSpeed, WalkthroughTimeline as WalkthroughTimelineType } from '../../../types';
@@ -416,32 +417,38 @@ export const WalkthroughPlannerCanvas = ({
       <PathEditor
         players={players}
         selectedPlayerId={selectedPlayerId}
-        onSelectPlayer={(id) => {
-          setSelectedPlayerId(id);
-          if (id !== null) setSelectedEntityType('player');
-        }}
         onClearPath={handleClearPath}
         isEditMode={isEditMode}
         onToggleEditMode={() => setIsEditMode(!isEditMode)}
         selectedEntityType={selectedEntityType}
-        onSelectEntityType={handleSelectEntityType}
         onClearBallPath={handleClearBallPath}
       />
 
-      <div
-        ref={containerRef}
-        onClick={handleFieldClick}
-        className={`relative bg-neutral-100 rounded-lg overflow-hidden shadow-lg ${isEditMode ? 'cursor-crosshair' : ''}`}
-        style={{
-          width: '100%',
-          maxWidth: '1200px',
-          aspectRatio: `${REFERENCE_WIDTH} / ${REFERENCE_HEIGHT}`,
-          margin: '0 auto',
-        }}
-      >
-        <Field isMobile={containerSize.width < 768} />
+      <div className="flex justify-center gap-2">
+        <EntitySelectorSidebar
+          players={players}
+          selectedPlayerId={selectedPlayerId}
+          onSelectPlayer={(id) => {
+            setSelectedPlayerId(id);
+            if (id !== null) setSelectedEntityType('player');
+          }}
+          selectedEntityType={selectedEntityType}
+          onSelectEntityType={handleSelectEntityType}
+          onEnableEditMode={() => setIsEditMode(true)}
+        />
 
-        {showPaths && (
+        <div
+          ref={containerRef}
+          onClick={handleFieldClick}
+          className={`relative bg-neutral-100 rounded-lg overflow-hidden shadow-lg flex-1 ${isEditMode ? 'cursor-crosshair' : ''}`}
+          style={{
+            maxWidth: '1200px',
+            aspectRatio: `${REFERENCE_WIDTH} / ${REFERENCE_HEIGHT}`,
+          }}
+        >
+          <Field isMobile={containerSize.width < 768} />
+
+          {showPaths && (
           <PathOverlay
             timeline={timeline}
             width={containerSize.width}
@@ -480,6 +487,7 @@ export const WalkthroughPlannerCanvas = ({
           ballSize={ballSize}
           isPlaying={playbackState.isPlaying}
         />
+        </div>
       </div>
 
       <WalkthroughControls
