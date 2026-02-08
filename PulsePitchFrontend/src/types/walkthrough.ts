@@ -1,4 +1,4 @@
-import { KeyframeDTO, BallKeyframeDTO, PlayerWalkthroughDTO, BallWalkthroughDTO, WalkthroughEventDTO } from './dtos';
+import { KeyframeDTO, BallKeyframeDTO, PlayerWalkthroughDTO, BallWalkthroughDTO, WalkthroughEventDTO, StepConfigDTO } from './dtos';
 
 export type PathType = "straight" | "curved" | "dashed";
 export type PlaybackSpeed = 0.5 | 1 | 2;
@@ -21,8 +21,12 @@ export interface BallWalkthrough extends BallWalkthroughDTO {
 export interface WalkthroughEvent extends WalkthroughEventDTO {
 }
 
+export interface StepConfig extends StepConfigDTO {
+}
+
 export interface WalkthroughTimeline {
   duration: number;
+  steps: StepConfig[];
   players: Record<number, PlayerWalkthrough>;
   ball: BallWalkthrough;
   events: WalkthroughEvent[];

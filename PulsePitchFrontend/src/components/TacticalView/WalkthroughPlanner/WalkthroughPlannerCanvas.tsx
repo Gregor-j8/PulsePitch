@@ -3,15 +3,14 @@ import { useImmer } from 'use-immer';
 import { Draft } from 'immer';
 import { Field } from '../Field';
 import { Button } from '../../ui/Button';
-import { WalkthroughControls } from './WalkthroughControls';
-import { WalkthroughTimeline } from './WalkthroughTimeline';
+import { TimelineDrawer } from './TimelineDrawer';
 import { PathOverlay } from './PathOverlay';
-import { PathEditor } from './PathEditor';
 import { EntitySelectorSidebar } from './EntitySelectorSidebar';
 import { AnimatedPlayer } from './AnimatedPlayer';
 import { AnimatedBall } from './AnimatedBall';
+import { ControlsDrawer } from './ControlsDrawer';
 import { PlayersInFormationDTO, WalkthroughPlannerDTO, PlaybackSpeed, WalkthroughTimeline as WalkthroughTimelineType } from '../../../types';
-import { getInterpolatedPosition, generateEmptyTimeline } from '../../../utils/walkthroughHelpers';
+import { getInterpolatedPositionForStep, getStepAndLocalTime, generateEmptyTimeline } from '../../../utils/walkthroughHelpers';
 import { useGetWalkthroughsByFormationId, useCreateWalkthrough, useUpdateWalkthrough } from '../../../hooks/useWalkthroughPlanner';
 
 interface WalkthroughPlannerCanvasProps {
@@ -42,6 +41,7 @@ export const WalkthroughPlannerCanvas = ({
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedPlayerId, setSelectedPlayerId] = useState<number | null>(null);
   const [selectedEntityType, setSelectedEntityType] = useState<'player' | 'ball'>('player');
+  const [activeStep, setActiveStep] = useState(1);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const containerRef = useRef<HTMLDivElement | null>(null);
   const animationFrameRef = useRef<number | null>(null);
@@ -184,17 +184,22 @@ export const WalkthroughPlannerCanvas = ({
     const refX = (x / containerSize.width) * REFERENCE_WIDTH;
     const refY = (y / containerSize.height) * REFERENCE_HEIGHT;
 
+    const { currentStep, localTime } = getStepAndLocalTime(playbackState.currentTime, timeline.steps);
+    const keyframeTime = currentStep === activeStep ? localTime : 0;
+
     if (selectedEntityType === 'ball') {
       mutateTimeline(draft => {
-        if (draft.ball.keyframes.length === 0 && playbackState.currentTime > 0) {
-          draft.ball.keyframes.push({ time: 0, x: 500, y: 350 });
+        const stepKeyframes = draft.ball.keyframes.filter(kf => (kf.step ?? 1) === activeStep);
+        if (stepKeyframes.length === 0 && keyframeTime > 0) {
+          draft.ball.keyframes.push({ time: 0, x: 500, y: 350, step: activeStep });
         }
         draft.ball.keyframes.push({
-          time: playbackState.currentTime,
+          time: keyframeTime,
           x: refX,
           y: refY,
+          step: activeStep,
         });
-        draft.ball.keyframes.sort((a, b) => a.time - b.time);
+        draft.ball.keyframes.sort((a, b) => (a.step ?? 1) - (b.step ?? 1) || a.time - b.time);
       });
     } else {
       if (!selectedPlayerId) return;
@@ -211,27 +216,29 @@ export const WalkthroughPlannerCanvas = ({
         }
 
         const pw = draft.players[selectedPlayerId];
-        if (pw.keyframes.length === 0 && playbackState.currentTime > 0) {
+        const stepKeyframes = pw.keyframes.filter(kf => (kf.step ?? 1) === activeStep);
+        if (stepKeyframes.length === 0 && keyframeTime > 0) {
           const player = players.find(p => p.id === selectedPlayerId);
           if (player) {
-            pw.keyframes.push({ time: 0, x: player.x, y: player.y });
+            pw.keyframes.push({ time: 0, x: player.x, y: player.y, step: activeStep });
           }
         }
 
         pw.keyframes.push({
-          time: playbackState.currentTime,
+          time: keyframeTime,
           x: refX,
           y: refY,
+          step: activeStep,
         });
 
-        pw.keyframes.sort((a, b) => a.time - b.time);
+        pw.keyframes.sort((a, b) => (a.step ?? 1) - (b.step ?? 1) || a.time - b.time);
       });
     }
 
     setPlaybackState(draft => {
       draft.currentTime = Math.min(playbackState.currentTime + 1500, timeline.duration);
     });
-  }, [isEditMode, selectedEntityType, selectedPlayerId, containerSize, playbackState.currentTime, mutateTimeline, players, setPlaybackState, timeline.duration]);
+  }, [isEditMode, selectedEntityType, selectedPlayerId, containerSize, playbackState.currentTime, mutateTimeline, players, setPlaybackState, timeline.duration, timeline.steps, activeStep]);
 
   const handleKeyframeDrag = useCallback((playerId: number, keyframeIndex: number, newX: number, newY: number) => {
     setTimeline(draft => {
@@ -268,6 +275,16 @@ export const WalkthroughPlannerCanvas = ({
       setSelectedPlayerId(null);
     }
   }, []);
+
+  const handleAddStep = useCallback(() => {
+    mutateTimeline(draft => {
+      const newStepNumber = draft.steps.length + 1;
+      const newStepDuration = 3000;
+      draft.steps.push({ stepNumber: newStepNumber, duration: newStepDuration });
+      draft.duration = draft.steps.reduce((sum, s) => sum + s.duration, 0);
+    });
+    setActiveStep(timeline.steps.length + 1);
+  }, [mutateTimeline, timeline.steps.length]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -381,18 +398,26 @@ export const WalkthroughPlannerCanvas = ({
 
   const getPlayerPosition = (playerId: number) => {
     const playerWalkthrough = timeline.players[playerId];
+    const player = players.find(p => p.id === playerId);
+    const fallback = player ? { x: player.x, y: player.y } : { x: 0, y: 0 };
+
     if (!playerWalkthrough || playerWalkthrough.keyframes.length === 0) {
-      const player = players.find(p => p.id === playerId);
-      return player ? { x: player.x, y: player.y } : { x: 0, y: 0 };
+      return fallback;
     }
-    return getInterpolatedPosition(playerWalkthrough.keyframes, playbackState.currentTime);
+
+    const { currentStep, localTime } = getStepAndLocalTime(playbackState.currentTime, timeline.steps);
+    return getInterpolatedPositionForStep(playerWalkthrough.keyframes, currentStep, localTime, fallback);
   };
 
   const getBallPosition = () => {
+    const fallback = { x: 500, y: 350 };
+
     if (timeline.ball.keyframes.length === 0) {
-      return { x: 500, y: 350 };
+      return fallback;
     }
-    return getInterpolatedPosition(timeline.ball.keyframes, playbackState.currentTime);
+
+    const { currentStep, localTime } = getStepAndLocalTime(playbackState.currentTime, timeline.steps);
+    return getInterpolatedPositionForStep(timeline.ball.keyframes, currentStep, localTime, fallback);
   };
 
   const playerSize = containerSize.width > 768 ? 50 : 35;
@@ -413,16 +438,6 @@ export const WalkthroughPlannerCanvas = ({
           </Button>
         </div>
       </div>
-
-      <PathEditor
-        players={players}
-        selectedPlayerId={selectedPlayerId}
-        onClearPath={handleClearPath}
-        isEditMode={isEditMode}
-        onToggleEditMode={() => setIsEditMode(!isEditMode)}
-        selectedEntityType={selectedEntityType}
-        onClearBallPath={handleClearBallPath}
-      />
 
       <div className="flex justify-center gap-2">
         <EntitySelectorSidebar
@@ -487,34 +502,45 @@ export const WalkthroughPlannerCanvas = ({
           ballSize={ballSize}
           isPlaying={playbackState.isPlaying}
         />
+
+        <ControlsDrawer
+          players={players}
+          selectedPlayerId={selectedPlayerId}
+          onClearPath={handleClearPath}
+          isEditMode={isEditMode}
+          onToggleEditMode={() => setIsEditMode(!isEditMode)}
+          selectedEntityType={selectedEntityType}
+          onClearBallPath={handleClearBallPath}
+          steps={timeline.steps}
+          activeStep={activeStep}
+          onStepChange={setActiveStep}
+          onAddStep={handleAddStep}
+          isPlaying={playbackState.isPlaying}
+          currentTime={playbackState.currentTime}
+          duration={timeline.duration}
+          speed={playbackState.speed}
+          loop={playbackState.loop}
+          onTogglePlay={handleTogglePlay}
+          onRestart={handleRestart}
+          onPrevFrame={handlePrevFrame}
+          onNextFrame={handleNextFrame}
+          onGoToEnd={handleGoToEnd}
+          onSetSpeed={handleSetSpeed}
+          onToggleLoop={handleToggleLoop}
+          canUndo={canUndo}
+          canRedo={canRedo}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+        />
         </div>
+
+        <TimelineDrawer
+          players={players}
+          timeline={timeline}
+          currentTime={playbackState.currentTime}
+          onSeek={handleSeek}
+        />
       </div>
-
-      <WalkthroughControls
-        isPlaying={playbackState.isPlaying}
-        currentTime={playbackState.currentTime}
-        duration={timeline.duration}
-        speed={playbackState.speed}
-        loop={playbackState.loop}
-        onTogglePlay={handleTogglePlay}
-        onRestart={handleRestart}
-        onPrevFrame={handlePrevFrame}
-        onNextFrame={handleNextFrame}
-        onGoToEnd={handleGoToEnd}
-        onSetSpeed={handleSetSpeed}
-        onToggleLoop={handleToggleLoop}
-        canUndo={canUndo}
-        canRedo={canRedo}
-        onUndo={handleUndo}
-        onRedo={handleRedo}
-      />
-
-      <WalkthroughTimeline
-        players={players}
-        timeline={timeline}
-        currentTime={playbackState.currentTime}
-        onSeek={handleSeek}
-      />
     </div>
   );
 };

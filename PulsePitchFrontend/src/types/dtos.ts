@@ -223,6 +223,7 @@ export interface KeyframeDTO {
   x: number;
   y: number;
   action?: string;
+  step?: number;
 }
 
 export interface BallKeyframeDTO {
@@ -231,6 +232,12 @@ export interface BallKeyframeDTO {
   y: number;
   action?: string;
   holderId?: number;
+  step?: number;
+}
+
+export interface StepConfigDTO {
+  stepNumber: number;
+  duration: number;
 }
 
 export interface PlayerWalkthroughDTO {
@@ -252,6 +259,7 @@ export interface WalkthroughEventDTO {
 
 export interface WalkthroughTimelineDTO {
   duration: number;
+  steps?: StepConfigDTO[];
   players: Record<number, PlayerWalkthroughDTO>;
   ball: BallWalkthroughDTO;
   events: WalkthroughEventDTO[];

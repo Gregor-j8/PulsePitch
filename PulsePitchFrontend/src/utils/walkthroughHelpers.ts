@@ -1,4 +1,4 @@
-import { Keyframe, BallKeyframe, InterpolatedPosition, PlayerWalkthrough, WalkthroughTimeline } from '../types';
+import { Keyframe, BallKeyframe, InterpolatedPosition, PlayerWalkthrough, WalkthroughTimeline, StepConfig } from '../types';
 
 
 export const getInterpolatedPosition = (
@@ -39,6 +39,85 @@ export const getInterpolatedPosition = (
     x: prevKf.x + (nextKf.x - prevKf.x) * t,
     y: prevKf.y + (nextKf.y - prevKf.y) * t,
   };
+};
+
+export const getStepAndLocalTime = (
+  globalTime: number,
+  steps: StepConfig[]
+): { currentStep: number; localTime: number; stepStartTime: number } => {
+  if (steps.length === 0) {
+    return { currentStep: 1, localTime: globalTime, stepStartTime: 0 };
+  }
+
+  let accumulated = 0;
+
+  for (const step of steps) {
+    if (globalTime < accumulated + step.duration) {
+      return {
+        currentStep: step.stepNumber,
+        localTime: globalTime - accumulated,
+        stepStartTime: accumulated,
+      };
+    }
+    accumulated += step.duration;
+  }
+
+  const lastStep = steps[steps.length - 1]!;
+  return {
+    currentStep: lastStep.stepNumber,
+    localTime: lastStep.duration,
+    stepStartTime: accumulated - lastStep.duration,
+  };
+};
+
+export const getInterpolatedPositionForStep = (
+  keyframes: (Keyframe | BallKeyframe)[],
+  currentStep: number,
+  localTime: number,
+  fallbackPosition?: { x: number; y: number }
+): InterpolatedPosition => {
+  const stepKeyframes = keyframes.filter(kf => (kf.step ?? 1) === currentStep);
+
+  if (stepKeyframes.length === 0) {
+    const previousKeyframes = keyframes
+      .filter(kf => (kf.step ?? 1) < currentStep)
+      .sort((a, b) => (b.step ?? 1) - (a.step ?? 1) || b.time - a.time);
+
+    if (previousKeyframes.length > 0) {
+      const last = previousKeyframes[0]!;
+      return { x: last.x, y: last.y };
+    }
+
+    return fallbackPosition ?? { x: 0, y: 0 };
+  }
+
+  return getInterpolatedPosition(stepKeyframes, localTime);
+};
+
+export const getStepBoundaries = (
+  steps: StepConfig[],
+  totalWidth: number
+): { step: number; startX: number; endX: number; color: string }[] => {
+  if (steps.length === 0) return [];
+
+  const totalDuration = steps.reduce((sum, s) => sum + s.duration, 0);
+  if (totalDuration === 0) return [];
+
+  const colors = ['#E0F2FE', '#FEF3C7', '#DCFCE7', '#FCE7F3', '#F3E8FF', '#FEE2E2', '#E0E7FF'];
+
+  let accumulatedTime = 0;
+  return steps.map((step, idx) => {
+    const startX = (accumulatedTime / totalDuration) * totalWidth;
+    accumulatedTime += step.duration;
+    const endX = (accumulatedTime / totalDuration) * totalWidth;
+
+    return {
+      step: step.stepNumber,
+      startX,
+      endX,
+      color: colors[idx % colors.length]!,
+    };
+  });
 };
 
 export const formatTime = (ms: number): string => {
@@ -92,6 +171,7 @@ export const generateEmptyTimeline = (playerIds: number[]): WalkthroughTimeline 
 
   return {
     duration: 10000,
+    steps: [{ stepNumber: 1, duration: 10000 }],
     players,
     ball: {
       keyframes: [],

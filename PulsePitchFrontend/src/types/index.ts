@@ -28,6 +28,7 @@ export type {
   WalkthroughEventDTO,
   WalkthroughTimelineDTO,
   WalkthroughPlannerDTO,
+  StepConfigDTO,
 } from './dtos';
 
 export type {
@@ -77,6 +78,7 @@ export type {
   PlayerWalkthrough,
   BallWalkthrough,
   WalkthroughEvent,
+  StepConfig,
   WalkthroughTimeline,
   PlaybackState,
   EditorState,

@@ -32,7 +32,6 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
   const [history, setHistory] = useState<PlayersInFormationDTO[][]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
   const { data: Players } = usePlayersByFormationId(formationId ?? 0)
-  const { data: formation } = useGetFormationsById(formationId ?? 0)
   const mutation = useEditPlayersInFormations()
   const ballRef = useRef<HTMLDivElement | null>(null)
   const draggedBallRef = useRef<boolean | null>(null)
@@ -157,28 +156,6 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
       return () => window.removeEventListener('keydown', handleKeyDown)
     }
   }, [undo, redo, canManageFormations])
-
-  const exportAsPNG = useCallback(async () => {
-    if (!containerRef.current) return
-
-    try {
-      const dataUrl = await toPng(containerRef.current, {
-        quality: 1.0,
-        pixelRatio: 2,
-        backgroundColor: '#5fb830',
-      })
-
-      const link = document.createElement('a')
-      link.download = `formation-${formation?.description || 'tactical-view'}.png`
-      link.href = dataUrl
-      link.click()
-
-      toast.success('Formation exported successfully!')
-    } catch (error) {
-      console.error('Export failed:', error)
-      toast.error('Failed to export formation')
-    }
-  }, [formation])
 
   const handlePlayerUpdate = useCallback((id: number, x: number, y: number) => {
     const player = players.find((p) => p.id === id)
@@ -362,7 +339,7 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
     window.addEventListener("touchmove", move as any)
     window.addEventListener("touchend", up)
   }, [setPlayers, handlePlayerUpdate, selectedPlayer, containerSize, unscaleCoordinate, REFERENCE_WIDTH, REFERENCE_HEIGHT])
-
+  console.log("here is the pitch")
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4 text-black text-center my-15">
@@ -405,14 +382,6 @@ export const PitchComponent = ({ formationId, setFormationId, setFormationModal,
               ↷ Redo
             </Button>
           </div>
-          <Button
-            variant="ghost"
-            onClick={exportAsPNG}
-            className="w-full sm:w-auto text-sm"
-            title="Export formation as PNG"
-          >
-            📸 Export PNG
-          </Button>
         </>
       )}
       <Button

@@ -13,7 +13,6 @@ export const Field = ({ isMobile }: FieldProps) => {
     if (initializedRef.current) return
     initializedRef.current = true
 
-    // Draw custom pitch
     const pitchContainer = d3.select(pitchRef.current)
     pitchContainer.selectAll("*").remove()
 
@@ -24,17 +23,14 @@ export const Field = ({ isMobile }: FieldProps) => {
       .attr("viewBox", "-5 0 130 80")
       .attr("preserveAspectRatio", "xMidYMid meet")
 
-    // Define patterns and gradients for realistic grass
     const defs = svg.append("defs")
 
-    // Grass stripe pattern
     const stripePattern = defs.append("pattern")
       .attr("id", "grass-stripes")
       .attr("patternUnits", "userSpaceOnUse")
       .attr("width", 10)
       .attr("height", 80)
 
-    // Alternating light and dark green stripes (mowed lawn effect)
     for (let i = 0; i < 13; i++) {
       stripePattern.append("rect")
         .attr("x", i * 10)
@@ -81,13 +77,6 @@ export const Field = ({ isMobile }: FieldProps) => {
 
     const g = svg.append("g")
 
-    // Background with grass pattern
-    g.append("rect")
-      .attr("x", -5)
-      .attr("y", 0)
-      .attr("width", 130)
-      .attr("height", 80)
-      .attr("fill", "url(#grass-stripes)")
 
     // Vignette overlay for depth
     g.append("rect")

@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { PlayersInFormationDTO, WalkthroughTimeline as WalkthroughTimelineType } from '../../../types';
-import { formatTime, timeToX, xToTime } from '../../../utils/walkthroughHelpers';
+import { formatTime, timeToX, xToTime, getStepBoundaries } from '../../../utils/walkthroughHelpers';
 
 interface WalkthroughTimelineProps {
   players: PlayersInFormationDTO[];
@@ -8,6 +8,7 @@ interface WalkthroughTimelineProps {
   currentTime: number;
   onSeek: (time: number) => void;
   onAddKeyframe?: (playerId: number, time: number) => void;
+  embedded?: boolean;
 }
 
 export const WalkthroughTimeline = ({
@@ -16,6 +17,7 @@ export const WalkthroughTimeline = ({
   currentTime,
   onSeek,
   onAddKeyframe,
+  embedded = false,
 }: WalkthroughTimelineProps) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -74,9 +76,25 @@ export const WalkthroughTimeline = ({
   const headerHeight = 40;
   const totalHeight = headerHeight + players.length * laneHeight + 20;
   const playheadX = timeToX(currentTime, timeline.duration, timelineWidth);
+  const stepBoundaries = getStepBoundaries(timeline.steps, timelineWidth);
+
+  const getKeyframeGlobalTime = (localTime: number, step: number): number => {
+    let globalTime = 0;
+    for (const s of timeline.steps) {
+      if (s.stepNumber === step) {
+        return globalTime + localTime;
+      }
+      globalTime += s.duration;
+    }
+    return localTime;
+  };
+
+  const containerClass = embedded
+    ? ''
+    : 'bg-white border border-neutral-200 rounded-lg p-4 shadow-sm';
 
   return (
-    <div className="bg-white border border-neutral-200 rounded-lg p-4 shadow-sm">
+    <div className={containerClass}>
       <div className="mb-2 flex justify-between items-center">
         <h3 className="text-sm font-semibold text-neutral-700">Timeline</h3>
         <span className="text-xs text-neutral-500">
@@ -95,6 +113,41 @@ export const WalkthroughTimeline = ({
         className="cursor-pointer"
       >
         <rect width="100%" height={totalHeight} fill="#F9FAFB" />
+
+        {stepBoundaries.length > 1 && (
+          <g className="step-backgrounds">
+            {stepBoundaries.map((boundary) => (
+              <g key={boundary.step}>
+                <rect
+                  x={boundary.startX}
+                  y={headerHeight}
+                  width={boundary.endX - boundary.startX}
+                  height={totalHeight - headerHeight}
+                  fill={boundary.color}
+                  opacity={0.5}
+                />
+                <line
+                  x1={boundary.startX}
+                  y1={0}
+                  x2={boundary.startX}
+                  y2={totalHeight}
+                  stroke="#94A3B8"
+                  strokeWidth={2}
+                  strokeDasharray="4,2"
+                />
+                <text
+                  x={boundary.startX + 5}
+                  y={headerHeight - 5}
+                  fontSize="10"
+                  fontWeight="600"
+                  fill="#475569"
+                >
+                  Step {boundary.step}
+                </text>
+              </g>
+            ))}
+          </g>
+        )}
 
         <g className="time-markers">
           {timeMarkers.map((t, idx) => {
@@ -150,7 +203,8 @@ export const WalkthroughTimeline = ({
               </text>
 
               {playerWalkthrough?.keyframes.map((kf, kfIdx) => {
-                const kfX = timeToX(kf.time, timeline.duration, timelineWidth);
+                const globalTime = getKeyframeGlobalTime(kf.time, kf.step ?? 1);
+                const kfX = timeToX(globalTime, timeline.duration, timelineWidth);
                 return (
                   <circle
                     key={kfIdx}
@@ -162,7 +216,7 @@ export const WalkthroughTimeline = ({
                     strokeWidth={2}
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleKeyframeClick(player.id, kf.time);
+                      handleKeyframeClick(player.id, globalTime);
                     }}
                     className="cursor-pointer hover:r-6"
                   />
