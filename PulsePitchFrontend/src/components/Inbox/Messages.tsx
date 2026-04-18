@@ -100,7 +100,7 @@ export const Messages = ({ loggedInUser }: MessagesProps) => {
                         <p className="text-xs text-gray-500 mb-1">
                           {message.sender?.firstName} {message.sender?.lastName}
                         </p>
-                        <div className="px-3 py-2 rounded max-w-xs text-sm bg-gray-200 text-gray-800">
+                        <div className="text-sm bg-gray-200 text-gray-800" style={{padding: '0.5rem 0.75rem', borderRadius: '0.375rem', maxWidth: '20rem'}}>
                           {message.content}
                           {loggedInUser.id === message.senderId && hoveredId === message.id && (
                             <div className="absolute -top-2 -right-2 flex gap-1 bg-white shadow-md p-1 rounded-md">
