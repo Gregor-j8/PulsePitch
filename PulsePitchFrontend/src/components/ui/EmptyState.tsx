@@ -27,7 +27,7 @@ export const EmptyState: React.FC<EmptyStateProps> = memo(({
       <h3 className="text-lg font-semibold text-neutral-800 mb-2">
         {title}
       </h3>
-      <p className="text-sm text-neutral-500 max-w-md mb-6">
+      <p className="text-sm text-neutral-500 mb-6" style={{maxWidth: '28rem', width: '100%'}}>
         {description}
       </p>
       {actionLabel && onAction && (

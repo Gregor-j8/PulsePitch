@@ -5,7 +5,6 @@ import { StepSelector } from './StepSelector';
 import { WalkthroughControls } from './WalkthroughControls';
 
 interface ControlsDrawerProps {
-  // PathEditor props
   players: PlayersInFormationDTO[];
   selectedPlayerId: number | null;
   onClearPath: (playerId: number) => void;
@@ -13,12 +12,10 @@ interface ControlsDrawerProps {
   onToggleEditMode: () => void;
   selectedEntityType: 'player' | 'ball';
   onClearBallPath: () => void;
-  // StepSelector props
   steps: StepConfig[];
   activeStep: number;
   onStepChange: (step: number) => void;
   onAddStep: () => void;
-  // WalkthroughControls props
   isPlaying: boolean;
   currentTime: number;
   duration: number;
@@ -38,7 +35,6 @@ interface ControlsDrawerProps {
 }
 
 export const ControlsDrawer = ({
-  // PathEditor
   players,
   selectedPlayerId,
   onClearPath,
@@ -46,12 +42,10 @@ export const ControlsDrawer = ({
   onToggleEditMode,
   selectedEntityType,
   onClearBallPath,
-  // StepSelector
   steps,
   activeStep,
   onStepChange,
   onAddStep,
-  // WalkthroughControls
   isPlaying,
   currentTime,
   duration,

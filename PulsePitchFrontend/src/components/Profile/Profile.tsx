@@ -68,16 +68,17 @@ export const Profile = ({ loggedInUser }: ProfileProps) => {
       { onSuccess: () => { setShowModal(false)}})}
 
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <Card className="p-6 mb-4 w-full max-w-md">
+    <div style={{padding: '2rem 1rem'}}>
+      <div style={{maxWidth: '448px', margin: '0 auto'}}>
+      <Card className="p-6 mb-4">
         <h2 className="text-xl font-bold mb-2 text-neutral-800">{userProfile.firstName} {userProfile.lastName}</h2>
         <h2 className="text-xl font-bold mb-2 text-neutral-600">{userProfile.email}</h2>
         {loggedInUser?.id === userProfile.id && (
           <div className="flex flex-col gap-2 mt-4">
-            <Button variant="primary" onClick={() => {setShowModal(true)}}>
+            <Button variant="primary" fullWidth onClick={() => {setShowModal(true)}}>
               Edit Profile
             </Button>
-            <Button variant="danger" onClick={() => setShowDeleteConfirm(true)}>Delete Account</Button>
+            <Button variant="danger" fullWidth onClick={() => setShowDeleteConfirm(true)}>Delete Account</Button>
           </div>
         )}
       </Card>
@@ -130,6 +131,7 @@ export const Profile = ({ loggedInUser }: ProfileProps) => {
         message="Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently removed."
         confirmText="Delete Account"
       />
+      </div>
     </div>
   )
 }

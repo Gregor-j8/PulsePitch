@@ -52,15 +52,15 @@ export default function VideoUploader() {
   }, [])
 
   return (
-  <div className="max-w-xl mx-auto p-6 bg-white rounded-2xl shadow-md space-y-6 text-gray-900">
+  <div style={{padding: '3rem 1rem'}}>
+  <div style={{maxWidth: '576px', margin: '0 auto', padding: '1.5rem', background: '#fff', borderRadius: '1rem', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', display: 'flex', flexDirection: 'column', gap: '1.5rem', color: '#111827'}}>
       <h2 className="text-2xl font-semibold text-center">Video Analysis</h2>
       <input type="file" accept="video/*"
-        className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 
+        className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
         file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
         onChange={(e) => {setFile(e.target.files?.[0] ?? null); setStreamFrame(null)}}/>
       {file && <p className="text-sm text-gray-600">Selected: {file.name}</p>}
-      <button onClick={handleUpload} disabled={uploading || !file} className={`w-full py-2 px-4 rounded-lg font-medium text-white 
-        ${uploading || !file ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}>
+      <button onClick={handleUpload} disabled={uploading || !file} style={{width: '100%', padding: '0.5rem 1rem', borderRadius: '0.5rem', fontWeight: 500, color: '#fff', background: uploading || !file ? '#9ca3af' : '#2563eb', cursor: uploading || !file ? 'not-allowed' : 'pointer', border: 'none'}}>
         {uploading ? "Uploading..." : "Upload & Stream"}
       </button>
       {showModal && streamFrame && (
@@ -77,5 +77,6 @@ export default function VideoUploader() {
         </div>
       )}
     </div>
+  </div>
   )
 }

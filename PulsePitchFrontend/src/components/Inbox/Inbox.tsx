@@ -12,8 +12,8 @@ interface InboxProps {
 export const Inbox = ({ loggedInUser }: InboxProps) => {
   const [activeTab, setActiveTab] = useState<'messages' | 'notifications'>('messages')
   return (
-    <div className="min-h-screen bg-neutral-100 flex items-center justify-center px-4 py-8">
-      <Card className="w-full max-w-4xl overflow-hidden">
+    <div style={{padding: '2rem 1rem'}}>
+      <Card style={{maxWidth: '896px', margin: '0 auto'}}>
         <div className="border-b px-6 py-4 bg-gradient-to-r from-primary-50 to-primary-100">
           <div className="flex space-x-4">
             <Button
@@ -32,7 +32,7 @@ export const Inbox = ({ loggedInUser }: InboxProps) => {
             </Button>
           </div>
         </div>
-        <div className="h-[500px] overflow-y-auto">
+        <div>
           {activeTab === 'messages' && (
             <Messages loggedInUser={loggedInUser} />
           )}

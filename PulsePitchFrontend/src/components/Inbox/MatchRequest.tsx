@@ -31,8 +31,8 @@ export const MatchRequest = ({ loggedInUser }: MatchRequestProps) => {
     }
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <h2 className="text-2xl font-semibold mb-4 text-center text-neutral-800">Your Match Requests</h2>
+    <div style={{width: '100%', padding: '1.5rem', boxSizing: 'border-box'}}>
+      <h2 className="text-2xl font-semibold mb-4 text-neutral-800">Your Match Requests</h2>
       {MatchRequests.length === 0 ? (
         <EmptyState
           icon={Trophy}
