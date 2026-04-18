@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
 import { useGetFormationsByTeamId } from "../../hooks/useFormation"
 import { PitchComponent } from "./PitchComponent"
 import {CreateFormationModal} from "./CreateFormationModal"
@@ -14,7 +13,6 @@ interface TacticalViewProps {
 }
 
 export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
-    const navigate = useNavigate()
     const [formationId, setFormationId] = useState<number | null>(0)
     const  [createFormationModal, setCreateFormationModal] = useState<boolean>(false)
     const teamId = (loggedInUser.teams as unknown as Array<{teamId: number}>)?.[0]?.teamId ?? 0;
@@ -37,12 +35,6 @@ export const TacticalView = ({loggedInUser}: TacticalViewProps) => {
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-neutral-900">Your Formations</h2>
                   <div className="flex gap-3">
-                    <Button
-                      variant="outline"
-                      onClick={() => navigate('/pitch2')}
-                    >
-                      Go to Tactical View 2
-                    </Button>
                     {canManageFormations && (
                       <Button
                         variant="primary"
